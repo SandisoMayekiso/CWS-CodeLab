@@ -1,227 +1,874 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="Explore practical programming and software-development courses at CWS CodeLab."
-  />
-  <title>Courses | CWS CodeLab</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
 
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/courses.css" />
-  <link rel="stylesheet" href="../css/responsive.css" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <script src="../data/courses.js" defer></script>
-  <script src="../js/main.js" defer></script>
-  <script src="../js/courses.js" defer></script>
+    <meta
+        name="description"
+        content="Explore course modules, lessons, projects and assessments at CWS CodeLab."
+    >
+
+    <title>
+        Course | CWS CodeLab
+    </title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/course-details.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         COURSE DATA
+    ====================================================== -->
+
+    <script
+        src="../data/courses.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         MAIN JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="../js/main.js"
+        defer
+    ></script>
+
+    <script
+        src="../js/course-details.js"
+        defer
+    ></script>
+
 </head>
 
+
 <body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a href="../index.html" class="brand" aria-label="CWS CodeLab home">
-        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-        <span class="brand-copy">
-          <strong>CWS CodeLab</strong>
-          <small>CyberWithSandiso</small>
-        </span>
-      </a>
 
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="primary-navigation"
-        aria-label="Open navigation"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <!-- =====================================================
+         SKIP LINK
+    ====================================================== -->
 
-      <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-        <a href="../index.html">Home</a>
-        <a href="courses.html" aria-current="page">Courses</a>
-        <a href="../index.html#paths">Learning Paths</a>
-        <a href="../index.html#projects">Projects</a>
-        <a href="https://sandisomayekiso.github.io/CyberWithSandiso/" target="_blank" rel="noopener noreferrer">CWS Academy</a>
-        <a href="../index.html#about">About</a>
-        <a href="#course-catalogue" class="nav-cta">Start Coding</a>
-      </nav>
-    </div>
-  </header>
+    <a
+        class="skip-link"
+        href="#main-content"
+    >
+        Skip to content
+    </a>
 
-  <main id="main-content">
-    <section class="courses-hero">
-      <div class="container courses-hero-grid">
-        <div>
-          <p class="eyebrow">CWS CodeLab Course Catalogue</p>
-          <h1>Build the skills.<br><span>Then build the software.</span></h1>
-          <p class="courses-hero-copy">
-            Begin with practical developer foundations and progress toward front-end,
-            Python, and full-stack development through structured courses and real projects.
-          </p>
 
-          <div class="catalogue-summary" aria-label="Course catalogue summary">
-            <div>
-              <strong id="summary-course-count">6</strong>
-              <span>Foundation courses</span>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="site-header">
+
+        <div class="container nav-wrap">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="../index.html"
+                class="brand"
+                aria-label="CWS CodeLab home"
+            >
+
+                <span
+                    class="brand-mark"
+                    aria-hidden="true"
+                >
+                    &lt;/&gt;
+                </span>
+
+                <span class="brand-copy">
+
+                    <strong>
+                        CWS CodeLab
+                    </strong>
+
+                    <small>
+                        CyberWithSandiso
+                    </small>
+
+                </span>
+
+            </a>
+
+
+            <!-- MOBILE NAV BUTTON -->
+
+            <button
+                class="nav-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="primary-navigation"
+                aria-label="Open navigation"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <!-- NAVIGATION -->
+
+            <nav
+                id="primary-navigation"
+                class="primary-nav"
+                aria-label="Primary navigation"
+            >
+
+                <a href="../index.html">
+                    Home
+                </a>
+
+                <a href="courses.html">
+                    Courses
+                </a>
+
+                <a href="../index.html#paths">
+                    Learning Paths
+                </a>
+
+                <a href="../index.html#projects">
+                    Projects
+                </a>
+
+                <a
+                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                >
+                    CWS Academy
+                </a>
+
+                <a href="../index.html#about">
+                    About
+                </a>
+
+                <a
+                    href="courses.html"
+                    class="nav-cta"
+                >
+                    Browse Courses
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main id="main-content">
+
+
+        <!-- =================================================
+             LOADING STATE
+        ================================================== -->
+
+        <section
+            id="course-loading"
+            class="course-loading"
+        >
+
+            <div class="container">
+
+                <div class="course-loading-card">
+
+                    <div class="loading-spinner"></div>
+
+                    <p>
+                        Loading course...
+                    </p>
+
+                </div>
+
             </div>
-            <div>
-              <strong id="summary-project-count">24</strong>
-              <span>Planned projects</span>
+
+        </section>
+
+
+        <!-- =================================================
+             COURSE NOT FOUND
+        ================================================== -->
+
+        <section
+            id="course-not-found"
+            class="course-not-found"
+            hidden
+        >
+
+            <div class="container">
+
+                <div class="course-not-found-card">
+
+                    <div class="not-found-icon">
+                        &lt;/&gt;
+                    </div>
+
+                    <p class="eyebrow">
+                        Course unavailable
+                    </p>
+
+                    <h1>
+                        Course Not Found
+                    </h1>
+
+                    <p>
+                        The course you're looking for does not exist,
+                        is unavailable, or has not yet been released.
+                    </p>
+
+                    <a
+                        href="courses.html"
+                        class="btn btn-primary"
+                    >
+                        Back to Courses
+                    </a>
+
+                </div>
+
             </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COURSE CONTENT
+        ================================================== -->
+
+        <div
+            id="course-content"
+            hidden
+        >
+
+
+            <!-- =============================================
+                 COURSE HERO
+            ============================================== -->
+
+            <section class="course-detail-hero">
+
+                <div class="container course-detail-hero-grid">
+
+
+                    <!-- COURSE COPY -->
+
+                    <div class="course-detail-copy">
+
+
+                        <!-- BREADCRUMB -->
+
+                        <nav
+                            class="course-breadcrumb"
+                            aria-label="Breadcrumb"
+                        >
+
+                            <a href="../index.html">
+                                Home
+                            </a>
+
+                            <span>
+                                /
+                            </span>
+
+                            <a href="courses.html">
+                                Courses
+                            </a>
+
+                            <span>
+                                /
+                            </span>
+
+                            <span
+                                id="breadcrumb-course"
+                                aria-current="page"
+                            >
+                                Course
+                            </span>
+
+                        </nav>
+
+
+                        <!-- COURSE BADGES -->
+
+                        <div class="course-detail-badges">
+
+                            <span
+                                id="course-access"
+                                class="course-access-badge"
+                            >
+                                Free
+                            </span>
+
+                            <span
+                                id="course-level"
+                                class="course-level-badge"
+                            >
+                                Beginner
+                            </span>
+
+                            <span
+                                id="course-category"
+                                class="course-category-badge"
+                            >
+                                Programming
+                            </span>
+
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <h1 id="course-title">
+                            Course Title
+                        </h1>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <p
+                            id="course-description"
+                            class="course-detail-description"
+                        >
+                        </p>
+
+
+                        <!-- HERO ACTIONS -->
+
+                        <div class="course-detail-actions">
+
+                            <a
+                                id="start-course-button"
+                                href="#curriculum"
+                                class="btn btn-primary"
+                            >
+                                Start Course
+                            </a>
+
+                            <a
+                                href="#curriculum"
+                                class="btn btn-secondary"
+                            >
+                                View Curriculum
+                            </a>
+
+                        </div>
+
+
+                        <!-- COURSE STATS -->
+
+                        <div class="course-detail-stats">
+
+                            <div>
+
+                                <strong id="course-module-count">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Modules
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong id="course-lesson-count">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Lessons
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong id="course-hours">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Hours
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong id="course-project-count">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Projects
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong id="course-assessment-count">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Assessments
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COURSE SUMMARY CARD -->
+
+                    <aside class="course-summary-card">
+
+                        <div
+                            id="course-icon"
+                            class="course-summary-icon"
+                        >
+                            PF
+                        </div>
+
+                        <p class="summary-label">
+                            Course Overview
+                        </p>
+
+                        <h2 id="course-summary-title">
+                            Course Title
+                        </h2>
+
+
+                        <div class="course-summary-list">
+
+                            <div>
+
+                                <span>
+                                    Duration
+                                </span>
+
+                                <strong id="course-duration">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Level
+                                </span>
+
+                                <strong id="course-summary-level">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Access
+                                </span>
+
+                                <strong id="course-summary-access">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Modules
+                                </span>
+
+                                <strong id="course-summary-modules">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="course-summary-message">
+
+                            <span>
+                                &lt;/&gt;
+                            </span>
+
+                            <p>
+                                Learn the concept.
+                                Write the code.
+                                Build something real.
+                            </p>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 COURSE BODY
+            ============================================== -->
+
+            <section class="course-detail-body">
+
+                <div class="container course-detail-layout">
+
+
+                    <!-- =====================================
+                         MAIN COLUMN
+                    ====================================== -->
+
+                    <div class="course-main-column">
+
+
+                        <!-- WHAT YOU WILL LEARN -->
+
+                        <section class="course-content-section">
+
+                            <p class="eyebrow">
+                                Course Outcome
+                            </p>
+
+                            <h2>
+                                What you'll learn
+                            </h2>
+
+                            <p
+                                id="course-outcome"
+                                class="course-outcome"
+                            >
+                            </p>
+
+                            <div
+                                id="course-skills"
+                                class="course-skills-grid"
+                            >
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================
+                             CURRICULUM
+                        ================================== -->
+
+                        <section
+                            class="course-content-section"
+                            id="curriculum"
+                        >
+
+                            <div class="curriculum-heading">
+
+                                <div>
+
+                                    <p class="eyebrow">
+                                        Curriculum
+                                    </p>
+
+                                    <h2>
+                                        Course Modules
+                                    </h2>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    id="toggle-all-modules"
+                                    class="toggle-modules-button"
+                                >
+                                    Expand All
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="course-curriculum"
+                                class="course-curriculum"
+                            >
+                            </div>
+
+                        </section>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         SIDEBAR
+                    ====================================== -->
+
+                    <aside class="course-sidebar">
+
+
+                        <!-- PREREQUISITES -->
+
+                        <div class="course-sidebar-card">
+
+                            <p class="sidebar-label">
+                                Prerequisites
+                            </p>
+
+                            <div
+                                id="course-prerequisites"
+                                class="prerequisite-list"
+                            >
+                            </div>
+
+                        </div>
+
+
+                        <!-- LEARNING PATHS -->
+
+                        <div class="course-sidebar-card">
+
+                            <p class="sidebar-label">
+                                Included In
+                            </p>
+
+                            <div
+                                id="course-learning-paths"
+                                class="course-path-list"
+                            >
+                            </div>
+
+                        </div>
+
+
+                        <!-- CWS ECOSYSTEM -->
+
+                        <div class="course-sidebar-card ecosystem-sidebar">
+
+                            <p class="sidebar-label">
+                                CWS Ecosystem
+                            </p>
+
+                            <h3>
+                                Want to learn cybersecurity too?
+                            </h3>
+
+                            <p>
+                                Continue your learning journey with
+                                ethical hacking, web security and
+                                penetration testing at CWS Academy.
+                            </p>
+
+                            <a
+                                href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                                class="sidebar-link"
+                            >
+                                Explore CWS Academy →
+                            </a>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 NEXT STEP
+            ============================================== -->
+
+            <section class="course-next-step">
+
+                <div class="container course-next-step-inner">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Ready to build?
+                        </p>
+
+                        <h2>
+                            Learn the concept.
+                            Build the project.
+                            Ship the result.
+                        </h2>
+
+                    </div>
+
+                    <a
+                        id="bottom-start-course-button"
+                        href="#curriculum"
+                        class="btn btn-light"
+                    >
+                        Start Course
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
             <div>
-              <strong>3</strong>
-              <span>Learning paths</span>
+
+                <a
+                    href="../index.html"
+                    class="brand footer-brand"
+                >
+
+                    <span
+                        class="brand-mark"
+                        aria-hidden="true"
+                    >
+                        &lt;/&gt;
+                    </span>
+
+                    <span class="brand-copy">
+
+                        <strong>
+                            CWS CodeLab
+                        </strong>
+
+                        <small>
+                            A CyberWithSandiso Learning Platform
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <p class="footer-note">
+
+                    Practical developer education built around
+                    learning, building, debugging and shipping.
+
+                </p>
+
             </div>
-          </div>
+
+
+            <div class="footer-links">
+
+                <a href="courses.html">
+                    Courses
+                </a>
+
+                <a href="../index.html#paths">
+                    Learning Paths
+                </a>
+
+                <a href="../index.html#projects">
+                    Projects
+                </a>
+
+                <a
+                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                >
+                    CWS Academy
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="course-roadmap-card">
-          <p class="roadmap-label">Developer Foundations</p>
-          <div class="roadmap-list">
-            <div><span>01</span><p>Programming Fundamentals</p></div>
-            <div><span>02</span><p>HTML &amp; CSS</p></div>
-            <div><span>03</span><p>JavaScript Fundamentals</p></div>
-            <div><span>04</span><p>Git &amp; GitHub</p></div>
-            <div><span>05</span><p>Python Programming</p></div>
-            <div><span>06</span><p>SQL &amp; Databases</p></div>
-          </div>
-          <p class="roadmap-foot">Learn → Build → Debug → Ship</p>
-        </div>
-      </div>
-    </section>
 
-    <section class="catalogue-section" id="course-catalogue">
-      <div class="container">
-        <div class="catalogue-toolbar">
-          <div>
-            <p class="eyebrow">Explore Courses</p>
-            <h2>Developer foundations</h2>
-          </div>
+        <div class="container footer-bottom">
 
-          <div class="catalogue-controls">
-            <label class="search-box">
-              <span class="sr-only">Search courses</span>
-              <input
-                id="course-search"
-                type="search"
-                placeholder="Search courses or skills..."
-                autocomplete="off"
-              />
-            </label>
+            <p>
+                &copy;
+                <span id="current-year"></span>
+                CyberWithSandiso.
+                All rights reserved.
+            </p>
 
-            <select id="level-filter" aria-label="Filter courses by level">
-              <option value="all">All levels</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
+            <p>
+                Learn. Build. Ship.
+            </p>
 
-            <select id="access-filter" aria-label="Filter courses by access">
-              <option value="all">Free + Pro</option>
-              <option value="Free">Free</option>
-              <option value="Pro">Pro</option>
-            </select>
-          </div>
         </div>
 
-        <div class="category-filters" id="category-filters" aria-label="Course categories">
-          <button class="category-filter active" type="button" data-category="all">All courses</button>
-        </div>
+    </footer>
 
-        <p class="results-status" id="results-status" aria-live="polite"></p>
-
-        <div class="catalogue-grid" id="courses-grid"></div>
-
-        <div class="empty-state" id="empty-state" hidden>
-          <div class="empty-icon">&lt;/&gt;</div>
-          <h3>No matching courses</h3>
-          <p>Try changing your search or filters.</p>
-          <button type="button" id="clear-filters" class="btn btn-primary">Clear filters</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="path-selector-section">
-      <div class="container">
-        <div class="section-heading centered">
-          <p class="eyebrow">Not sure where to start?</p>
-          <h2>Choose a developer path</h2>
-          <p>
-            Each path uses the same course catalogue but arranges your learning in an
-            intentional order based on the type of developer you want to become.
-          </p>
-        </div>
-
-        <div class="path-selector-grid" id="path-selector-grid"></div>
-      </div>
-    </section>
-
-    <section class="course-philosophy">
-      <div class="container philosophy-grid">
-        <div>
-          <p class="eyebrow">How CodeLab teaches</p>
-          <h2>Courses are only one part of the journey.</h2>
-        </div>
-
-        <div class="philosophy-steps">
-          <div><span>01</span><p><strong>Learn</strong> the concept.</p></div>
-          <div><span>02</span><p><strong>Code</strong> with guided exercises.</p></div>
-          <div><span>03</span><p><strong>Build</strong> increasingly independent projects.</p></div>
-          <div><span>04</span><p><strong>Debug</strong> mistakes and understand why they happened.</p></div>
-          <div><span>05</span><p><strong>Ship</strong> portfolio-ready work.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="final-cta">
-      <div class="container final-cta-inner">
-        <div>
-          <p class="eyebrow">CWS CodeLab</p>
-          <h2>Start with strong foundations. Specialise when you are ready.</h2>
-        </div>
-        <a class="btn btn-light" href="#course-catalogue">Browse Courses</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <a href="../index.html" class="brand footer-brand">
-          <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-          <span class="brand-copy">
-            <strong>CWS CodeLab</strong>
-            <small>A CyberWithSandiso Learning Platform</small>
-          </span>
-        </a>
-        <p class="footer-note">
-          Practical developer education built around learning, building, debugging, and shipping.
-        </p>
-      </div>
-
-      <div class="footer-links">
-        <a href="courses.html">Courses</a>
-        <a href="../index.html#paths">Learning Paths</a>
-        <a href="../index.html#projects">Projects</a>
-        <a href="https://sandisomayekiso.github.io/CyberWithSandiso/" target="_blank" rel="noopener noreferrer">CWS Academy</a>
-      </div>
-    </div>
-
-    <div class="container footer-bottom">
-      <p>&copy; <span id="current-year"></span> CyberWithSandiso. All rights reserved.</p>
-      <p>Learn. Build. Ship.</p>
-    </div>
-  </footer>
 </body>
+
 </html>
