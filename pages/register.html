@@ -15,7 +15,14 @@
         content="Create your CWS CodeLab account and start learning practical software development."
     >
 
-    <title>Create Account | CWS CodeLab</title>
+    <meta
+        name="author"
+        content="CyberWithSandiso"
+    >
+
+    <title>
+        Create Account | CWS CodeLab
+    </title>
 
 
     <!-- =====================================================
@@ -68,6 +75,11 @@
         defer
     ></script>
 
+    <script
+        src="../js/auth-ui.js"
+        defer
+    ></script>
+
 </head>
 
 
@@ -95,7 +107,9 @@
         <div class="container nav-wrap">
 
 
-            <!-- BRAND -->
+            <!-- =================================================
+                 BRAND
+            ================================================== -->
 
             <a
                 href="../index.html"
@@ -109,6 +123,7 @@
                 >
                     &lt;/&gt;
                 </span>
+
 
                 <span class="brand-copy">
 
@@ -125,7 +140,9 @@
             </a>
 
 
-            <!-- MOBILE NAVIGATION -->
+            <!-- =================================================
+                 MOBILE NAVIGATION
+            ================================================== -->
 
             <button
                 class="nav-toggle"
@@ -142,7 +159,9 @@
             </button>
 
 
-            <!-- NAVIGATION -->
+            <!-- =================================================
+                 PRIMARY NAVIGATION
+            ================================================== -->
 
             <nav
                 id="primary-navigation"
@@ -150,31 +169,75 @@
                 aria-label="Primary navigation"
             >
 
+
                 <a href="../index.html">
                     Home
                 </a>
+
 
                 <a href="courses.html">
                     Courses
                 </a>
 
-                <a href="learning-paths.html">
+
+                <a href="../index.html#paths">
                     Learning Paths
                 </a>
+
 
                 <a href="pricing.html">
                     Pricing
                 </a>
 
+
+                <!-- =============================================
+                     CWS ACADEMY
+                ============================================== -->
+
                 <a
                     href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                    class="academy-nav-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit CWS Academy Cybersecurity School - opens in a new tab"
                 >
-                    CWS Academy
+
+                    <span
+                        class="academy-nav-mark"
+                        aria-hidden="true"
+                    >
+                        CWS
+                    </span>
+
+
+                    <span class="academy-nav-copy">
+
+                        <strong>
+                            CWS Academy
+                        </strong>
+
+                        <small>
+
+                            Cybersecurity School
+
+                            <span aria-hidden="true">
+                                ↗
+                            </span>
+
+                        </small>
+
+                    </span>
+
                 </a>
 
-                <a href="login.html">
+
+                <a
+                    href="login.html"
+                    class="nav-signin"
+                >
                     Sign In
                 </a>
+
 
                 <a
                     href="register.html"
@@ -183,6 +246,7 @@
                 >
                     Start Learning
                 </a>
+
 
             </nav>
 
@@ -207,7 +271,7 @@
 
 
                 <!-- =================================================
-                     LEFT SIDE
+                     INTRO
                 ================================================== -->
 
                 <div class="auth-intro">
@@ -216,7 +280,7 @@
                     <a
                         href="../index.html"
                         class="auth-brand-mark"
-                        aria-label="CWS CodeLab"
+                        aria-label="CWS CodeLab home"
                     >
                         &lt;/&gt;
                     </a>
@@ -228,31 +292,42 @@
 
 
                     <h1>
+
                         Learn.
-                        <span>Build.</span>
+
+                        <span>
+                            Build.
+                        </span>
+
                         Ship.
+
                     </h1>
 
 
                     <p class="auth-intro-description">
 
-                        Build practical software-development skills
-                        through structured courses, coding exercises,
-                        projects and real applications.
+                        Build practical software-development
+                        skills through structured courses,
+                        coding exercises, projects and
+                        real applications.
 
                     </p>
 
 
-                    <!-- BENEFITS -->
+                    <!-- =========================================
+                         BENEFITS
+                    ========================================== -->
 
                     <div class="auth-benefits">
 
 
                         <div class="auth-benefit">
 
+
                             <span class="auth-benefit-icon">
                                 01
                             </span>
+
 
                             <div>
 
@@ -261,21 +336,26 @@
                                 </strong>
 
                                 <p>
-                                    Follow developer learning paths
-                                    from fundamentals to complete
-                                    applications.
+
+                                    Follow developer learning
+                                    paths from the foundations
+                                    toward complete applications.
+
                                 </p>
 
                             </div>
+
 
                         </div>
 
 
                         <div class="auth-benefit">
 
+
                             <span class="auth-benefit-icon">
                                 02
                             </span>
+
 
                             <div>
 
@@ -284,21 +364,26 @@
                                 </strong>
 
                                 <p>
+
                                     Turn concepts into websites,
-                                    applications, APIs and portfolio
-                                    projects.
+                                    applications, APIs and
+                                    portfolio projects.
+
                                 </p>
 
                             </div>
+
 
                         </div>
 
 
                         <div class="auth-benefit">
 
+
                             <span class="auth-benefit-icon">
                                 03
                             </span>
+
 
                             <div>
 
@@ -307,21 +392,26 @@
                                 </strong>
 
                                 <p>
+
                                     Continue lessons, complete
                                     assessments and build toward
                                     course completion.
+
                                 </p>
 
                             </div>
+
 
                         </div>
 
 
                         <div class="auth-benefit">
 
+
                             <span class="auth-benefit-icon">
                                 04
                             </span>
+
 
                             <div>
 
@@ -330,12 +420,15 @@
                                 </strong>
 
                                 <p>
-                                    Complete eligible courses and
-                                    learning paths to earn CWS CodeLab
-                                    credentials.
+
+                                    Complete eligible CodeLab
+                                    courses and learning paths
+                                    toward CodeLab credentials.
+
                                 </p>
 
                             </div>
+
 
                         </div>
 
@@ -343,19 +436,47 @@
                     </div>
 
 
-                    <!-- ECOSYSTEM -->
+                    <!-- =========================================
+                         ECOSYSTEM
+                    ========================================== -->
 
                     <div class="auth-ecosystem">
+
 
                         <span>
                             CWS
                         </span>
 
-                        <p>
-                            Already learning cybersecurity?
-                            Your CodeLab journey complements
-                            CWS Academy.
-                        </p>
+
+                        <div>
+
+                            <strong>
+                                Two learning schools
+                            </strong>
+
+
+                            <p>
+
+                                Learn software development here
+                                at CWS CodeLab, then explore
+                                cybersecurity, ethical hacking
+                                and penetration testing through
+                                CWS Academy.
+
+                            </p>
+
+
+                            <a
+                                href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Visit CWS Academy ↗
+                            </a>
+
+
+                        </div>
+
 
                     </div>
 
@@ -372,26 +493,36 @@
                     <div class="auth-card">
 
 
+                        <!-- =========================================
+                             CARD HEADER
+                        ========================================== -->
+
                         <div class="auth-card-header">
+
 
                             <p class="auth-card-overline">
                                 Create your account
                             </p>
 
+
                             <h2>
                                 Start coding with CWS
                             </h2>
 
+
                             <p>
-                                Create a free CodeLab account to begin
-                                your developer journey.
+
+                                Create a free CodeLab account
+                                and begin your developer journey.
+
                             </p>
+
 
                         </div>
 
 
                         <!-- =========================================
-                             STATUS MESSAGE
+                             STATUS
                         ========================================== -->
 
                         <div
@@ -405,7 +536,7 @@
 
 
                         <!-- =========================================
-                             REGISTER FORM
+                             FORM
                         ========================================== -->
 
                         <form
@@ -415,13 +546,15 @@
                         >
 
 
-                            <!-- NAME -->
+                            <!-- FULL NAME -->
 
                             <div class="form-group">
+
 
                                 <label for="full-name">
                                     Full name
                                 </label>
+
 
                                 <input
                                     type="text"
@@ -432,11 +565,13 @@
                                     required
                                 >
 
+
                                 <small
                                     id="full-name-error"
                                     class="form-error"
                                 >
                                 </small>
+
 
                             </div>
 
@@ -445,9 +580,11 @@
 
                             <div class="form-group">
 
+
                                 <label for="email">
                                     Email address
                                 </label>
+
 
                                 <input
                                     type="email"
@@ -458,11 +595,13 @@
                                     required
                                 >
 
+
                                 <small
                                     id="email-error"
                                     class="form-error"
                                 >
                                 </small>
+
 
                             </div>
 
@@ -471,12 +610,14 @@
 
                             <div class="form-group">
 
+
                                 <label for="password">
                                     Password
                                 </label>
 
 
                                 <div class="password-field">
+
 
                                     <input
                                         type="password"
@@ -488,6 +629,7 @@
                                         required
                                     >
 
+
                                     <button
                                         type="button"
                                         class="password-toggle"
@@ -497,10 +639,14 @@
                                         Show
                                     </button>
 
+
                                 </div>
 
 
+                                <!-- PASSWORD REQUIREMENTS -->
+
                                 <div class="password-requirements">
+
 
                                     <span
                                         id="requirement-length"
@@ -509,12 +655,14 @@
                                         8+ characters
                                     </span>
 
+
                                     <span
                                         id="requirement-uppercase"
                                         class="password-requirement"
                                     >
                                         Uppercase
                                     </span>
+
 
                                     <span
                                         id="requirement-lowercase"
@@ -523,12 +671,14 @@
                                         Lowercase
                                     </span>
 
+
                                     <span
                                         id="requirement-number"
                                         class="password-requirement"
                                     >
                                         Number
                                     </span>
+
 
                                 </div>
 
@@ -539,6 +689,7 @@
                                 >
                                 </small>
 
+
                             </div>
 
 
@@ -546,12 +697,14 @@
 
                             <div class="form-group">
 
+
                                 <label for="confirm-password">
                                     Confirm password
                                 </label>
 
 
                                 <div class="password-field">
+
 
                                     <input
                                         type="password"
@@ -562,6 +715,7 @@
                                         required
                                     >
 
+
                                     <button
                                         type="button"
                                         class="password-toggle"
@@ -570,6 +724,7 @@
                                     >
                                         Show
                                     </button>
+
 
                                 </div>
 
@@ -580,6 +735,7 @@
                                 >
                                 </small>
 
+
                             </div>
 
 
@@ -587,12 +743,14 @@
 
                             <label class="auth-checkbox">
 
+
                                 <input
                                     type="checkbox"
                                     id="terms"
                                     name="terms"
                                     required
                                 >
+
 
                                 <span>
 
@@ -609,6 +767,7 @@
                                     </a>.
 
                                 </span>
+
 
                             </label>
 
@@ -673,15 +832,21 @@
 
                         <div class="auth-security-note">
 
+
                             <span aria-hidden="true">
                                 ◇
                             </span>
 
+
                             <p>
-                                Authentication will be securely
-                                handled through the CWS CodeLab
-                                account system.
+
+                                CodeLab account authentication
+                                is designed to be handled through
+                                the account service rather than
+                                storing passwords in page code.
+
                             </p>
+
 
                         </div>
 
@@ -690,10 +855,9 @@
 
 
                     <p class="auth-card-footer">
-
                         A CyberWithSandiso Learning Platform
-
                     </p>
+
 
                 </div>
 
@@ -712,30 +876,114 @@
 
     <footer class="site-footer">
 
+        <div class="container footer-grid">
+
+
+            <div>
+
+
+                <a
+                    href="../index.html"
+                    class="brand footer-brand"
+                >
+
+                    <span
+                        class="brand-mark"
+                        aria-hidden="true"
+                    >
+                        &lt;/&gt;
+                    </span>
+
+
+                    <span class="brand-copy">
+
+                        <strong>
+                            CWS CodeLab
+                        </strong>
+
+                        <small>
+                            A CyberWithSandiso Learning Platform
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <p class="footer-note">
+
+                    Practical software-development education
+                    built around learning, building, debugging
+                    and shipping.
+
+                </p>
+
+
+            </div>
+
+
+            <div class="footer-links">
+
+
+                <a href="courses.html">
+                    Courses
+                </a>
+
+
+                <a href="../index.html#paths">
+                    Learning Paths
+                </a>
+
+
+                <a href="pricing.html">
+                    Pricing
+                </a>
+
+
+                <a href="login.html">
+                    Sign In
+                </a>
+
+
+                <a
+                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                    class="footer-academy-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    CWS Academy
+
+                    <span>
+                        Cybersecurity School ↗
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
         <div class="container footer-bottom">
 
+
             <p>
+
                 &copy;
                 <span id="current-year"></span>
                 CyberWithSandiso.
                 All rights reserved.
+
             </p>
 
-            <div class="auth-footer-links">
 
-                <a href="privacy-policy.html">
-                    Privacy
-                </a>
+            <p>
+                Learn. Build. Ship.
+            </p>
 
-                <a href="terms.html">
-                    Terms
-                </a>
-
-                <a href="contact.html">
-                    Contact
-                </a>
-
-            </div>
 
         </div>
 
@@ -743,12 +991,5 @@
 
 
 </body>
-<script
-    src="../js/main.js"
-    defer
-></script>
-<script
-    src="../js/auth-ui.js"
-    defer
-></script>
+
 </html>
