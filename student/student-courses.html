@@ -1,967 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CWS CodeLab student course library.">
+  <title>My Courses | CWS CodeLab</title>
 
-    <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/student-courses.css">
 
-    <meta
-        name="description"
-        content="View, enrol in and continue CWS CodeLab software-development courses."
-    >
+  <!-- Shared CodeLab data layer -->
+  <script src="../data/course-experience.js" defer></script>
+  <script src="../data/assessment-config.js" defer></script>
+  <script src="../data/courses.js" defer></script>
 
-    <meta
-        name="author"
-        content="CyberWithSandiso"
-    >
-
-    <title>
-        My Courses | CWS CodeLab
-    </title>
-
-
-    <!-- =====================================================
-         GOOGLE FONTS
-    ====================================================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- =====================================================
-         STYLES
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="../css/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../css/student-courses.css"
-    >
-
-
-    <!-- =====================================================
-         COURSE DATA
-    ====================================================== -->
-
-    <script
-        src="../data/courses.js"
-        defer
-    ></script>
-
-
-    <!-- =====================================================
-         STUDENT COURSES
-    ====================================================== -->
-
-    <script
-        type="module"
-        src="../js/student-courses.js"
-    ></script>
-
+  <script type="module" src="../js/student-courses.js"></script>
 </head>
 
-
 <body class="student-body">
-
-
-    <!-- =====================================================
-         SKIP LINK
-    ====================================================== -->
-
-    <a
-        href="#student-courses-main"
-        class="skip-link"
-    >
-        Skip to courses
-    </a>
-
-
-    <!-- =====================================================
-         APP
-    ====================================================== -->
-
-    <div class="student-courses-app">
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
-
-        <aside
-            id="student-sidebar"
-            class="student-sidebar"
-            aria-label="Student navigation"
-        >
-
-
-            <!-- =============================================
-                 BRAND
-            ============================================== -->
-
-            <div class="student-sidebar-header">
-
-
-                <a
-                    href="../index.html"
-                    class="student-brand"
-                    aria-label="CWS CodeLab home"
-                >
-
-                    <span
-                        class="student-brand-mark"
-                        aria-hidden="true"
-                    >
-                        &lt;/&gt;
-                    </span>
-
-
-                    <span class="student-brand-copy">
-
-                        <strong>
-                            CWS CodeLab
-                        </strong>
-
-                        <small>
-                            Student Portal
-                        </small>
-
-                    </span>
-
-                </a>
-
-
-                <button
-                    type="button"
-                    id="student-sidebar-close"
-                    class="student-sidebar-close"
-                    aria-label="Close navigation"
-                >
-                    ×
-                </button>
-
-
-            </div>
-
-
-            <!-- =============================================
-                 ACCOUNT
-            ============================================== -->
-
-            <div class="sidebar-account-card">
-
-
-                <div
-                    id="sidebar-student-avatar"
-                    class="sidebar-account-avatar"
-                    aria-hidden="true"
-                >
-                    S
-                </div>
-
-
-                <div class="sidebar-account-copy">
-
-                    <strong id="sidebar-student-name">
-                        Student
-                    </strong>
-
-                    <span id="sidebar-account-plan">
-                        Free Learner
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-            <!-- =============================================
-                 NAVIGATION
-            ============================================== -->
-
-            <nav class="student-navigation">
-
-
-                <p class="student-nav-label">
-                    Learning
-                </p>
-
-
-                <a
-                    href="dashboard.html"
-                    class="student-nav-link"
-                >
-
-                    <span class="student-nav-icon">
-                        DB
-                    </span>
-
-                    <span>
-                        Dashboard
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="student-courses.html"
-                    class="student-nav-link active"
-                    aria-current="page"
-                >
-
-                    <span class="student-nav-icon">
-                        CR
-                    </span>
-
-                    <span>
-                        My Courses
-                    </span>
-
-                </a>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="learning-paths"
-                >
-
-                    <span class="student-nav-icon">
-                        LP
-                    </span>
-
-                    <span>
-                        Learning Paths
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="projects"
-                >
-
-                    <span class="student-nav-icon">
-                        PJ
-                    </span>
-
-                    <span>
-                        Projects
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="assessments"
-                >
-
-                    <span class="student-nav-icon">
-                        AS
-                    </span>
-
-                    <span>
-                        Assessments
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <p class="student-nav-label student-nav-label-second">
-                    Achievement
-                </p>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="progress"
-                >
-
-                    <span class="student-nav-icon">
-                        PR
-                    </span>
-
-                    <span>
-                        Progress
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="certificates"
-                >
-
-                    <span class="student-nav-icon">
-                        CT
-                    </span>
-
-                    <span>
-                        Certificates
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="student-nav-link student-nav-placeholder"
-                    data-future-page="profile"
-                >
-
-                    <span class="student-nav-icon">
-                        PF
-                    </span>
-
-                    <span>
-                        Profile
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-            </nav>
-
-
-            <!-- =============================================
-                 SIDEBAR FOOTER
-            ============================================== -->
-
-            <div class="student-sidebar-footer">
-
-
-                <a
-                    href="../pages/courses.html"
-                    class="sidebar-resource-link"
-                >
-
-                    <span>
-                        +CR
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Course Catalogue
-                        </strong>
-
-                        <small>
-                            Explore all courses
-                        </small>
-
-                    </div>
-
-                </a>
-
-
-                <a
-                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
-                    class="sidebar-resource-link sidebar-academy-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-
-                    <span>
-                        CWS
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            CWS Academy
-                        </strong>
-
-                        <small>
-                            Cybersecurity School ↗
-                        </small>
-
-                    </div>
-
-                </a>
-
-
-                <button
-                    type="button"
-                    id="student-sign-out-button"
-                    class="student-signout-button"
-                >
-
-                    <span>
-                        Sign Out
-                    </span>
-
-                    <span aria-hidden="true">
-                        →
-                    </span>
-
-                </button>
-
-
-            </div>
-
-
-        </aside>
-
-
-        <!-- =================================================
-             MOBILE OVERLAY
-        ================================================== -->
-
-        <div
-            id="student-sidebar-overlay"
-            class="student-sidebar-overlay"
-        ></div>
-
-
-        <!-- =================================================
-             CONTENT
-        ================================================== -->
-
-        <div class="student-courses-content">
-
-
-            <!-- =============================================
-                 TOPBAR
-            ============================================== -->
-
-            <header class="student-topbar">
-
-
-                <div class="student-topbar-left">
-
-
-                    <button
-                        type="button"
-                        id="student-sidebar-toggle"
-                        class="student-menu-button"
-                        aria-controls="student-sidebar"
-                        aria-expanded="false"
-                        aria-label="Open student navigation"
-                    >
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </button>
-
-
-                    <div>
-
-                        <p class="student-topbar-kicker">
-                            CWS CodeLab
-                        </p>
-
-                        <strong>
-                            My Courses
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="student-topbar-account">
-
-
-                    <div class="student-topbar-account-copy">
-
-                        <strong id="student-name">
-                            Student
-                        </strong>
-
-                        <span id="student-email">
-                            Loading...
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        id="student-topbar-avatar"
-                        class="student-topbar-avatar"
-                        aria-hidden="true"
-                    >
-                        S
-                    </div>
-
-
-                </div>
-
-
-            </header>
-
-
-            <!-- =================================================
-                 MAIN
-            ================================================== -->
-
-            <main
-                id="student-courses-main"
-                class="student-courses-main"
-            >
-
-
-                <!-- =============================================
-                     MESSAGE
-                ============================================== -->
-
-                <div
-                    id="student-courses-message"
-                    class="student-courses-message"
-                    role="status"
-                    aria-live="polite"
-                    hidden
-                >
-                </div>
-
-
-                <!-- =============================================
-                     HERO
-                ============================================== -->
-
-                <section class="student-courses-hero">
-
-
-                    <div>
-
-
-                        <p class="student-courses-kicker">
-                            Your Learning Workspace
-                        </p>
-
-
-                        <h1>
-                            Learn. Build. <span>Progress.</span>
-                        </h1>
-
-
-                        <p>
-
-                            Manage your CodeLab courses, continue
-                            your learning journey and discover what
-                            to study next.
-
-                        </p>
-
-
-                    </div>
-
-
-                    <a
-                        href="../pages/courses.html"
-                        class="student-catalogue-button"
-                    >
-
-                        Explore Catalogue
-
-                        <span aria-hidden="true">
-                            →
-                        </span>
-
-                    </a>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     STATS
-                ============================================== -->
-
-                <section
-                    class="student-course-stats"
-                    aria-label="Course statistics"
-                >
-
-
-                    <article>
-
-                        <span>
-                            EN
-                        </span>
-
-                        <div>
-
-                            <strong id="enrolled-course-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Enrolled
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <article>
-
-                        <span>
-                            IP
-                        </span>
-
-                        <div>
-
-                            <strong id="in-progress-course-count">
-                                0
-                            </strong>
-
-                            <p>
-                                In Progress
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <article>
-
-                        <span>
-                            CP
-                        </span>
-
-                        <div>
-
-                            <strong id="completed-course-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Completed
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <article>
-
-                        <span>
-                            AV
-                        </span>
-
-                        <div>
-
-                            <strong id="available-course-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Available
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     TOOLBAR
-                ============================================== -->
-
-                <section class="student-course-toolbar">
-
-
-                    <!-- SEARCH -->
-
-                    <div class="student-course-search">
-
-                        <label
-                            for="student-course-search"
-                            class="visually-hidden"
-                        >
-                            Search courses
-                        </label>
-
-                        <span aria-hidden="true">
-                            /
-                        </span>
-
-                        <input
-                            type="search"
-                            id="student-course-search"
-                            placeholder="Search courses, skills or categories..."
-                            autocomplete="off"
-                        >
-
-                    </div>
-
-
-                    <!-- CATEGORY -->
-
-                    <div class="student-course-select">
-
-                        <label
-                            for="student-category-filter"
-                            class="visually-hidden"
-                        >
-                            Filter by category
-                        </label>
-
-                        <select id="student-category-filter">
-
-                            <option value="all">
-                                All Categories
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     FILTER TABS
-                ============================================== -->
-
-                <div
-                    class="student-course-tabs"
-                    role="group"
-                    aria-label="Filter courses"
-                >
-
-
-                    <button
-                        type="button"
-                        class="student-course-tab active"
-                        data-course-filter="all"
-                    >
-                        All Courses
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="student-course-tab"
-                        data-course-filter="enrolled"
-                    >
-                        Enrolled
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="student-course-tab"
-                        data-course-filter="free"
-                    >
-                        Free
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="student-course-tab"
-                        data-course-filter="pro"
-                    >
-                        Pro
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="student-course-tab"
-                        data-course-filter="coming-soon"
-                    >
-                        Coming Soon
-                    </button>
-
-
-                </div>
-
-
-                <!-- =============================================
-                     SECTION HEADER
-                ============================================== -->
-
-                <section class="student-course-section-header">
-
-
-                    <div>
-
-                        <p class="student-course-section-kicker">
-                            Course Library
-                        </p>
-
-                        <h2 id="student-course-section-title">
-                            All Courses
-                        </h2>
-
-                    </div>
-
-
-                    <p id="student-course-result-count">
-                        Loading courses...
-                    </p>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     COURSE GRID
-                ============================================== -->
-
-                <section
-                    id="student-course-grid"
-                    class="student-course-grid"
-                    aria-live="polite"
-                >
-                </section>
-
-
-                <!-- =============================================
-                     EMPTY STATE
-                ============================================== -->
-
-                <section
-                    id="student-course-empty"
-                    class="student-course-empty"
-                    hidden
-                >
-
-                    <div>
-                        &lt;/&gt;
-                    </div>
-
-                    <h2>
-                        No courses found
-                    </h2>
-
-                    <p>
-
-                        Try another search or change the
-                        selected filters.
-
-                    </p>
-
-                    <button
-                        type="button"
-                        id="student-reset-filters"
-                    >
-                        Reset Filters
-                    </button>
-
-                </section>
-
-
-            </main>
-
-
-            <!-- =================================================
-                 FOOTER
-            ================================================== -->
-
-            <footer class="student-courses-footer">
-
-
-                <p>
-
-                    &copy;
-                    <span id="student-courses-year"></span>
-                    CyberWithSandiso.
-
-                </p>
-
-
-                <p>
-                    CWS CodeLab · Learn. Build. Ship.
-                </p>
-
-
-            </footer>
-
-
+  <a href="#student-courses-main" class="skip-link">Skip to courses</a>
+
+  <div class="student-courses-app">
+
+    <aside id="student-sidebar" class="student-sidebar" aria-label="Student navigation">
+
+      <div class="student-sidebar-header">
+        <a href="dashboard.html" class="student-brand" aria-label="CWS CodeLab dashboard">
+          <span class="student-brand-mark" aria-hidden="true">&lt;/&gt;</span>
+          <span class="student-brand-copy">
+            <strong>CWS CodeLab</strong>
+            <small>Student Portal</small>
+          </span>
+        </a>
+
+        <button type="button" id="student-sidebar-close" class="student-sidebar-close" aria-label="Close navigation">×</button>
+      </div>
+
+      <div class="sidebar-account-card">
+        <div id="sidebar-student-avatar" class="sidebar-account-avatar" aria-hidden="true">S</div>
+        <div class="sidebar-account-copy">
+          <strong id="sidebar-student-name">Student</strong>
+          <span id="sidebar-account-plan">Free Learner</span>
+        </div>
+      </div>
+
+      <nav class="student-navigation">
+        <p class="student-nav-label">Learning</p>
+
+        <a href="dashboard.html" class="student-nav-link">
+          <span class="student-nav-icon">DB</span><span>Dashboard</span>
+        </a>
+
+        <a href="student-courses.html" class="student-nav-link active" aria-current="page">
+          <span class="student-nav-icon">CR</span><span>My Courses</span>
+        </a>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="learning-paths">
+          <span class="student-nav-icon">LP</span><span>Learning Paths</span><small>Soon</small>
+        </button>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="projects">
+          <span class="student-nav-icon">PJ</span><span>Projects</span><small>Soon</small>
+        </button>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="assessments">
+          <span class="student-nav-icon">AS</span><span>Assessments</span><small>Soon</small>
+        </button>
+
+        <p class="student-nav-label student-nav-label-second">Achievement</p>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="progress">
+          <span class="student-nav-icon">PR</span><span>Progress</span><small>Soon</small>
+        </button>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="certificates">
+          <span class="student-nav-icon">CT</span><span>Certificates</span><small>Soon</small>
+        </button>
+
+        <button type="button" class="student-nav-link student-nav-placeholder" data-future-page="profile">
+          <span class="student-nav-icon">PF</span><span>Profile</span><small>Soon</small>
+        </button>
+      </nav>
+
+      <div class="student-sidebar-footer">
+        <a href="#course-library" class="sidebar-resource-link">
+          <span>+CR</span>
+          <div><strong>Course Library</strong><small>Browse all CodeLab courses</small></div>
+        </a>
+
+        <a href="https://sandisomayekiso.github.io/CyberWithSandiso/" class="sidebar-resource-link sidebar-academy-link" target="_blank" rel="noopener noreferrer">
+          <span>CWS</span>
+          <div><strong>CWS Academy</strong><small>Cybersecurity School ↗</small></div>
+        </a>
+
+        <button type="button" id="student-sign-out-button" class="student-signout-button">
+          <span>Sign Out</span><span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </aside>
+
+    <div id="student-sidebar-overlay" class="student-sidebar-overlay"></div>
+
+    <div class="student-courses-content">
+
+      <header class="student-topbar">
+        <div class="student-topbar-left">
+          <button type="button" id="student-sidebar-toggle" class="student-menu-button" aria-controls="student-sidebar" aria-expanded="false" aria-label="Open student navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div><p class="student-topbar-kicker">CWS CodeLab</p><strong>My Courses</strong></div>
         </div>
 
-
-        <!-- =================================================
-             AUTH LOADING
-        ================================================== -->
-
-        <div
-            id="student-courses-loading"
-            class="student-courses-loading"
-        >
-
-            <div class="student-courses-loader"></div>
-
-            <strong>
-                Loading your courses...
-            </strong>
-
-            <span>
-                Checking your CodeLab account
-            </span>
-
+        <div class="student-topbar-account">
+          <div class="student-topbar-account-copy">
+            <strong id="student-name">Student</strong>
+            <span id="student-email">Loading account...</span>
+          </div>
+          <div id="student-topbar-avatar" class="student-topbar-avatar" aria-hidden="true">S</div>
         </div>
+      </header>
 
+      <main id="student-courses-main" class="student-courses-main">
 
+        <div id="student-courses-message" class="student-courses-message" role="status" aria-live="polite" hidden></div>
+
+        <section class="student-courses-hero">
+          <div>
+            <p class="student-courses-kicker">Your Learning Workspace</p>
+            <h1>Learn. Build. <span>Progress.</span></h1>
+            <p>Explore CodeLab courses, enrol in free learning and continue where you left off.</p>
+          </div>
+          <a href="#course-library" class="student-catalogue-button">Browse All Courses <span aria-hidden="true">↓</span></a>
+        </section>
+
+        <section class="student-course-stats" aria-label="Course statistics">
+          <article><span>EN</span><div><strong id="enrolled-course-count">0</strong><p>Enrolled</p></div></article>
+          <article><span>IP</span><div><strong id="in-progress-course-count">0</strong><p>In Progress</p></div></article>
+          <article><span>CP</span><div><strong id="completed-course-count">0</strong><p>Completed</p></div></article>
+          <article><span>AV</span><div><strong id="available-course-count">0</strong><p>Available</p></div></article>
+        </section>
+
+        <section id="course-library" class="student-course-library">
+
+          <section class="student-course-toolbar">
+            <div class="student-course-search">
+              <label for="student-course-search" class="visually-hidden">Search courses</label>
+              <span aria-hidden="true">/</span>
+              <input type="search" id="student-course-search" placeholder="Search courses, skills or categories..." autocomplete="off">
+            </div>
+
+            <div class="student-course-select">
+              <label for="student-category-filter" class="visually-hidden">Filter by category</label>
+              <select id="student-category-filter"><option value="all">All Categories</option></select>
+            </div>
+          </section>
+
+          <div class="student-course-tabs" role="group" aria-label="Filter courses">
+            <button type="button" class="student-course-tab active" data-course-filter="all">All Courses</button>
+            <button type="button" class="student-course-tab" data-course-filter="enrolled">Enrolled</button>
+            <button type="button" class="student-course-tab" data-course-filter="free">Free</button>
+            <button type="button" class="student-course-tab" data-course-filter="pro">Pro</button>
+            <button type="button" class="student-course-tab" data-course-filter="coming-soon">Coming Soon</button>
+          </div>
+
+          <section class="student-course-section-header">
+            <div>
+              <p class="student-course-section-kicker">Course Library</p>
+              <h2 id="student-course-section-title">All Courses</h2>
+            </div>
+            <p id="student-course-result-count">Loading courses...</p>
+          </section>
+
+          <section id="student-course-grid" class="student-course-grid" aria-live="polite"></section>
+
+          <section id="student-course-empty" class="student-course-empty" hidden>
+            <div>&lt;/&gt;</div>
+            <h2>No courses found</h2>
+            <p>Try another search or change the selected filters.</p>
+            <button type="button" id="student-reset-filters">Reset Filters</button>
+          </section>
+        </section>
+      </main>
+
+      <footer class="student-courses-footer">
+        <p>&copy; <span id="student-courses-year"></span> CyberWithSandiso.</p>
+        <p>CWS CodeLab · Learn. Build. Ship.</p>
+      </footer>
     </div>
 
+    <div id="student-courses-loading" class="student-courses-loading">
+      <div class="student-courses-loader"></div>
+      <strong>Loading your courses...</strong>
+      <span>Checking your CodeLab account</span>
+    </div>
+  </div>
+
+  <dialog id="course-detail-dialog" class="course-detail-dialog" aria-labelledby="course-detail-title">
+    <div class="course-detail-shell">
+
+      <div class="course-detail-header">
+        <div>
+          <p id="course-detail-kicker" class="course-detail-kicker">CWS CodeLab Course</p>
+          <h2 id="course-detail-title">Course Details</h2>
+        </div>
+        <button type="button" id="course-detail-close" class="course-detail-close" aria-label="Close course details">×</button>
+      </div>
+
+      <div id="course-detail-badges" class="course-detail-badges"></div>
+      <p id="course-detail-description" class="course-detail-description"></p>
+      <div id="course-detail-meta" class="course-detail-meta"></div>
+
+      <section class="course-detail-section">
+        <h3>What you'll achieve</h3>
+        <p id="course-detail-outcome"></p>
+      </section>
+
+      <section class="course-detail-section">
+        <h3>Skills you'll learn</h3>
+        <div id="course-detail-skills" class="course-detail-skills"></div>
+      </section>
+
+      <section class="course-detail-section">
+        <h3>Prerequisites</h3>
+        <ul id="course-detail-prerequisites"></ul>
+      </section>
+
+      <section class="course-detail-section">
+        <div class="course-detail-section-heading">
+          <h3>Curriculum</h3>
+          <span id="course-detail-module-count"></span>
+        </div>
+        <div id="course-detail-curriculum" class="course-detail-curriculum"></div>
+      </section>
+
+      <div id="course-detail-action" class="course-detail-action"></div>
+    </div>
+  </dialog>
 
 </body>
-
 </html>
