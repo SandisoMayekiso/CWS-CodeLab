@@ -1,4 +1,9 @@
 /* =========================================================
+   CWS CODELAB LIGHT READING THEME
+   Dark sidebar, hero and code blocks remain intentionally dark.
+========================================================= */
+
+/* =========================================================
    CWS CODELAB
    LESSON WORKSPACE
 ========================================================= */
@@ -6,11 +11,15 @@
 :root {
     --lesson-sidebar-width: 310px;
     --lesson-dark: #07111f;
-    --lesson-bg: #f5f7fb;
-    --lesson-surface: #ffffff;
-    --lesson-text: #172236;
-    --lesson-muted: #6e7a8f;
-    --lesson-border: #dfe5ef;
+    /* Shared light reading hierarchy from style.css */
+    --lesson-bg: var(--page-light, #e9eef5);
+    --lesson-surface: var(--surface-raised, #fbfcfe);
+    --lesson-soft: var(--surface-soft, #edf2f7);
+    --lesson-muted-surface: var(--surface-muted, #e5ebf2);
+    --lesson-text: var(--dark-text, #162337);
+    --lesson-reading-text: var(--reading-text, #334155);
+    --lesson-muted: var(--dark-muted, #526174);
+    --lesson-border: var(--light-border, #d4dde8);
     --lesson-primary: #5967e8;
     --lesson-primary-dark: #404ecb;
     --lesson-success: #19774f;
@@ -290,7 +299,12 @@ button {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    background: rgba(255,255,255,0.94);
+    background:
+        color-mix(
+            in srgb,
+            var(--lesson-surface) 94%,
+            transparent
+        );
     border-bottom: 1px solid var(--lesson-border);
     backdrop-filter: blur(14px);
 }
@@ -309,7 +323,7 @@ button {
     padding: 10px;
     border: 1px solid var(--lesson-border);
     border-radius: 10px;
-    background: #ffffff;
+    background: var(--lesson-surface);
 }
 
 .lesson-menu-button span {
@@ -445,6 +459,9 @@ button {
 
 .lesson-content-card h2 {
     margin: 0 0 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--lesson-primary);
+    color: var(--lesson-text);
     font-size: 1.45rem;
 }
 
@@ -455,7 +472,7 @@ button {
 
 .lesson-content-card p,
 .lesson-content-card li {
-    color: #4f5d71;
+    color: var(--lesson-reading-text);
     line-height: 1.8;
 }
 
@@ -469,8 +486,8 @@ button {
     padding: 18px;
     margin-top: 12px;
     border-radius: 14px;
-    background: #f8f9fc;
-    border: 1px solid #e6eaf1;
+    background: var(--lesson-soft);
+    border: 1px solid var(--lesson-border);
 }
 
 .lesson-example pre,
@@ -488,7 +505,7 @@ button {
 .lesson-practice-block details {
     margin-top: 10px;
     border-radius: 10px;
-    background: #ffffff;
+    background: var(--lesson-surface);
     border: 1px solid var(--lesson-border);
 }
 
@@ -531,12 +548,12 @@ button {
     align-items: start;
     border: 1px solid var(--lesson-border);
     border-radius: 13px;
-    background: #ffffff;
+    background: var(--lesson-soft);
 }
 
 .lesson-knowledge-option.selected {
     border-color: #7a86e8;
-    background: #f5f6ff;
+    background: #eef0ff;
 }
 
 .lesson-knowledge-option input {
@@ -550,8 +567,8 @@ button {
     display: grid;
     place-items: center;
     border-radius: 8px;
-    background: #eef1f8;
-    color: #536076;
+    background: var(--lesson-muted-surface);
+    color: var(--lesson-muted);
     font-family: "JetBrains Mono", monospace;
     font-size: 0.7rem;
     font-weight: 800;
@@ -643,7 +660,7 @@ button {
     justify-content: space-between;
     gap: 20px;
     border-radius: 18px;
-    background: #ffffff;
+    background: var(--lesson-surface);
     border: 1px solid var(--lesson-border);
 }
 
@@ -683,7 +700,7 @@ button {
     border: 1px solid var(--lesson-border);
     border-radius: 16px;
     color: var(--lesson-text);
-    background: #ffffff;
+    background: var(--lesson-surface);
     text-align: left;
 }
 
@@ -704,8 +721,8 @@ button {
     justify-content: space-between;
     gap: 15px;
     flex-wrap: wrap;
-    color: #7d899d;
-    background: #ffffff;
+    color: var(--lesson-muted);
+    background: var(--surface-light, #f3f6fa);
     border-top: 1px solid var(--lesson-border);
     font-size: 0.78rem;
 }
