@@ -12,7 +12,7 @@
 
     <meta
         name="description"
-        content="Learn practical programming with CWS CodeLab."
+        content="CWS CodeLab interactive lesson workspace."
     >
 
     <title>
@@ -21,7 +21,7 @@
 
 
     <!-- =====================================================
-         GOOGLE FONTS
+         FONTS
     ====================================================== -->
 
     <link
@@ -42,7 +42,7 @@
 
 
     <!-- =====================================================
-         STYLES
+         CSS
     ====================================================== -->
 
     <link
@@ -55,14 +55,9 @@
         href="../css/lesson.css"
     >
 
-    <link
-        rel="stylesheet"
-        href="../css/responsive.css"
-    >
-
 
     <!-- =====================================================
-         DATA
+         COURSE DATA
     ====================================================== -->
 
     <script
@@ -72,629 +67,591 @@
 
 
     <!-- =====================================================
-         JAVASCRIPT
+         LESSON APP
     ====================================================== -->
 
     <script
-        src="../js/main.js"
-        defer
-    ></script>
-
-    <script
+        type="module"
         src="../js/lesson.js"
-        defer
     ></script>
 
 </head>
 
 
-<body>
+<body class="lesson-body">
 
 
-    <!-- =====================================================
-         SKIP LINK
-    ====================================================== -->
-
-    <a
-        href="#lesson-main"
-        class="skip-link"
-    >
-        Skip to lesson
-    </a>
-
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header class="site-header">
-
-        <div class="container nav-wrap">
-
-
-            <a
-                href="../index.html"
-                class="brand"
-                aria-label="CWS CodeLab home"
-            >
-
-                <span
-                    class="brand-mark"
-                    aria-hidden="true"
-                >
-                    &lt;/&gt;
-                </span>
-
-                <span class="brand-copy">
-
-                    <strong>
-                        CWS CodeLab
-                    </strong>
-
-                    <small>
-                        CyberWithSandiso
-                    </small>
-
-                </span>
-
-            </a>
-
-
-            <button
-                class="nav-toggle"
-                type="button"
-                aria-expanded="false"
-                aria-controls="primary-navigation"
-                aria-label="Open navigation"
-            >
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </button>
-
-
-            <nav
-                id="primary-navigation"
-                class="primary-nav"
-                aria-label="Primary navigation"
-            >
-
-                <a href="../index.html">
-                    Home
-                </a>
-
-                <a href="../pages/courses.html">
-                    Courses
-                </a>
-
-                <a href="../index.html#paths">
-                    Learning Paths
-                </a>
-
-                <a href="../index.html#projects">
-                    Projects
-                </a>
-
-                <a
-                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
-                >
-                    CWS Academy
-                </a>
-
-                <a
-                    href="../pages/courses.html"
-                    class="nav-cta"
-                >
-                    Browse Courses
-                </a>
-
-            </nav>
-
-        </div>
-
-    </header>
-
-
-    <!-- =====================================================
-         LOADING
-    ====================================================== -->
-
-    <section
-        id="lesson-loading"
-        class="lesson-loading"
-    >
-
-        <div class="loading-spinner"></div>
-
-        <p>
-            Loading lesson...
-        </p>
-
-    </section>
-
-
-    <!-- =====================================================
-         LESSON NOT FOUND
-    ====================================================== -->
-
-    <section
-        id="lesson-not-found"
-        class="lesson-not-found"
-        hidden
-    >
-
-        <div class="container">
-
-            <div class="lesson-not-found-card">
-
-                <div class="lesson-not-found-icon">
-                    &lt;/&gt;
-                </div>
-
-                <p class="eyebrow">
-                    Lesson unavailable
-                </p>
-
-                <h1>
-                    Lesson Not Found
-                </h1>
-
-                <p>
-                    This lesson does not exist or is not currently
-                    available.
-                </p>
-
-                <a
-                    href="../pages/courses.html"
-                    class="btn btn-primary"
-                >
-                    Browse Courses
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         LESSON APPLICATION
-    ====================================================== -->
-
-    <main
-        id="lesson-main"
-        class="lesson-app"
-        hidden
-    >
+    <div class="lesson-app">
 
 
         <!-- =================================================
-             COURSE BAR
+             COURSE SIDEBAR
         ================================================== -->
 
-        <section class="lesson-course-bar">
-
-            <div class="container lesson-course-bar-inner">
-
-
-                <div>
-
-                    <p class="lesson-course-label">
-                        Currently Learning
-                    </p>
-
-                    <a
-                        id="lesson-course-link"
-                        href="#"
-                        class="lesson-course-name"
-                    >
-                        Course
-                    </a>
-
-                </div>
+        <aside
+            id="lesson-sidebar"
+            class="lesson-sidebar"
+        >
 
 
-                <div class="lesson-progress-summary">
+            <!-- =============================================
+                 BRAND
+            ============================================== -->
 
-                    <span id="lesson-position">
-                        Lesson 1 of 1
+            <div class="lesson-sidebar-header">
+
+
+                <a
+                    href="dashboard.html"
+                    class="lesson-brand"
+                >
+
+                    <span class="lesson-brand-mark">
+                        &lt;/&gt;
                     </span>
 
-                </div>
+                    <span>
+
+                        <strong>
+                            CWS CodeLab
+                        </strong>
+
+                        <small>
+                            Learning Workspace
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="lesson-sidebar-close"
+                    class="lesson-sidebar-close"
+                    aria-label="Close lesson navigation"
+                >
+                    ×
+                </button>
+
 
             </div>
 
-        </section>
-
-
-        <!-- =================================================
-             LESSON LAYOUT
-        ================================================== -->
-
-        <div class="lesson-layout">
-
 
             <!-- =============================================
-                 SIDEBAR
+                 COURSE
             ============================================== -->
 
-            <aside
-                id="lesson-sidebar"
-                class="lesson-sidebar"
-            >
+            <div class="lesson-course-summary">
 
 
-                <div class="lesson-sidebar-header">
+                <p>
+                    Current Course
+                </p>
 
-                    <p class="sidebar-overline">
-                        Course Curriculum
-                    </p>
 
-                    <h2 id="sidebar-course-title">
-                        Course
-                    </h2>
+                <h2 id="sidebar-course-title">
+                    Loading course...
+                </h2>
+
+
+                <div class="lesson-course-progress">
+
+
+                    <div>
+
+                        <span>
+                            Progress
+                        </span>
+
+                        <strong id="sidebar-course-progress">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="lesson-progress-track">
+
+                        <div
+                            id="sidebar-course-progress-bar"
+                            class="lesson-progress-bar"
+                        ></div>
+
+                    </div>
+
 
                 </div>
 
 
+            </div>
+
+
+            <!-- =============================================
+                 CURRICULUM
+            ============================================== -->
+
+            <nav
+                id="lesson-curriculum"
+                class="lesson-curriculum"
+                aria-label="Course curriculum"
+            >
+            </nav>
+
+
+            <!-- =============================================
+                 SIDEBAR FOOTER
+            ============================================== -->
+
+            <div class="lesson-sidebar-footer">
+
+
+                <a href="student-courses.html">
+                    ← My Courses
+                </a>
+
+
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- =================================================
+             MOBILE OVERLAY
+        ================================================== -->
+
+        <div
+            id="lesson-sidebar-overlay"
+            class="lesson-sidebar-overlay"
+        ></div>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <div class="lesson-content">
+
+
+            <!-- =============================================
+                 TOPBAR
+            ============================================== -->
+
+            <header class="lesson-topbar">
+
+
+                <div class="lesson-topbar-left">
+
+
+                    <button
+                        type="button"
+                        id="lesson-sidebar-toggle"
+                        class="lesson-menu-button"
+                        aria-label="Open curriculum"
+                    >
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </button>
+
+
+                    <div>
+
+                        <p id="lesson-course-kicker">
+                            CWS CodeLab
+                        </p>
+
+                        <strong id="lesson-course-name">
+                            Course
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="lesson-account">
+
+
+                    <div>
+
+                        <strong id="lesson-student-name">
+                            Student
+                        </strong>
+
+                        <span id="lesson-student-email">
+                            Loading...
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="lesson-student-avatar"
+                        class="lesson-account-avatar"
+                    >
+                        S
+                    </div>
+
+
+                </div>
+
+
+            </header>
+
+
+            <!-- =================================================
+                 MAIN LESSON
+            ================================================== -->
+
+            <main
+                id="lesson-main"
+                class="lesson-main"
+            >
+
+
+                <!-- =============================================
+                     MESSAGE
+                ============================================== -->
+
                 <div
-                    id="sidebar-curriculum"
-                    class="sidebar-curriculum"
+                    id="lesson-message"
+                    class="lesson-message"
+                    hidden
                 >
                 </div>
 
 
-            </aside>
+                <!-- =============================================
+                     BREADCRUMBS
+                ============================================== -->
+
+                <nav
+                    class="lesson-breadcrumbs"
+                    aria-label="Breadcrumb"
+                >
+
+                    <a href="student-courses.html">
+                        My Courses
+                    </a>
+
+                    <span>
+                        /
+                    </span>
+
+                    <span id="breadcrumb-course">
+                        Course
+                    </span>
+
+                    <span>
+                        /
+                    </span>
+
+                    <strong id="breadcrumb-lesson">
+                        Lesson
+                    </strong>
+
+                </nav>
 
 
-            <!-- =============================================
-                 LESSON CONTENT
-            ============================================== -->
+                <!-- =============================================
+                     LESSON HERO
+                ============================================== -->
 
-            <section class="lesson-workspace">
-
-
-                <div class="lesson-workspace-inner">
+                <section class="lesson-hero">
 
 
-                    <!-- BREADCRUMB -->
+                    <div>
 
-                    <nav
-                        class="lesson-breadcrumb"
-                        aria-label="Breadcrumb"
-                    >
 
-                        <a href="../pages/courses.html">
-                            Courses
-                        </a>
-
-                        <span>
-                            /
-                        </span>
-
-                        <a
-                            id="breadcrumb-course-link"
-                            href="#"
-                        >
-                            Course
-                        </a>
-
-                        <span>
-                            /
-                        </span>
-
-                        <span id="breadcrumb-module">
+                        <p id="lesson-module-label">
                             Module
-                        </span>
-
-                    </nav>
-
-
-                    <!-- LESSON HEADER -->
-
-                    <header class="lesson-header">
-
-
-                        <div class="lesson-header-meta">
-
-                            <span
-                                id="lesson-type"
-                                class="lesson-type-badge"
-                            >
-                                Lesson
-                            </span>
-
-                            <span id="lesson-duration">
-                                10 min
-                            </span>
-
-                            <span id="lesson-module-label">
-                                Module 1
-                            </span>
-
-                        </div>
-
-
-                        <h1 id="lesson-title">
-                            Lesson Title
-                        </h1>
-
-
-                        <p
-                            id="lesson-module-description"
-                            class="lesson-module-description"
-                        >
                         </p>
 
 
-                    </header>
+                        <h1 id="lesson-title">
+                            Loading lesson...
+                        </h1>
 
 
-                    <!-- =====================================
-                         LESSON CONTENT AREA
-                    ====================================== -->
-
-                    <article
-                        id="lesson-content"
-                        class="lesson-content"
-                    >
+                        <p id="lesson-description">
+                        </p>
 
 
-                        <div class="lesson-introduction">
+                    </div>
 
-                            <p class="eyebrow">
-                                CWS CodeLab Lesson
-                            </p>
 
-                            <h2 id="lesson-content-heading">
-                                Lesson overview
-                            </h2>
+                    <div class="lesson-meta">
 
-                            <p id="lesson-introduction-text">
+
+                        <span id="lesson-type">
+                            Lesson
+                        </span>
+
+
+                        <span id="lesson-duration">
+                            20 min
+                        </span>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- =============================================
+                     LESSON BODY
+                ============================================== -->
+
+                <section
+                    id="lesson-body-content"
+                    class="lesson-body-content"
+                >
+
+
+                    <article class="lesson-content-card">
+
+
+                        <p class="lesson-section-kicker">
+                            Lesson Overview
+                        </p>
+
+
+                        <h2 id="lesson-content-heading">
+                            About this lesson
+                        </h2>
+
+
+                        <div id="lesson-content-text">
+
+                            <p>
+
+                                Your lesson content will appear here.
+
                             </p>
 
                         </div>
-
-
-                        <!-- =================================
-                             CURRENT CONTENT PLACEHOLDER
-                        ================================== -->
-
-                        <div class="lesson-information-card">
-
-                            <div class="lesson-information-icon">
-                                &lt;/&gt;
-                            </div>
-
-                            <div>
-
-                                <h3>
-                                    Lesson engine ready
-                                </h3>
-
-                                <p>
-                                    This lesson is now connected to the
-                                    central CWS CodeLab curriculum.
-                                    Detailed teaching content, examples,
-                                    code blocks and exercises will be
-                                    added in the next content phase.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- =================================
-                             LEARNING WORKFLOW
-                        ================================== -->
-
-                        <section class="lesson-workflow">
-
-                            <h2>
-                                How to use this lesson
-                            </h2>
-
-
-                            <div class="lesson-workflow-grid">
-
-
-                                <div>
-
-                                    <span>
-                                        01
-                                    </span>
-
-                                    <strong>
-                                        Learn
-                                    </strong>
-
-                                    <p>
-                                        Understand the concept and why
-                                        it matters.
-                                    </p>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        02
-                                    </span>
-
-                                    <strong>
-                                        Code
-                                    </strong>
-
-                                    <p>
-                                        Apply the concept through
-                                        practical examples.
-                                    </p>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        03
-                                    </span>
-
-                                    <strong>
-                                        Practise
-                                    </strong>
-
-                                    <p>
-                                        Complete exercises without
-                                        simply copying solutions.
-                                    </p>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        04
-                                    </span>
-
-                                    <strong>
-                                        Build
-                                    </strong>
-
-                                    <p>
-                                        Use the new skill in a working
-                                        project.
-                                    </p>
-
-                                </div>
-
-
-                            </div>
-
-                        </section>
 
 
                     </article>
 
 
-                    <!-- =====================================
-                         COMPLETE LESSON
-                    ====================================== -->
+                    <!-- =========================================
+                         LEARNING OBJECTIVES
+                    ========================================== -->
 
-                    <section class="lesson-complete-section">
+                    <article class="lesson-content-card">
 
-                        <button
-                            type="button"
-                            id="complete-lesson-button"
-                            class="complete-lesson-button"
+
+                        <p class="lesson-section-kicker">
+                            Objectives
+                        </p>
+
+
+                        <h2>
+                            What you'll work on
+                        </h2>
+
+
+                        <ul
+                            id="lesson-objectives"
+                            class="lesson-objectives"
                         >
-
-                            <span class="complete-icon">
-                                ✓
-                            </span>
-
-                            <span>
-
-                                <strong>
-                                    Mark Lesson Complete
-                                </strong>
-
-                                <small>
-                                    Progress tracking will later sync
-                                    with your student account.
-                                </small>
-
-                            </span>
-
-                        </button>
-
-                    </section>
+                        </ul>
 
 
-                    <!-- =====================================
-                         PREVIOUS / NEXT
-                    ====================================== -->
+                    </article>
 
-                    <nav
-                        class="lesson-navigation"
-                        aria-label="Lesson navigation"
+
+                    <!-- =========================================
+                         DEVELOPMENT NOTE
+                    ========================================== -->
+
+                    <article class="lesson-code-card">
+
+
+                        <div class="lesson-code-header">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                            <strong>
+                                codelab.js
+                            </strong>
+
+                        </div>
+
+
+                        <pre><code id="lesson-code-example"><span class="lesson-code-comment">// CWS CodeLab</span>
+
+const learner = {
+    status: "building",
+    progress: true
+};
+
+learner.keepLearning();</code></pre>
+
+
+                    </article>
+
+
+                </section>
+
+
+                <!-- =============================================
+                     COMPLETION
+                ============================================== -->
+
+                <section class="lesson-completion">
+
+
+                    <div>
+
+
+                        <p>
+                            Lesson Status
+                        </p>
+
+
+                        <strong id="lesson-completion-status">
+                            Not completed
+                        </strong>
+
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="mark-lesson-complete"
+                        class="lesson-complete-button"
+                    >
+                        Mark Lesson Complete ✓
+                    </button>
+
+
+                </section>
+
+
+                <!-- =============================================
+                     NAVIGATION
+                ============================================== -->
+
+                <nav class="lesson-navigation">
+
+
+                    <button
+                        type="button"
+                        id="previous-lesson-button"
+                        class="lesson-navigation-button"
                     >
 
+                        <span>
+                            ←
+                        </span>
 
-                        <a
-                            id="previous-lesson"
-                            class="lesson-navigation-card previous"
-                            href="#"
-                            hidden
-                        >
+                        <div>
 
-                            <span class="lesson-nav-direction">
-                                ← Previous
-                            </span>
+                            <small>
+                                Previous
+                            </small>
 
                             <strong id="previous-lesson-title">
                                 Previous Lesson
                             </strong>
 
-                        </a>
+                        </div>
+
+                    </button>
 
 
-                        <a
-                            id="next-lesson"
-                            class="lesson-navigation-card next"
-                            href="#"
-                            hidden
-                        >
+                    <button
+                        type="button"
+                        id="next-lesson-button"
+                        class="lesson-navigation-button lesson-navigation-next"
+                    >
 
-                            <span class="lesson-nav-direction">
-                                Next →
-                            </span>
+                        <div>
+
+                            <small>
+                                Next
+                            </small>
 
                             <strong id="next-lesson-title">
                                 Next Lesson
                             </strong>
 
-                        </a>
+                        </div>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
 
 
-                    </nav>
+                </nav>
 
 
-                </div>
+            </main>
 
-            </section>
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer class="lesson-footer">
+
+                <p>
+                    CWS CodeLab · Learn. Build. Ship.
+                </p>
+
+                <p>
+                    &copy;
+                    <span id="lesson-year"></span>
+                    CyberWithSandiso
+                </p>
+
+            </footer>
+
 
         </div>
 
-    </main>
 
+        <!-- =================================================
+             LOADING
+        ================================================== -->
 
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
+        <div
+            id="lesson-loading"
+            class="lesson-loading"
+        >
 
-    <footer class="site-footer">
+            <div class="lesson-loader"></div>
 
-        <div class="container footer-bottom">
+            <strong>
+                Loading lesson...
+            </strong>
 
-            <p>
-                &copy;
-                <span id="current-year"></span>
-                CyberWithSandiso.
-            </p>
-
-            <p>
-                Learn. Build. Ship.
-            </p>
+            <span>
+                Checking course access and progress
+            </span>
 
         </div>
 
-    </footer>
+
+    </div>
 
 
 </body>
