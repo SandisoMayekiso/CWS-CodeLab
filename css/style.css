@@ -22,8 +22,28 @@
   --surface-2:
     #132641;
 
+  /* =====================================================
+     LIGHT THEME LAYERS
+
+     These variables deliberately avoid a large pure-white
+     canvas. Pure white is reserved for very small/high-focus
+     controls. Reading areas use softer blue-grey surfaces.
+  ===================================================== */
+
+  --page-light:
+    #e9eef5;
+
   --surface-light:
-    #f5f7fb;
+    #f3f6fa;
+
+  --surface-raised:
+    #fbfcfe;
+
+  --surface-soft:
+    #edf2f7;
+
+  --surface-muted:
+    #e5ebf2;
 
   --white:
     #ffffff;
@@ -35,10 +55,16 @@
     #91a3b8;
 
   --dark-text:
-    #122033;
+    #162337;
+
+  --reading-text:
+    #334155;
 
   --dark-muted:
-    #637083;
+    #526174;
+
+  --light-border:
+    #d4dde8;
 
   --accent:
     #6c7cff;
@@ -65,7 +91,7 @@
     rgba(255, 255, 255, 0.08);
 
   --line-dark:
-    rgba(18, 32, 51, 0.09);
+    rgba(22, 35, 55, 0.13);
 
   --shadow:
     0 24px 70px
@@ -225,7 +251,7 @@ section[id] {
     10px;
 
   background:
-    var(--white);
+    var(--page-light);
 
   color:
     var(--dark-text);
@@ -1538,7 +1564,7 @@ select:focus-visible {
 
 
 .section-soft {
-  background: var(--surface-light);
+  background: var(--surface-soft);
 }
 
 
@@ -1614,6 +1640,63 @@ select:focus-visible {
 
 
 /* =========================================================
+   LIGHT SURFACE UTILITIES
+   Shared by public pages and available to page-specific CSS.
+========================================================= */
+
+.surface-page {
+  background:
+    var(--page-light);
+
+  color:
+    var(--dark-text);
+}
+
+
+.surface-section {
+  background:
+    var(--surface-light);
+
+  color:
+    var(--dark-text);
+}
+
+
+.surface-raised {
+  border:
+    1px solid
+    var(--light-border);
+
+  background:
+    var(--surface-raised);
+
+  color:
+    var(--dark-text);
+
+  box-shadow:
+    var(--shadow-light);
+}
+
+
+.surface-soft {
+  background:
+    var(--surface-soft);
+
+  color:
+    var(--reading-text);
+}
+
+
+.reading-copy {
+  color:
+    var(--reading-text);
+
+  line-height:
+    1.75;
+}
+
+
+/* =========================================================
    WORKFLOW
 ========================================================= */
 
@@ -1654,7 +1737,7 @@ select:focus-visible {
     var(--radius-md);
 
   background:
-    var(--white);
+    var(--surface-raised);
 
   transition:
     transform 0.24s ease,
@@ -1723,7 +1806,7 @@ select:focus-visible {
     15px;
 
   background:
-    #eef0ff;
+    #e8ecff;
 
   color:
     #5263e6;
@@ -1800,7 +1883,7 @@ select:focus-visible {
     var(--radius-lg);
 
   background:
-    var(--white);
+    var(--surface-raised);
 
   transition:
     transform 0.25s ease,
@@ -1871,8 +1954,8 @@ select:focus-visible {
   background:
     linear-gradient(
       135deg,
-      #edf0ff,
-      #f2eaff
+      #e8ecff,
+      #eee7fa
     );
 
   color:
@@ -1905,7 +1988,7 @@ select:focus-visible {
     999px;
 
   background:
-    #fafbfc;
+    var(--surface-light);
 
   color:
     #6e7a8b;
@@ -1970,7 +2053,7 @@ select:focus-visible {
     20px;
 
   color:
-    #4c596b;
+    var(--reading-text);
 
   font-size:
     13px;
@@ -2257,7 +2340,7 @@ select:focus-visible {
     94px 0;
 
   background:
-    #f7f8fb;
+    var(--surface-light);
 
   color:
     var(--dark-text);
@@ -2357,7 +2440,7 @@ select:focus-visible {
     16px;
 
   background:
-    var(--white);
+    var(--surface-raised);
 
   transition:
     transform 0.2s ease,
@@ -2403,7 +2486,7 @@ select:focus-visible {
     12px;
 
   background:
-    #eef0ff;
+    #e8ecff;
 
   color:
     #5b69d8;
@@ -2544,7 +2627,7 @@ select:focus-visible {
     rgba(108, 124, 255, 0.20);
 
   background:
-    #fafaff;
+    #f1f3fb;
 
 }
 
@@ -2567,7 +2650,7 @@ select:focus-visible {
 .project-list p {
 
   color:
-    #3f4c5f;
+    var(--reading-text);
 
   font-size:
     13px;
@@ -2743,7 +2826,7 @@ p:not(.panel-kicker) {
     45px;
 
   background:
-    #f7f8fc;
+    var(--surface-soft);
 
 }
 
@@ -2774,7 +2857,7 @@ p:not(.panel-kicker) {
     32px;
 
   background:
-    var(--white);
+    var(--surface-raised);
 
   box-shadow:
     0 24px 80px
@@ -2980,7 +3063,7 @@ p:not(.eyebrow) {
     17px;
 
   background:
-    var(--white);
+    var(--surface-raised);
 
   text-align:
     center;
@@ -3100,7 +3183,7 @@ span:not(.eco-school-label) {
     rgba(108, 124, 255, 0.35);
 
   background:
-    #f7f7ff;
+    #f0f2ff;
 
 }
 
@@ -3128,7 +3211,7 @@ span:not(.eco-school-label) {
     rgba(64, 164, 124, 0.33);
 
   background:
-    #f3fbf7;
+    #edf8f2;
 
   box-shadow:
     0 15px 35px
