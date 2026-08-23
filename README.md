@@ -1,8 +1,7 @@
-# CWS CodeLab — Phase 2
+# CWS CodeLab
 
 **Learn. Build. Ship.**
 
-Phase 2 converts the original concept homepage into the beginning of a data-driven course platform.
 
 ## Current structure
 
