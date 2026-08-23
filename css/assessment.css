@@ -1,14 +1,23 @@
 /* =========================================================
+   CWS CODELAB LIGHT ASSESSMENT THEME
+   Parent cards are raised; controls use softer nested surfaces.
+========================================================= */
+
+/* =========================================================
    CWS CODELAB
    ASSESSMENT WORKSPACE
 ========================================================= */
 
 :root {
-    --assessment-bg: #f5f7fb;
-    --assessment-surface: #ffffff;
-    --assessment-text: #142033;
-    --assessment-muted: #68758a;
-    --assessment-border: #dfe5ef;
+    /* Shared light assessment hierarchy from style.css */
+    --assessment-bg: var(--page-light, #e9eef5);
+    --assessment-surface: var(--surface-raised, #fbfcfe);
+    --assessment-soft: var(--surface-soft, #edf2f7);
+    --assessment-muted-surface: var(--surface-muted, #e5ebf2);
+    --assessment-text: var(--dark-text, #162337);
+    --assessment-reading-text: var(--reading-text, #334155);
+    --assessment-muted: var(--dark-muted, #526174);
+    --assessment-border: var(--light-border, #d4dde8);
     --assessment-primary: #5967e8;
     --assessment-primary-dark: #3f4dc7;
     --assessment-success: #19774f;
@@ -254,7 +263,7 @@ button:disabled {
     margin-top: 10px;
     overflow: hidden;
     border-radius: 999px;
-    background: #e9edf5;
+    background: var(--assessment-muted-surface);
 }
 
 .assessment-progress-bar {
@@ -289,8 +298,8 @@ button:disabled {
 .assessment-question-meta span {
     padding: 7px 10px;
     border-radius: 999px;
-    color: #45516a;
-    background: #eef1f8;
+    color: var(--assessment-muted);
+    background: var(--assessment-soft);
     font-size: 0.7rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -323,7 +332,7 @@ button:disabled {
     padding: 16px 18px;
     border: 1px solid var(--assessment-border);
     border-radius: 16px;
-    background: #ffffff;
+    background: var(--assessment-soft);
     transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
@@ -334,7 +343,7 @@ button:disabled {
 
 .assessment-option.selected {
     border-color: #5967e8;
-    background: #f5f6ff;
+    background: #eef0ff;
 }
 
 .assessment-option.correct {
@@ -359,8 +368,8 @@ button:disabled {
     display: grid;
     place-items: center;
     border-radius: 10px;
-    color: #505d72;
-    background: #edf0f7;
+    color: var(--assessment-muted);
+    background: var(--assessment-muted-surface);
     font-family: "JetBrains Mono", monospace;
     font-size: 0.78rem;
     font-weight: 800;
@@ -368,6 +377,7 @@ button:disabled {
 
 .assessment-option-copy {
     padding-top: 6px;
+    color: var(--assessment-reading-text);
     line-height: 1.55;
 }
 
@@ -426,8 +436,8 @@ button:disabled {
 }
 
 .assessment-button.secondary {
-    color: #344055;
-    background: #ffffff;
+    color: var(--assessment-reading-text);
+    background: var(--assessment-soft);
     border-color: var(--assessment-border);
 }
 
@@ -460,8 +470,8 @@ button:disabled {
     height: 38px;
     border: 1px solid var(--assessment-border);
     border-radius: 10px;
-    color: #465168;
-    background: #ffffff;
+    color: var(--assessment-muted);
+    background: var(--assessment-soft);
     font-weight: 800;
 }
 
@@ -493,6 +503,7 @@ button:disabled {
 
 .assessment-practical-card p,
 .assessment-practical-card li {
+    color: var(--assessment-reading-text);
     line-height: 1.75;
 }
 
@@ -505,7 +516,7 @@ button:disabled {
     display: block;
     margin: 22px 0 8px;
     font-weight: 800;
-    color: #354156;
+    color: var(--assessment-text);
 }
 
 .assessment-practical-card textarea {
@@ -513,7 +524,7 @@ button:disabled {
     resize: vertical;
     padding: 15px 16px;
     color: var(--assessment-text);
-    background: #fbfcff;
+    background: var(--assessment-soft);
     border: 1px solid var(--assessment-border);
     border-radius: 14px;
     line-height: 1.55;
@@ -626,8 +637,8 @@ button:disabled {
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-    color: #78859a;
-    background: #ffffff;
+    color: var(--assessment-muted);
+    background: var(--surface-light, #f3f6fa);
     border-top: 1px solid var(--assessment-border);
     font-size: 0.8rem;
 }
