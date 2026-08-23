@@ -49,7 +49,36 @@
 
             description:
                 options.description ||
-                ""
+                "",
+
+            objectives:
+                Array.isArray(
+                    options.objectives
+                )
+                    ? options.objectives
+                    : [],
+
+            content:
+                Array.isArray(
+                    options.content
+                )
+                    ? options.content
+                    : [],
+
+            practice:
+                Array.isArray(
+                    options.practice
+                )
+                    ? options.practice
+                    : [],
+
+            codeExample:
+                options.codeExample ||
+                "",
+
+            codeLanguage:
+                options.codeLanguage ||
+                "javascript"
 
         };
 
@@ -168,33 +197,279 @@
             curriculum: [
 
                 module(
+
                     "pf-m01",
+
                     "Introduction to Programming",
-                    "Understand what programming is and how software instructions are executed.",
+
+                    "Understand what programming is, how software instructions are executed and how developers use programming languages and tools.",
+
                     [
 
+                        /* =================================================
+                           LESSON 1
+                           WHAT IS PROGRAMMING?
+                        ================================================= */
+
                         lesson(
+
                             "pf-l01",
+
                             "What Is Programming?",
+
                             {
-                                preview: true
+
+                                preview:
+                                    true,
+
+                                duration:
+                                    "20 min",
+
+                                description:
+                                    "Learn what programming means, what programs are and how programmers turn problems into instructions a computer can execute.",
+
+                                objectives: [
+
+                                    "Explain what programming is in simple terms.",
+
+                                    "Describe the relationship between a programmer, source code and a computer.",
+
+                                    "Identify examples of software created through programming.",
+
+                                    "Understand why programming is fundamentally about problem solving."
+
+                                ],
+
+                                content: [
+
+                                    "Programming is the process of creating instructions that tell a computer what to do. Those instructions are written using a programming language such as JavaScript, Python, Java, C# or C++.",
+
+                                    "A computer is extremely fast at following instructions, but it does not understand a problem the way a human does. A programmer must break a problem into smaller, clear and logical steps that the computer can execute.",
+
+                                    "The instructions written by a programmer are commonly called source code. Source code is stored in files and interpreted or compiled into instructions that the computer's processor can ultimately execute.",
+
+                                    "Almost every digital system you use depends on programming. Websites, mobile applications, banking systems, games, operating systems, cloud platforms, cybersecurity tools and embedded devices are all built using software.",
+
+                                    "Programming is therefore not simply about memorising syntax. Good programmers learn how to analyse a problem, design a solution, express that solution logically and test whether the solution behaves correctly.",
+
+                                    "For example, imagine you are building a banking application. Before writing code, you might identify a requirement such as: a customer may withdraw money only when the requested amount does not exceed the available balance. Programming allows us to turn that rule into precise computer instructions."
+
+                                ],
+
+                                practice: [
+
+                                    "Write down three applications or digital services you use every day that depend on programming.",
+
+                                    "Choose one everyday activity, such as making tea or withdrawing money from an ATM, and write the activity as a sequence of clear steps.",
+
+                                    "Explain in your own words why a computer needs precise instructions."
+
+                                ],
+
+                                codeLanguage:
+                                    "javascript",
+
+                                codeExample:
+`// A very small program
+
+const learnerName = "Student";
+
+console.log("Welcome to CWS CodeLab!");
+console.log("Hello " + learnerName);
+
+// The computer executes these
+// instructions in sequence.`
+
                             }
+
                         ),
 
+
+                        /* =================================================
+                           LESSON 2
+                           HOW PROGRAMS WORK
+                        ================================================= */
+
                         lesson(
+
                             "pf-l02",
+
                             "How Programs Work",
+
                             {
-                                preview: true
+
+                                preview:
+                                    true,
+
+                                duration:
+                                    "25 min",
+
+                                description:
+                                    "Follow the journey from source code to execution and understand input, processing, output and program flow.",
+
+                                objectives: [
+
+                                    "Describe the basic input-process-output model.",
+
+                                    "Explain what source code is.",
+
+                                    "Understand the difference between compiled and interpreted execution at a beginner level.",
+
+                                    "Describe how instructions execute in a logical sequence.",
+
+                                    "Understand why program errors and debugging occur."
+
+                                ],
+
+                                content: [
+
+                                    "A program normally accepts some form of input, processes that information and produces an output. This simple model is known as Input → Processing → Output and appears in almost every software system.",
+
+                                    "Input is information supplied to the program. It may come from a keyboard, mouse, touchscreen, file, database, network request, sensor or another application.",
+
+                                    "Processing is the work performed by the program. This may include calculations, comparisons, searching, sorting, authentication, validation or changing stored information.",
+
+                                    "Output is the result produced by the program. Output might appear on a screen, be saved to a database, written to a file, sent across a network or passed to another program.",
+
+                                    "The code that developers write is called source code. Computers eventually need machine-level instructions, so programming languages use translators such as compilers, interpreters or runtime environments to execute developer-written code.",
+
+                                    "A compiled language commonly converts source code into another executable representation before the program runs. An interpreted or runtime-based environment generally processes instructions through another program while the application executes. Modern languages often use combinations of these techniques.",
+
+                                    "Programs also have a flow of execution. Unless a condition, loop, function or other control mechanism changes that flow, instructions generally execute in a defined order.",
+
+                                    "When instructions are invalid or the logic does not behave as expected, the program contains an error or bug. Debugging is the process of investigating the program, finding the cause and correcting it."
+
+                                ],
+
+                                practice: [
+
+                                    "For a calculator application, identify one example of input, processing and output.",
+
+                                    "For a login form, identify what information is input and what output the user might receive.",
+
+                                    "Read the example program and predict its output before running it."
+
+                                ],
+
+                                codeLanguage:
+                                    "javascript",
+
+                                codeExample:
+`// INPUT
+const price = 250;
+const quantity = 3;
+
+// PROCESSING
+const total = price * quantity;
+
+// OUTPUT
+console.log("Total: R" + total);
+
+// Expected output:
+// Total: R750`
+
                             }
+
                         ),
 
+
+                        /* =================================================
+                           LESSON 3
+                           LANGUAGES AND TOOLS
+                        ================================================= */
+
                         lesson(
+
                             "pf-l03",
-                            "Programming Languages and Tools"
+
+                            "Programming Languages and Tools",
+
+                            {
+
+                                duration:
+                                    "25 min",
+
+                                description:
+                                    "Explore common programming languages and the essential tools developers use to create, test and manage software.",
+
+                                objectives: [
+
+                                    "Explain why different programming languages exist.",
+
+                                    "Recognise common uses for JavaScript, Python, Java, C#, C++ and SQL.",
+
+                                    "Understand the purpose of a code editor or IDE.",
+
+                                    "Describe the roles of a terminal, debugger and version-control system.",
+
+                                    "Understand why Git and GitHub are important developer tools."
+
+                                ],
+
+                                content: [
+
+                                    "There is no single programming language used for every type of software. Different languages were designed with different goals, ecosystems, platforms and development styles in mind.",
+
+                                    "JavaScript is heavily used for interactive websites and web applications. With environments such as Node.js, JavaScript can also run on servers and be used for backend development.",
+
+                                    "Python is known for its readable syntax and broad ecosystem. It is widely used for automation, backend development, data analysis, artificial intelligence, scripting and cybersecurity.",
+
+                                    "Java is widely used in enterprise applications and large software systems. C# is strongly associated with the .NET ecosystem and is used for web applications, desktop applications, cloud systems and games.",
+
+                                    "C++ provides developers with significant control over system resources and performance. It is commonly used in systems programming, game engines, embedded applications and performance-sensitive software.",
+
+                                    "SQL is different from general-purpose programming languages. It is designed primarily for working with relational databases, including storing, retrieving, filtering and modifying structured data.",
+
+                                    "Developers also rely on tools. A code editor such as Visual Studio Code provides an environment for writing and organising source files. A more comprehensive Integrated Development Environment, or IDE, may include building, debugging and project-management capabilities.",
+
+                                    "The terminal or command line allows developers to interact with the operating system and development tools using text commands. As you progress through CodeLab, you will regularly use terminal commands.",
+
+                                    "A debugger helps developers inspect a running program and investigate problems. Developers can examine values, pause execution and follow program behaviour step by step.",
+
+                                    "Git is a version-control system used to track changes to source code. GitHub is an online platform commonly used to host Git repositories, collaborate with other developers and showcase projects."
+
+                                ],
+
+                                practice: [
+
+                                    "Match JavaScript, Python, SQL and C++ with one common use case for each.",
+
+                                    "Identify the code editor or IDE installed on your computer.",
+
+                                    "Open a terminal or command prompt and identify which operating system shell you are using.",
+
+                                    "Explain the difference between Git and GitHub in one or two sentences."
+
+                                ],
+
+                                codeLanguage:
+                                    "javascript",
+
+                                codeExample:
+`// Different languages can solve
+// similar problems.
+
+// JavaScript example:
+
+const language = "JavaScript";
+
+console.log(
+    language + " can build interactive web applications."
+);
+
+// Later in CodeLab you will also work with:
+// Python
+// SQL
+// Java
+// C#
+// C++`
+
+                            }
+
                         )
 
                     ]
+
                 ),
 
 
