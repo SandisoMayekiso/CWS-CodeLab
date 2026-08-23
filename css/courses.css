@@ -1,555 +1,1639 @@
+/* =========================================================
+   CWS CODELAB
+   COURSES / PUBLIC COURSE CATALOGUE
+========================================================= */
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
 .sr-only {
   position: absolute;
+
   width: 1px;
   height: 1px;
+
   padding: 0;
   margin: -1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
   border: 0;
 }
 
+
+/* =========================================================
+   COURSES HERO
+========================================================= */
+
 .courses-hero {
-  padding: 86px 0 92px;
+  position: relative;
+
+  overflow: hidden;
+
+  padding:
+    86px 0 92px;
+
   background:
-    radial-gradient(circle at 88% 16%, rgba(164, 92, 255, 0.12), transparent 28%),
-    radial-gradient(circle at 18% 90%, rgba(108, 124, 255, 0.08), transparent 26%),
+    radial-gradient(
+      circle at 88% 16%,
+      rgba(164, 92, 255, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 18% 90%,
+      rgba(108, 124, 255, 0.08),
+      transparent 26%
+    ),
     var(--bg);
 }
 
+
+.courses-hero::before {
+  content: "";
+
+  position: absolute;
+
+  top: -240px;
+  right: -180px;
+
+  width: 520px;
+  height: 520px;
+
+  border:
+    1px solid
+    rgba(108, 124, 255, 0.08);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HERO GRID
+========================================================= */
+
 .courses-hero-grid {
+  position: relative;
+
+  z-index: 1;
+
   display: grid;
-  grid-template-columns: 1.05fr 0.8fr;
+
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(300px, 0.8fr);
+
   align-items: center;
+
   gap: 72px;
 }
 
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
 .courses-hero h1 {
-  margin-top: 16px;
   max-width: 760px;
-  color: var(--white);
-  font-size: clamp(48px, 7vw, 82px);
+
+  margin-top: 16px;
+
+  color:
+    var(--white);
+
+  font-size:
+    clamp(
+      48px,
+      7vw,
+      82px
+    );
+
   line-height: 0.98;
+
   letter-spacing: -0.06em;
 }
 
+
 .courses-hero h1 span {
-  background: linear-gradient(90deg, #8d9aff, #c984ff);
+  background:
+    linear-gradient(
+      90deg,
+      #8d9aff,
+      #c984ff
+    );
+
   -webkit-background-clip: text;
+
   background-clip: text;
+
   color: transparent;
 }
 
+
 .courses-hero-copy {
   max-width: 690px;
+
   margin-top: 24px;
-  color: #a7b8ca;
+
+  color:
+    #a7b8ca;
+
   font-size: 17px;
+
+  line-height: 1.75;
 }
+
+
+/* =========================================================
+   HERO ACTIONS
+========================================================= */
+
+.courses-hero-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   CATALOGUE SUMMARY
+========================================================= */
 
 .catalogue-summary {
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 38px;
+
   margin-top: 36px;
 }
 
+
 .catalogue-summary div {
   display: flex;
+
   flex-direction: column;
 }
 
+
 .catalogue-summary strong {
-  color: var(--white);
+  color:
+    var(--white);
+
   font-size: 24px;
+
+  line-height: 1.2;
 }
 
+
 .catalogue-summary span {
-  color: var(--muted);
+  margin-top: 3px;
+
+  color:
+    var(--muted);
+
   font-size: 11px;
 }
 
+
+/* =========================================================
+   ROADMAP CARD
+========================================================= */
+
 .course-roadmap-card {
   padding: 30px;
-  border: 1px solid rgba(140, 154, 255, 0.15);
+
+  border:
+    1px solid
+    rgba(140, 154, 255, 0.15);
+
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: var(--shadow);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-shadow:
+    var(--shadow);
 }
+
 
 .roadmap-label,
 .roadmap-foot {
-  color: #8999ae;
-  font-family: "JetBrains Mono", monospace;
+  color:
+    #8999ae;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 10px;
+
   font-weight: 700;
+
   letter-spacing: 0.12em;
+
   text-transform: uppercase;
 }
 
+
 .roadmap-list {
   display: grid;
+
   gap: 8px;
-  margin: 22px 0;
+
+  margin:
+    22px 0;
 }
+
 
 .roadmap-list div {
   display: flex;
+
   align-items: center;
+
   gap: 13px;
-  padding: 12px 13px;
-  border: 1px solid rgba(255,255,255,0.055);
+
+  padding:
+    12px 13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+
   border-radius: 12px;
-  background: rgba(255,255,255,0.02);
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
+
+.roadmap-list div:hover {
+  transform:
+    translateX(3px);
+
+  border-color:
+    rgba(108, 124, 255, 0.20);
+
+  background:
+    rgba(108, 124, 255, 0.05);
+}
+
+
 .roadmap-list span {
-  color: #8996ff;
-  font-family: "JetBrains Mono", monospace;
+  flex-shrink: 0;
+
+  color:
+    #8996ff;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 10px;
 }
 
+
 .roadmap-list p {
-  color: #d7e0eb;
+  color:
+    #d7e0eb;
+
   font-size: 12px;
+
   font-weight: 700;
 }
 
+
+/* =========================================================
+   COURSE CATALOGUE SECTION
+========================================================= */
+
 .catalogue-section {
-  padding: 92px 0 108px;
-  background: #f7f8fb;
-  color: var(--dark-text);
+  padding:
+    92px 0 108px;
+
+  background:
+    #f7f8fb;
+
+  color:
+    var(--dark-text);
 }
+
+
+/* =========================================================
+   CATALOGUE TOOLBAR
+========================================================= */
 
 .catalogue-toolbar {
   display: flex;
+
   align-items: flex-end;
+
   justify-content: space-between;
+
   gap: 32px;
 }
 
+
+.catalogue-toolbar-copy {
+  max-width: 650px;
+}
+
+
 .catalogue-toolbar h2 {
   margin-top: 9px;
-  font-size: clamp(34px, 4vw, 50px);
+
+  color:
+    var(--dark-text);
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      50px
+    );
+
   line-height: 1.05;
+
   letter-spacing: -0.045em;
 }
 
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
 .catalogue-controls {
   display: flex;
-  gap: 10px;
+
   flex-wrap: wrap;
+
   justify-content: flex-end;
+
+  gap: 10px;
 }
+
+
+.search-box {
+  position: relative;
+}
+
 
 .search-box input,
 .catalogue-controls select {
   min-height: 45px;
-  border: 1px solid #dfe4ec;
+
+  border:
+    1px solid
+    #dfe4ec;
+
   border-radius: 12px;
-  background: #fff;
-  color: #263548;
-  font: inherit;
-  font-size: 12px;
+
   outline: none;
+
+  background:
+    #fff;
+
+  color:
+    #263548;
+
+  font: inherit;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
+
 
 .search-box input {
   min-width: 250px;
-  padding: 0 14px;
+
+  padding:
+    0 14px;
 }
+
+
+.search-box input::placeholder {
+  color:
+    #929dac;
+}
+
 
 .catalogue-controls select {
-  padding: 0 35px 0 12px;
-}
+  padding:
+    0 35px 0 12px;
 
-.search-box input:focus,
-.catalogue-controls select:focus {
-  border-color: #8793ee;
-  box-shadow: 0 0 0 4px rgba(108, 124, 255, 0.08);
-}
-
-.category-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 30px;
-}
-
-.category-filter {
-  border: 1px solid #dde2eb;
-  border-radius: 999px;
-  padding: 8px 12px;
-  background: #fff;
-  color: #637083;
-  font: inherit;
-  font-size: 11px;
-  font-weight: 700;
   cursor: pointer;
 }
 
-.category-filter.active {
-  border-color: #6675e6;
-  background: #eef0ff;
-  color: #4d5bd2;
+
+.search-box input:hover,
+.catalogue-controls select:hover {
+  border-color:
+    #c9d0dd;
 }
+
+
+.search-box input:focus,
+.catalogue-controls select:focus {
+  border-color:
+    #8793ee;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(108, 124, 255, 0.08);
+}
+
+
+/* =========================================================
+   CATEGORY FILTERS
+========================================================= */
+
+.category-filters {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 30px;
+}
+
+
+.category-filter {
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    #dde2eb;
+
+  border-radius: 999px;
+
+  background:
+    #fff;
+
+  color:
+    #637083;
+
+  font: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.category-filter:hover {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    #aeb7ec;
+
+  color:
+    #4f5ece;
+}
+
+
+.category-filter.active {
+  border-color:
+    #6675e6;
+
+  background:
+    #eef0ff;
+
+  color:
+    #4d5bd2;
+}
+
+
+.category-filter:focus-visible {
+  outline:
+    3px solid
+    rgba(108, 124, 255, 0.25);
+
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESULTS STATUS
+========================================================= */
 
 .results-status {
   min-height: 22px;
-  margin: 22px 0 12px;
-  color: #7a8798;
+
+  margin:
+    22px 0 12px;
+
+  color:
+    #7a8798;
+
   font-size: 11px;
 }
 
+
+/* =========================================================
+   CATALOGUE GRID
+========================================================= */
+
 .catalogue-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
   gap: 18px;
 }
 
+
+/* =========================================================
+   COURSE CARD
+========================================================= */
+
 .catalogue-card {
   display: flex;
+
   flex-direction: column;
+
   min-height: 430px;
+
   padding: 26px;
-  border: 1px solid #e3e7ee;
+
+  border:
+    1px solid
+    #e3e7ee;
+
   border-radius: 22px;
-  background: #fff;
-  transition: 0.22s ease;
+
+  background:
+    #fff;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
+
 .catalogue-card:hover {
-  transform: translateY(-4px);
-  border-color: #ccd3e9;
-  box-shadow: 0 22px 55px rgba(28, 42, 69, 0.08);
+  transform:
+    translateY(-4px);
+
+  border-color:
+    #ccd3e9;
+
+  box-shadow:
+    0 22px 55px
+    rgba(28, 42, 69, 0.08);
 }
+
+
+/* =========================================================
+   COURSE CARD TOP
+========================================================= */
 
 .catalogue-card-top {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 14px;
 }
 
+
+/* =========================================================
+   COURSE ICON
+========================================================= */
+
 .catalogue-icon {
   display: grid;
+
   place-items: center;
+
   width: 49px;
   height: 49px;
+
+  flex-shrink: 0;
+
   border-radius: 14px;
-  background: #eef0ff;
-  color: #5867d8;
-  font-family: "JetBrains Mono", monospace;
+
+  background:
+    #eef0ff;
+
+  color:
+    #5867d8;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 12px;
+
   font-weight: 800;
 }
 
-.catalogue-icon[data-accent="blue"] { background: #ecf5ff; color: #4779c7; }
-.catalogue-icon[data-accent="yellow"] { background: #fff6d8; color: #9b7412; }
-.catalogue-icon[data-accent="orange"] { background: #fff0e7; color: #bb6230; }
-.catalogue-icon[data-accent="green"] { background: #e9f8ef; color: #34895b; }
-.catalogue-icon[data-accent="cyan"] { background: #e7f8fa; color: #2f8290; }
+
+.catalogue-icon[data-accent="violet"] {
+  background:
+    #f0edff;
+
+  color:
+    #7158cb;
+}
+
+
+.catalogue-icon[data-accent="blue"] {
+  background:
+    #ecf5ff;
+
+  color:
+    #4779c7;
+}
+
+
+.catalogue-icon[data-accent="yellow"] {
+  background:
+    #fff6d8;
+
+  color:
+    #9b7412;
+}
+
+
+.catalogue-icon[data-accent="orange"] {
+  background:
+    #fff0e7;
+
+  color:
+    #bb6230;
+}
+
+
+.catalogue-icon[data-accent="green"] {
+  background:
+    #e9f8ef;
+
+  color:
+    #34895b;
+}
+
+
+.catalogue-icon[data-accent="cyan"] {
+  background:
+    #e7f8fa;
+
+  color:
+    #2f8290;
+}
+
+
+/* =========================================================
+   ACCESS BADGES
+========================================================= */
 
 .access-badge {
-  padding: 6px 9px;
+  padding:
+    6px 9px;
+
   border-radius: 999px;
-  background: #f3f5f8;
-  color: #677487;
+
+  background:
+    #f3f5f8;
+
+  color:
+    #677487;
+
   font-size: 9px;
+
   font-weight: 800;
+
   text-transform: uppercase;
-  letter-spacing: .06em;
+
+  letter-spacing: 0.06em;
 }
 
-.access-badge.pro {
-  background: #f1edff;
-  color: #7358c7;
+
+.access-badge.free {
+  background:
+    #eaf8f2;
+
+  color:
+    #398465;
 }
+
+
+.access-badge.pro {
+  background:
+    #f1edff;
+
+  color:
+    #7358c7;
+}
+
+
+/* =========================================================
+   CARD KICKER
+========================================================= */
 
 .catalogue-card-kicker {
   margin-top: 26px;
-  color: #7f8da0;
-  font-family: "JetBrains Mono", monospace;
+
+  color:
+    #7f8da0;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 9px;
+
   font-weight: 700;
+
   text-transform: uppercase;
-  letter-spacing: .08em;
+
+  letter-spacing: 0.08em;
 }
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
 
 .catalogue-card h3 {
   margin-top: 7px;
-  color: #17263a;
+
+  color:
+    #17263a;
+
   font-size: 22px;
+
   line-height: 1.15;
+
   letter-spacing: -0.03em;
 }
 
+
+/* =========================================================
+   CARD DESCRIPTION
+========================================================= */
+
 .catalogue-card-description {
   margin-top: 12px;
-  color: #687689;
+
+  color:
+    #687689;
+
   font-size: 12px;
+
+  line-height: 1.7;
 }
+
+
+/* =========================================================
+   COURSE SKILLS
+========================================================= */
 
 .catalogue-skills {
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 6px;
+
   margin-top: 19px;
 }
 
+
 .catalogue-skills span {
-  padding: 5px 7px;
+  padding:
+    5px 7px;
+
   border-radius: 8px;
-  background: #f4f6f9;
-  color: #687486;
+
+  background:
+    #f4f6f9;
+
+  color:
+    #687486;
+
   font-size: 9px;
+
   font-weight: 700;
 }
 
+
+/* =========================================================
+   COURSE STATS
+========================================================= */
+
 .course-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
   gap: 8px;
+
   margin-top: auto;
+
   padding-top: 23px;
 }
 
+
 .course-stats div {
-  padding: 10px 8px;
-  border: 1px solid #edf0f4;
+  padding:
+    10px 8px;
+
+  border:
+    1px solid
+    #edf0f4;
+
   border-radius: 10px;
+
+  background:
+    #fafbfc;
+
   text-align: center;
 }
+
 
 .course-stats strong,
 .course-stats span {
   display: block;
 }
 
+
 .course-stats strong {
-  color: #26364a;
+  color:
+    #26364a;
+
   font-size: 12px;
 }
+
 
 .course-stats span {
   margin-top: 2px;
-  color: #8995a4;
+
+  color:
+    #8995a4;
+
   font-size: 8px;
+
   text-transform: uppercase;
-  letter-spacing: .04em;
+
+  letter-spacing: 0.04em;
 }
+
+
+/* =========================================================
+   CARD FOOTER
+========================================================= */
 
 .catalogue-card-footer {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 12px;
+
   margin-top: 16px;
+
+  padding-top: 14px;
+
+  border-top:
+    1px solid
+    #f0f2f5;
 }
 
+
 .course-duration {
-  color: #7e8998;
+  color:
+    #7e8998;
+
   font-size: 10px;
+
   font-weight: 700;
 }
 
+
 .course-action {
-  color: #5968dd;
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color:
+    #5968dd;
+
   font-size: 11px;
+
   font-weight: 800;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
+
+
+.course-action:hover {
+  color:
+    #3e4fc7;
+
+  transform:
+    translateX(2px);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
 
 .empty-state {
   max-width: 480px;
-  margin: 50px auto 0;
+
+  margin:
+    50px auto 0;
+
+  padding:
+    35px;
+
   text-align: center;
+
+  border:
+    1px solid
+    #e5e8ee;
+
+  border-radius: 20px;
+
+  background:
+    #fff;
 }
+
 
 .empty-icon {
   display: grid;
+
   place-items: center;
+
   width: 58px;
   height: 58px;
-  margin: 0 auto 18px;
+
+  margin:
+    0 auto 18px;
+
   border-radius: 16px;
-  background: #eef0ff;
-  color: #5968dd;
-  font-family: "JetBrains Mono", monospace;
+
+  background:
+    #eef0ff;
+
+  color:
+    #5968dd;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-weight: 800;
 }
 
+
 .empty-state h3 {
+  color:
+    #1d2c40;
+
   font-size: 24px;
 }
 
+
 .empty-state p {
-  margin: 8px 0 20px;
-  color: #748194;
+  margin:
+    8px 0 20px;
+
+  color:
+    #748194;
 }
 
+
+/* =========================================================
+   LEARNING PATH SELECTOR
+========================================================= */
+
 .path-selector-section {
-  padding: 102px 0;
-  background: #fff;
-  color: var(--dark-text);
+  padding:
+    102px 0;
+
+  background:
+    #fff;
+
+  color:
+    var(--dark-text);
 }
+
 
 .path-selector-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
   gap: 18px;
 }
 
+
+/* =========================================================
+   LEARNING PATH CARD
+========================================================= */
+
 .path-selector-card {
+  display: flex;
+
+  flex-direction: column;
+
   padding: 28px;
-  border: 1px solid #e3e7ee;
+
+  border:
+    1px solid
+    #e3e7ee;
+
   border-radius: 22px;
+
+  background:
+    #fff;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
+
+.path-selector-card:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    #cdd4eb;
+
+  box-shadow:
+    0 20px 50px
+    rgba(28, 42, 69, 0.07);
+}
+
+
 .path-selector-card h3 {
+  color:
+    #1c2b40;
+
   font-size: 22px;
+
   letter-spacing: -0.03em;
 }
 
+
 .path-selector-card > p {
   margin-top: 10px;
-  color: #687689;
+
+  color:
+    #687689;
+
   font-size: 12px;
+
+  line-height: 1.7;
 }
+
+
+/* =========================================================
+   LEARNING PATH COURSE LIST
+========================================================= */
 
 .path-course-list {
   display: grid;
+
   gap: 7px;
+
   margin-top: 20px;
 }
 
+
 .path-course-list div {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
-  padding: 8px 0;
-  border-top: 1px solid #eef1f5;
+
+  padding:
+    8px 0;
+
+  border-top:
+    1px solid
+    #eef1f5;
 }
 
+
 .path-course-list span {
-  color: #6473df;
-  font-family: "JetBrains Mono", monospace;
+  color:
+    #6473df;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 9px;
 }
 
+
 .path-course-list p {
-  color: #435166;
+  color:
+    #435166;
+
   font-size: 11px;
+
   font-weight: 700;
 }
 
-.course-philosophy {
-  padding: 92px 0;
-  background: #0b1729;
+
+/* =========================================================
+   PATH ACTION
+========================================================= */
+
+.path-selector-action {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 22px;
+
+  color:
+    #5968dc;
+
+  font-size: 11px;
+
+  font-weight: 800;
 }
+
+
+/* =========================================================
+   COURSE PHILOSOPHY
+========================================================= */
+
+.course-philosophy {
+  padding:
+    92px 0;
+
+  background:
+    #0b1729;
+}
+
 
 .philosophy-grid {
   display: grid;
-  grid-template-columns: .85fr 1fr;
+
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1fr);
+
   gap: 70px;
+
   align-items: start;
 }
 
+
 .course-philosophy h2 {
   margin-top: 12px;
-  color: #fff;
-  font-size: clamp(34px, 4vw, 50px);
+
+  color:
+    #fff;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      50px
+    );
+
   line-height: 1.05;
+
   letter-spacing: -0.045em;
 }
 
+
+.course-philosophy-copy {
+  margin-top: 18px;
+
+  color:
+    #8fa1b5;
+
+  font-size: 14px;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   PHILOSOPHY STEPS
+========================================================= */
+
 .philosophy-steps {
   display: grid;
+
   gap: 10px;
 }
 
+
 .philosophy-steps div {
   display: flex;
+
   align-items: center;
+
   gap: 18px;
-  padding: 16px 18px;
-  border: 1px solid rgba(255,255,255,0.07);
+
+  padding:
+    16px 18px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
   border-radius: 14px;
-  background: rgba(255,255,255,0.025);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
+
+.philosophy-steps div:hover {
+  transform:
+    translateX(3px);
+
+  border-color:
+    rgba(108, 124, 255, 0.20);
+
+  background:
+    rgba(108, 124, 255, 0.045);
+}
+
+
 .philosophy-steps span {
-  color: #8190f6;
-  font-family: "JetBrains Mono", monospace;
+  flex-shrink: 0;
+
+  color:
+    #8190f6;
+
+  font-family:
+    "JetBrains Mono",
+    monospace;
+
   font-size: 10px;
 }
 
+
 .philosophy-steps p {
-  color: #9fb0c2;
+  color:
+    #9fb0c2;
+
   font-size: 12px;
 }
 
+
 .philosophy-steps strong {
-  color: #eef2f7;
+  color:
+    #eef2f7;
 }
 
+
+/* =========================================================
+   PUBLIC ACCOUNT CTA
+========================================================= */
+
+.catalogue-account-section {
+  padding:
+    85px 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5968df,
+      #7f55c9
+    );
+}
+
+
+.catalogue-account-inner {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+
+.catalogue-account-copy {
+  max-width: 720px;
+}
+
+
+.catalogue-account-section .eyebrow {
+  color:
+    #dce0ff;
+}
+
+
+.catalogue-account-section h2 {
+  margin-top: 10px;
+
+  color:
+    #fff;
+
+  font-size:
+    clamp(
+      32px,
+      4vw,
+      50px
+    );
+
+  line-height: 1.05;
+
+  letter-spacing: -0.045em;
+}
+
+
+.catalogue-account-section p:not(.eyebrow) {
+  margin-top: 15px;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 14px;
+}
+
+
+.catalogue-account-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FOCUS STATES
+========================================================= */
+
+.course-action:focus-visible,
+.path-selector-action:focus-visible {
+  outline:
+    3px solid
+    rgba(108, 124, 255, 0.25);
+
+  outline-offset: 4px;
+
+  border-radius: 4px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media (max-width: 980px) {
+
   .courses-hero-grid,
   .philosophy-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
+
+
+  .courses-hero-grid {
+    gap: 48px;
+  }
+
 
   .course-roadmap-card {
     max-width: 650px;
   }
 
+
   .catalogue-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
   }
 
+
   .catalogue-controls {
-    justify-content: flex-start;
+    justify-content:
+      flex-start;
   }
+
 
   .catalogue-grid,
   .path-selector-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
+
+
+  .catalogue-account-inner {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
 }
 
-@media (max-width: 640px) {
-  .courses-hero {
-    padding: 58px 0 68px;
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .catalogue-controls {
+    width: 100%;
   }
+
+
+  .search-box {
+    flex:
+      1 1 100%;
+  }
+
+
+  .search-box input {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+
+  .catalogue-controls select {
+    flex:
+      1 1
+      calc(50% - 5px);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+
+  .courses-hero {
+    padding:
+      58px 0 68px;
+  }
+
 
   .courses-hero h1 {
     font-size: 48px;
   }
 
+
+  .courses-hero-copy {
+    font-size: 15px;
+  }
+
+
+  .courses-hero-actions {
+    flex-direction:
+      column;
+  }
+
+
+  .courses-hero-actions .btn {
+    width: 100%;
+  }
+
+
+  .course-roadmap-card {
+    padding: 22px;
+  }
+
+
   .catalogue-summary {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
     gap: 10px;
   }
+
+
+  .catalogue-summary div {
+    padding:
+      10px;
+
+    border:
+      1px solid
+      rgba(255, 255, 255, 0.07);
+
+    border-radius: 10px;
+
+    background:
+      rgba(255, 255, 255, 0.025);
+  }
+
 
   .catalogue-summary strong {
     font-size: 18px;
   }
 
+
   .catalogue-summary span {
     font-size: 9px;
   }
 
+
   .catalogue-section,
   .path-selector-section,
   .course-philosophy {
-    padding: 72px 0;
+    padding:
+      72px 0;
   }
+
 
   .catalogue-controls {
     width: 100%;
+
+    flex-direction:
+      column;
   }
+
 
   .search-box,
   .search-box input,
@@ -557,12 +1641,133 @@
     width: 100%;
   }
 
+
+  .catalogue-controls select {
+    flex:
+      none;
+  }
+
+
+  .category-filters {
+    gap: 6px;
+  }
+
+
+  .category-filter {
+    padding:
+      7px 10px;
+
+    font-size: 10px;
+  }
+
+
   .catalogue-grid,
   .path-selector-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
+
 
   .catalogue-card {
     min-height: auto;
+
+    padding: 22px;
   }
+
+
+  .catalogue-card-footer {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .course-stats {
+    gap: 6px;
+  }
+
+
+  .path-selector-card {
+    padding: 23px;
+  }
+
+
+  .philosophy-grid {
+    gap: 42px;
+  }
+
+
+  .catalogue-account-section {
+    padding:
+      65px 0;
+  }
+
+
+  .catalogue-account-actions {
+    width: 100%;
+
+    flex-direction:
+      column;
+  }
+
+
+  .catalogue-account-actions .btn {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .courses-hero h1 {
+    font-size: 42px;
+  }
+
+
+  .catalogue-summary {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .catalogue-summary div {
+    flex-direction:
+      row;
+
+    align-items:
+      center;
+
+    justify-content:
+      space-between;
+  }
+
+
+  .course-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .course-stats div {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    text-align: left;
+  }
+
+
+  .course-stats span {
+    margin-top: 0;
+  }
+
 }
