@@ -1,4 +1,9 @@
 /* =========================================================
+   CWS CODELAB LIGHT PRICING THEME
+   Uses shared surface hierarchy from css/style.css.
+========================================================= */
+
+/* =========================================================
    CWS CODELAB
    PRICING PAGE
 ========================================================= */
@@ -243,7 +248,7 @@
         100px 0 110px;
 
     background:
-        #f7f8fb;
+        var(--page-light, #e9eef5);
 
     color:
         var(--dark-text);
@@ -350,13 +355,13 @@
 
     border:
         1px solid
-        #e1e5ed;
+        var(--light-border, #d4dde8);
 
     border-radius:
         26px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     box-shadow:
         0 20px 60px
@@ -570,7 +575,7 @@
         10px;
 
     color:
-        #6e7b8d;
+        var(--reading-text, #334155);
 
     font-size:
         13px;
@@ -745,13 +750,13 @@
 
     border:
         1px solid
-        #dfe3eb;
+        var(--light-border, #d4dde8);
 
     background:
-        #fafbfc;
+        var(--surface-soft, #edf2f7);
 
     color:
-        #405066;
+        var(--reading-text, #334155);
 
 }
 
@@ -762,7 +767,7 @@
         #bdc5d6;
 
     background:
-        #f4f6fa;
+        var(--surface-muted, #e5ebf2);
 
 }
 
@@ -780,7 +785,7 @@
         30px 0 24px;
 
     background:
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
 }
 
@@ -825,7 +830,7 @@
         flex-start;
 
     color:
-        #607083;
+        var(--reading-text, #334155);
 
     font-size:
         11px;
@@ -854,7 +859,7 @@
         100px 0;
 
     background:
-        #fff;
+        var(--surface-light, #f3f6fa);
 
     color:
         var(--dark-text);
@@ -869,13 +874,13 @@
 
     border:
         1px solid
-        #e3e7ee;
+        var(--light-border, #d4dde8);
 
     border-radius:
         20px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     box-shadow:
         0 18px 50px
@@ -906,7 +911,7 @@
 
     border-bottom:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
     text-align:
         center;
@@ -937,7 +942,7 @@
 .pricing-table thead {
 
     background:
-        #f6f7fb;
+        var(--surface-soft, #edf2f7);
 
 }
 
@@ -956,7 +961,7 @@
 .pricing-table td {
 
     color:
-        #697689;
+        var(--reading-text, #334155);
 
 }
 
@@ -1216,7 +1221,7 @@
         95px 0;
 
     background:
-        #fff;
+        var(--page-light, #e9eef5);
 
     color:
         var(--dark-text);
@@ -1244,13 +1249,13 @@
 
     border:
         1px solid
-        #e5e9ef;
+        var(--light-border, #d4dde8);
 
     border-radius:
         28px;
 
     background:
-        #f8f9fc;
+        var(--surface-raised, #fbfcfe);
 
 }
 
@@ -1293,7 +1298,7 @@ p:not(.eyebrow) {
         17px;
 
     color:
-        #667487;
+        var(--reading-text, #334155);
 
     font-size:
         14px;
@@ -1330,7 +1335,7 @@ p:not(.eyebrow) {
         19px;
 
     background:
-        #f2faf6;
+        #eaf6f0;
 
     transition:
         transform 0.22s ease,
@@ -1486,7 +1491,7 @@ p:not(.eyebrow) {
         100px 0;
 
     background:
-        #f7f8fb;
+        var(--surface-light, #f3f6fa);
 
     color:
         var(--dark-text);
@@ -1518,13 +1523,13 @@ p:not(.eyebrow) {
 
     border:
         1px solid
-        #e3e7ee;
+        var(--light-border, #d4dde8);
 
     border-radius:
         18px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     transition:
         transform 0.2s ease,
@@ -1566,7 +1571,7 @@ p:not(.eyebrow) {
         9px;
 
     color:
-        #6f7c8e;
+        var(--reading-text, #334155);
 
     font-size:
         12px;
