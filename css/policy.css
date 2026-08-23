@@ -1,6 +1,8 @@
 /* =========================================================
    CWS CODELAB
    POLICY PAGES
+
+   Uses the shared light hierarchy from css/style.css.
 ========================================================= */
 
 
@@ -17,10 +19,10 @@
         82px 20px 105px;
 
     background:
-        #f6f7fb;
+        var(--page-light, #e9eef5);
 
     color:
-        var(--dark-text);
+        var(--dark-text, #162337);
 
 }
 
@@ -49,7 +51,7 @@
         inline-block;
 
     color:
-        #6977dc;
+        #5968dc;
 
     font-family:
         "JetBrains Mono",
@@ -76,7 +78,7 @@
         13px;
 
     color:
-        #142338;
+        var(--dark-text, #162337);
 
     font-size:
         clamp(
@@ -103,13 +105,13 @@
         19px auto 0;
 
     color:
-        #667487;
+        var(--reading-text, #334155);
 
     font-size:
         15px;
 
     line-height:
-        1.75;
+        1.8;
 
 }
 
@@ -127,16 +129,16 @@
 
     border:
         1px solid
-        #e0e4ec;
+        var(--light-border, #d4dde8);
 
     border-radius:
         999px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     color:
-        #7b8797;
+        var(--dark-muted, #526174);
 
     font-size:
         9px;
@@ -164,17 +166,17 @@
 
     border:
         1px solid
-        #e2e6ed;
+        var(--light-border, #d4dde8);
 
     border-radius:
         26px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     box-shadow:
         0 24px 70px
-        rgba(24, 37, 61, 0.06);
+        rgba(24, 37, 61, 0.07);
 
 }
 
@@ -190,7 +192,7 @@
 
     border-bottom:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
 }
 
@@ -216,8 +218,15 @@
 
 .cws-policy-section h2 {
 
+    padding-left:
+        13px;
+
+    border-left:
+        4px solid
+        var(--accent, #6c7cff);
+
     color:
-        #1b2b40;
+        var(--dark-text, #162337);
 
     font-size:
         20px;
@@ -228,19 +237,32 @@
 }
 
 
-.cws-policy-section p {
+.cws-policy-section p,
+.cws-policy-section li {
 
     margin-top:
         12px;
 
     color:
-        #647286;
+        var(--reading-text, #334155);
 
     font-size:
         13px;
 
     line-height:
-        1.8;
+        1.85;
+
+}
+
+
+.cws-policy-section ul,
+.cws-policy-section ol {
+
+    margin-top:
+        12px;
+
+    padding-left:
+        22px;
 
 }
 
@@ -248,7 +270,7 @@
 .cws-policy-section a {
 
     color:
-        #5968dc;
+        #4f5fd0;
 
     font-weight:
         700;
@@ -278,10 +300,13 @@
 
     border:
         1px solid
-        #e3e7ee;
+        var(--light-border, #d4dde8);
 
     border-radius:
         16px;
+
+    background:
+        var(--surface-raised, #fbfcfe);
 
 }
 
@@ -308,7 +333,7 @@
 
     border-bottom:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
     text-align:
         left;
@@ -325,10 +350,10 @@
 .cws-policy-table th {
 
     background:
-        #f6f7fb;
+        var(--surface-soft, #edf2f7);
 
     color:
-        #36465a;
+        var(--dark-text, #162337);
 
     font-weight:
         800;
@@ -338,11 +363,22 @@
 
 .cws-policy-table td {
 
+    background:
+        var(--surface-raised, #fbfcfe);
+
     color:
-        #667487;
+        var(--reading-text, #334155);
 
     line-height:
-        1.65;
+        1.7;
+
+}
+
+
+.cws-policy-table tbody tr:nth-child(even) td {
+
+    background:
+        var(--surface-light, #f3f6fa);
 
 }
 
@@ -369,13 +405,13 @@
 
     border:
         1px solid
-        rgba(108, 124, 255, 0.18);
+        rgba(108, 124, 255, 0.22);
 
     border-radius:
         14px;
 
     background:
-        #f6f7ff;
+        #eef0ff;
 
 }
 
@@ -395,6 +431,9 @@
 
     margin-top:
         7px;
+
+    color:
+        #3f4d6a;
 
 }
 
@@ -429,13 +468,13 @@
 .cws-policy-actions .btn-secondary {
 
     border-color:
-        #dfe3eb;
+        var(--light-border, #d4dde8);
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     color:
-        #455267;
+        var(--reading-text, #334155);
 
 }
 
@@ -443,10 +482,10 @@
 .cws-policy-actions .btn-secondary:hover {
 
     border-color:
-        #bac3d3;
+        #b8c3d2;
 
     background:
-        #fafbfc;
+        var(--surface-soft, #edf2f7);
 
 }
 
