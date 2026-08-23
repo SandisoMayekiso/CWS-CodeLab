@@ -2,19 +2,23 @@
    CWS CODELAB
    STUDENT COURSES
 
-   Handles:
-   - Firebase authentication guard
+   Responsibilities:
+   - Firebase authentication
    - Student profile loading
-   - Course catalogue rendering
-   - Search
-   - Category filtering
-   - Access/status filtering
+   - Central course catalogue loading
+   - Search and filtering
+   - URL filters
    - Free-course enrolment
-   - Student progress display
+   - Pro-course handling
+   - Course progress
+   - Course detail modal
+   - Course curriculum preview
+   - Continue / Resume learning
+   - Lesson workspace navigation
    - Mobile sidebar
    - Sign out
 
-   CURRENT FIRESTORE MODEL:
+   FIRESTORE MODEL
 
    /users/{uid}
 
@@ -25,14 +29,33 @@
        ],
 
        courseProgress: {
-           "programming-fundamentals": 25,
-           "html-css": 70
-       }
-   }
 
-   Later we can move enrolments/progress into dedicated
-   Firestore collections once the full student portal and
-   security rules are built.
+           "programming-fundamentals": {
+
+               completedLessons: [
+                   "pf-l01",
+                   "pf-l02"
+               ],
+
+               completedCount: 2,
+               totalLessons: 24,
+               percentage: 8,
+
+               currentLessonId:
+                   "pf-l03",
+
+               completed:
+                   false,
+
+               startedAt: Timestamp,
+               lastAccessedAt: Timestamp
+           }
+
+       },
+
+       lastActiveCourseId:
+           "programming-fundamentals"
+   }
 ========================================================= */
 
 
@@ -101,6 +124,32 @@ const PRICING_URL =
     ).href;
 
 
+const LESSON_URL =
+    new URL(
+        "../student/lesson.html",
+        import.meta.url
+    ).href;
+
+
+/* =========================================================
+   VALID FILTERS
+========================================================= */
+
+const VALID_FILTERS = [
+
+    "all",
+
+    "enrolled",
+
+    "free",
+
+    "pro",
+
+    "coming-soon"
+
+];
+
+
 /* =========================================================
    STATE
 ========================================================= */
@@ -117,7 +166,7 @@ const state = {
         [],
 
     activeFilter:
-        "all",
+        getRequestedFilter(),
 
     category:
         "all",
@@ -126,7 +175,16 @@ const state = {
         "",
 
     enrollingCourseId:
-        null
+        null,
+
+    selectedCourseId:
+        null,
+
+    authReady:
+        false,
+
+    courseDataReady:
+        false
 
 };
 
@@ -135,113 +193,156 @@ const state = {
    ELEMENTS
 ========================================================= */
 
-const courseGrid =
-    document.getElementById(
-        "student-course-grid"
-    );
+const elements = {
 
+    courseGrid:
+        document.getElementById(
+            "student-course-grid"
+        ),
 
-const emptyState =
-    document.getElementById(
-        "student-course-empty"
-    );
+    emptyState:
+        document.getElementById(
+            "student-course-empty"
+        ),
 
+    resultCount:
+        document.getElementById(
+            "student-course-result-count"
+        ),
 
-const resultCount =
-    document.getElementById(
-        "student-course-result-count"
-    );
+    sectionTitle:
+        document.getElementById(
+            "student-course-section-title"
+        ),
 
+    searchInput:
+        document.getElementById(
+            "student-course-search"
+        ),
 
-const sectionTitle =
-    document.getElementById(
-        "student-course-section-title"
-    );
+    categoryFilter:
+        document.getElementById(
+            "student-category-filter"
+        ),
 
+    filterButtons:
+        document.querySelectorAll(
+            "[data-course-filter]"
+        ),
 
-const searchInput =
-    document.getElementById(
-        "student-course-search"
-    );
+    resetButton:
+        document.getElementById(
+            "student-reset-filters"
+        ),
 
+    loadingScreen:
+        document.getElementById(
+            "student-courses-loading"
+        ),
 
-const categoryFilter =
-    document.getElementById(
-        "student-category-filter"
-    );
+    message:
+        document.getElementById(
+            "student-courses-message"
+        ),
 
+    courseDialog:
+        document.getElementById(
+            "course-detail-dialog"
+        ),
 
-const filterButtons =
-    document.querySelectorAll(
-        "[data-course-filter]"
-    );
+    courseDialogClose:
+        document.getElementById(
+            "course-detail-close"
+        )
 
-
-const resetFiltersButton =
-    document.getElementById(
-        "student-reset-filters"
-    );
-
-
-const loadingScreen =
-    document.getElementById(
-        "student-courses-loading"
-    );
-
-
-/* =========================================================
-   INITIAL COURSE DATA
-========================================================= */
-
-state.courses =
-    Array.isArray(
-        window.CWS_COURSES
-    )
-
-        ? [...window.CWS_COURSES]
-
-        : [];
+};
 
 
 /* =========================================================
-   YEAR
+   INITIALIZE PAGE
 ========================================================= */
 
-setText(
-    "student-courses-year",
-    new Date().getFullYear()
-);
+initializePage();
+
+
+async function initializePage() {
+
+
+    setText(
+        "student-courses-year",
+        new Date()
+            .getFullYear()
+    );
+
+
+    initialiseSidebar();
+
+
+    initialiseFilters();
+
+
+    initialiseFuturePages();
+
+
+    initialiseCourseDialog();
+
+
+    setLoading(
+        true
+    );
+
+
+    try {
+
+
+        state.courses =
+            await waitForCourseData();
+
+
+        state.courseDataReady =
+            true;
+
+
+        populateCategoryFilter();
+
+
+        updateActiveFilterTab();
+
+
+        console.log(
+            `CWS CodeLab: ${state.courses.length} courses loaded.`
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "CWS CodeLab course catalogue error:",
+            error
+        );
+
+
+        showMessage(
+            "CodeLab could not load the course catalogue.",
+            "error"
+        );
+
+
+        setLoading(
+            false
+        );
+
+
+    }
+
+
+}
 
 
 /* =========================================================
-   SIDEBAR
+   FIREBASE AUTHENTICATION
 ========================================================= */
-
-initialiseSidebar();
-
-
-/* =========================================================
-   FILTERS
-========================================================= */
-
-initialiseFilters();
-
-
-/* =========================================================
-   PLACEHOLDER LINKS
-========================================================= */
-
-initialiseFuturePages();
-
-
-/* =========================================================
-   AUTHENTICATION
-========================================================= */
-
-setLoading(
-    true
-);
-
 
 const unsubscribe =
     onAuthStateChanged(
@@ -251,7 +352,7 @@ const unsubscribe =
 
 
             /* =================================================
-               NOT AUTHENTICATED
+               NOT SIGNED IN
             ================================================= */
 
             if (!user) {
@@ -264,6 +365,7 @@ const unsubscribe =
 
                 return;
 
+
             }
 
 
@@ -273,6 +375,10 @@ const unsubscribe =
 
             state.user =
                 user;
+
+
+            state.authReady =
+                true;
 
 
             try {
@@ -286,28 +392,17 @@ const unsubscribe =
                 populateStudentIdentity();
 
 
-                populateCategoryFilter();
-
-
-                renderCourses();
-
-
-                setLoading(
-                    false
-                );
-
-
-                console.log(
-                    "CWS CodeLab student courses initialized."
-                );
-
-
             } catch (error) {
 
 
                 console.error(
-                    "CWS CodeLab could not load student courses:",
+                    "CWS CodeLab student profile error:",
                     error
+                );
+
+
+                populateFirebaseIdentity(
+                    user
                 );
 
 
@@ -319,20 +414,72 @@ const unsubscribe =
                 );
 
 
-                /*
-                 * Authentication succeeded even if profile
-                 * loading fails.
-                 */
-
-                populateFirebaseIdentity(
-                    user
-                );
+            }
 
 
-                populateCategoryFilter();
+            try {
+
+
+                if (
+                    !state.courseDataReady
+                ) {
+
+
+                    state.courses =
+                        await waitForCourseData();
+
+
+                    state.courseDataReady =
+                        true;
+
+
+                    populateCategoryFilter();
+
+
+                }
+
+
+                updateActiveFilterTab();
 
 
                 renderCourses();
+
+
+                setLoading(
+                    false
+                );
+
+
+                if (
+                    state.activeFilter !==
+                    "all"
+                ) {
+
+
+                    scrollToCourseLibrary();
+
+
+                }
+
+
+                console.log(
+                    "CWS CodeLab student course workspace initialized."
+                );
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "CWS CodeLab course rendering error:",
+                    error
+                );
+
+
+                showMessage(
+                    "Your account is signed in, but the course library could not be displayed.",
+                    "error"
+                );
 
 
                 setLoading(
@@ -364,12 +511,213 @@ const unsubscribe =
 
 
 /* =========================================================
+   WAIT FOR data/courses.js
+========================================================= */
+
+function waitForCourseData(
+    timeout = 6000
+) {
+
+
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
+
+
+            /* =================================================
+               ALREADY AVAILABLE
+            ================================================= */
+
+            if (
+                Array.isArray(
+                    window.CWS_COURSES
+                )
+            ) {
+
+
+                resolve(
+                    [
+                        ...window.CWS_COURSES
+                    ]
+                );
+
+
+                return;
+
+
+            }
+
+
+            const started =
+                Date.now();
+
+
+            const timer =
+                window.setInterval(
+                    () => {
+
+
+                        if (
+                            Array.isArray(
+                                window.CWS_COURSES
+                            )
+                        ) {
+
+
+                            window.clearInterval(
+                                timer
+                            );
+
+
+                            resolve(
+                                [
+                                    ...window.CWS_COURSES
+                                ]
+                            );
+
+
+                            return;
+
+
+                        }
+
+
+                        if (
+                            Date.now() -
+                            started >=
+                            timeout
+                        ) {
+
+
+                            window.clearInterval(
+                                timer
+                            );
+
+
+                            reject(
+                                new Error(
+                                    "course-data-unavailable"
+                                )
+                            );
+
+
+                        }
+
+
+                    },
+                    40
+                );
+
+
+        }
+    );
+
+
+}
+
+
+/* =========================================================
+   URL FILTER
+========================================================= */
+
+function getRequestedFilter() {
+
+
+    const parameters =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const requested =
+        String(
+            parameters.get(
+                "filter"
+            ) ||
+            "all"
+        )
+            .trim()
+            .toLowerCase();
+
+
+    return VALID_FILTERS.includes(
+        requested
+    )
+
+        ? requested
+
+        : "all";
+
+
+}
+
+
+/* =========================================================
+   UPDATE URL FILTER
+========================================================= */
+
+function updateURLFilter() {
+
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    if (
+        state.activeFilter ===
+        "all"
+    ) {
+
+
+        url.searchParams.delete(
+            "filter"
+        );
+
+
+    } else {
+
+
+        url.searchParams.set(
+            "filter",
+            state.activeFilter
+        );
+
+
+    }
+
+
+    window.history.replaceState(
+        {},
+        "",
+        url.href
+    );
+
+
+}
+
+
+/* =========================================================
    LOAD STUDENT PROFILE
 ========================================================= */
 
 async function loadStudentProfile(
     user
 ) {
+
+
+    if (!user?.uid) {
+
+
+        throw new Error(
+            "firebase-user-missing"
+        );
+
+
+    }
 
 
     const reference =
@@ -393,6 +741,7 @@ async function loadStudentProfile(
             "student-profile-not-found"
         );
 
+
     }
 
 
@@ -410,7 +759,7 @@ async function loadStudentProfile(
 
 
 /* =========================================================
-   POPULATE STUDENT
+   STUDENT IDENTITY
 ========================================================= */
 
 function populateStudentIdentity() {
@@ -433,16 +782,16 @@ function populateStudentIdentity() {
         "";
 
 
-    const initial =
-        getInitial(
-            name
-        );
-
-
     const plan =
         formatPlan(
             state.profile.plan ||
             "free"
+        );
+
+
+    const initial =
+        getInitial(
+            name
         );
 
 
@@ -518,13 +867,20 @@ function populateFirebaseIdentity(
 
     setText(
         "student-email",
-        user.email || ""
+        user.email ||
+        ""
     );
 
 
     setText(
         "sidebar-student-name",
         name
+    );
+
+
+    setText(
+        "sidebar-account-plan",
+        "Free Learner"
     );
 
 
@@ -544,109 +900,174 @@ function populateFirebaseIdentity(
 
 
 /* =========================================================
-   FILTER INITIALIZATION
+   INITIALIZE FILTERS
 ========================================================= */
 
 function initialiseFilters() {
 
 
-    searchInput?.addEventListener(
-        "input",
-        () => {
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    elements.searchInput
+        ?.addEventListener(
+            "input",
+            () => {
 
 
-            state.search =
-                searchInput.value
-                    .trim()
-                    .toLowerCase();
+                state.search =
+                    elements.searchInput
+                        .value
+                        .trim()
+                        .toLowerCase();
 
 
-            renderCourses();
+                renderCourses();
 
 
-        }
-    );
+            }
+        );
 
 
-    categoryFilter?.addEventListener(
-        "change",
-        () => {
+    /* =====================================================
+       CATEGORY
+    ===================================================== */
+
+    elements.categoryFilter
+        ?.addEventListener(
+            "change",
+            () => {
 
 
-            state.category =
-                categoryFilter.value;
+                state.category =
+                    elements.categoryFilter
+                        .value;
 
 
-            renderCourses();
+                renderCourses();
 
 
-        }
-    );
+            }
+        );
 
 
-    filterButtons.forEach(
-        button => {
+    /* =====================================================
+       MAIN FILTER TABS
+    ===================================================== */
+
+    elements.filterButtons
+        .forEach(
+            button => {
 
 
-            button.addEventListener(
-                "click",
-                () => {
+                button.addEventListener(
+                    "click",
+                    () => {
 
 
-                    filterButtons.forEach(
-                        item => {
-
-
-                            item.classList.remove(
-                                "active"
+                        const filter =
+                            String(
+                                button.dataset
+                                    .courseFilter ||
+                                "all"
                             );
 
 
+                        if (
+                            !VALID_FILTERS.includes(
+                                filter
+                            )
+                        ) {
+
+
+                            return;
+
+
                         }
-                    );
 
 
-                    button.classList.add(
-                        "active"
-                    );
+                        state.activeFilter =
+                            filter;
 
 
-                    state.activeFilter =
-                        button.dataset
-                            .courseFilter ||
-                        "all";
+                        updateActiveFilterTab();
 
 
-                    renderCourses();
+                        updateURLFilter();
 
 
-                }
-            );
+                        renderCourses();
 
 
-        }
-    );
+                    }
+                );
 
 
-    resetFiltersButton?.addEventListener(
-        "click",
-        resetFilters
-    );
+            }
+        );
+
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    elements.resetButton
+        ?.addEventListener(
+            "click",
+            resetFilters
+        );
 
 
 }
 
 
 /* =========================================================
-   CATEGORY FILTER
+   ACTIVE FILTER
+========================================================= */
+
+function updateActiveFilterTab() {
+
+
+    elements.filterButtons
+        .forEach(
+            button => {
+
+
+                const filter =
+                    button.dataset
+                        .courseFilter ||
+                    "all";
+
+
+                button.classList.toggle(
+                    "active",
+                    filter ===
+                        state.activeFilter
+                );
+
+
+            }
+        );
+
+
+}
+
+
+/* =========================================================
+   CATEGORY FILTER OPTIONS
 ========================================================= */
 
 function populateCategoryFilter() {
 
 
-    if (!categoryFilter) {
+    if (
+        !elements.categoryFilter
+    ) {
+
 
         return;
+
 
     }
 
@@ -656,6 +1077,7 @@ function populateCategoryFilter() {
         ...new Set(
 
             state.courses
+
                 .map(
                     course =>
                         String(
@@ -664,6 +1086,7 @@ function populateCategoryFilter() {
                         )
                             .trim()
                 )
+
                 .filter(
                     Boolean
                 )
@@ -682,31 +1105,35 @@ function populateCategoryFilter() {
         );
 
 
-    categoryFilter.innerHTML = `
+    elements.categoryFilter
+        .innerHTML = `
 
-        <option value="all">
-            All Categories
-        </option>
+            <option value="all">
+                All Categories
+            </option>
 
-        ${categories
-            .map(
-                category => `
+            ${categories
+                .map(
+                    category => `
 
-                    <option
-                        value="${escapeHtml(
-                            category.toLowerCase()
-                        )}"
-                    >
-                        ${escapeHtml(
-                            category
-                        )}
-                    </option>
+                        <option
+                            value="${escapeHtml(
+                                category
+                                    .toLowerCase()
+                            )}"
+                        >
 
-                `
-            )
-            .join("")}
+                            ${escapeHtml(
+                                category
+                            )}
 
-    `;
+                        </option>
+
+                    `
+                )
+                .join("")}
+
+        `;
 
 
 }
@@ -719,9 +1146,13 @@ function populateCategoryFilter() {
 function renderCourses() {
 
 
-    if (!courseGrid) {
+    if (
+        !elements.courseGrid
+    ) {
+
 
         return;
+
 
     }
 
@@ -730,12 +1161,13 @@ function renderCourses() {
         getFilteredCourses();
 
 
-    courseGrid.innerHTML =
-        courses
-            .map(
-                createCourseCard
-            )
-            .join("");
+    elements.courseGrid
+        .innerHTML =
+            courses
+                .map(
+                    createCourseCard
+                )
+                .join("");
 
 
     initialiseCourseActions();
@@ -749,17 +1181,19 @@ function renderCourses() {
     );
 
 
-    if (emptyState) {
+    if (
+        elements.emptyState
+    ) {
 
 
-        emptyState.hidden =
+        elements.emptyState.hidden =
             courses.length !== 0;
 
 
     }
 
 
-    courseGrid.hidden =
+    elements.courseGrid.hidden =
         courses.length === 0;
 
 
@@ -767,13 +1201,14 @@ function renderCourses() {
 
 
 /* =========================================================
-   FILTERED COURSES
+   FILTER COURSES
 ========================================================= */
 
 function getFilteredCourses() {
 
 
     return state.courses
+
         .filter(
             course => {
 
@@ -789,19 +1224,12 @@ function getFilteredCourses() {
                         course.access ||
                         ""
                     )
-                        .toLowerCase();
-
-
-                const status =
-                    String(
-                        course.status ||
-                        ""
-                    )
+                        .trim()
                         .toLowerCase();
 
 
                 /* =========================================
-                   TAB FILTER
+                   ACTIVE FILTER
                 ========================================== */
 
                 if (
@@ -810,7 +1238,9 @@ function getFilteredCourses() {
                     !enrolled
                 ) {
 
+
                     return false;
+
 
                 }
 
@@ -818,10 +1248,13 @@ function getFilteredCourses() {
                 if (
                     state.activeFilter ===
                         "free" &&
-                    access !== "free"
+                    access !==
+                        "free"
                 ) {
 
+
                     return false;
+
 
                 }
 
@@ -829,10 +1262,13 @@ function getFilteredCourses() {
                 if (
                     state.activeFilter ===
                         "pro" &&
-                    access !== "pro"
+                    access !==
+                        "pro"
                 ) {
 
+
                     return false;
+
 
                 }
 
@@ -845,7 +1281,9 @@ function getFilteredCourses() {
                     )
                 ) {
 
+
                     return false;
+
 
                 }
 
@@ -865,7 +1303,9 @@ function getFilteredCourses() {
                         state.category
                 ) {
 
+
                     return false;
+
 
                 }
 
@@ -898,6 +1338,12 @@ function getFilteredCourses() {
                                 course.skills
                             )
                                 ? course.skills
+                                : []),
+
+                            ...(Array.isArray(
+                                course.prerequisites
+                            )
+                                ? course.prerequisites
                                 : [])
 
                         ]
@@ -911,7 +1357,9 @@ function getFilteredCourses() {
                         )
                     ) {
 
+
                         return false;
+
 
                     }
 
@@ -919,19 +1367,17 @@ function getFilteredCourses() {
                 }
 
 
-                /*
-                 * Keep status variable used for future
-                 * filtering extensions.
-                 */
-
-                void status;
-
-
                 return true;
 
 
             }
         )
+
+
+        /* =================================================
+           ENROLLED FIRST, THEN COURSE ORDER
+        ================================================= */
+
         .sort(
             (
                 a,
@@ -1005,13 +1451,6 @@ function createCourseCard(
         );
 
 
-    const access =
-        String(
-            course.access ||
-            "Free"
-        );
-
-
     const progress =
         getCourseProgress(
             course.id
@@ -1030,6 +1469,12 @@ function createCourseCard(
         );
 
 
+    const modules =
+        getModuleCount(
+            course
+        );
+
+
     return `
 
         <article
@@ -1037,75 +1482,109 @@ function createCourseCard(
             data-course-id="${escapeHtml(
                 course.id
             )}"
-            style="--course-accent: ${accent};"
+            style="--course-accent:${accent};"
         >
 
-            <div class="student-course-card-accent"></div>
+
+            <div
+                class="student-course-card-accent"
+            ></div>
 
 
-            <div class="student-course-card-body">
+            <div
+                class="student-course-card-body"
+            >
 
+
+                <!-- =========================================
+                     BADGES
+                ========================================== -->
 
                 <div class="student-course-badges">
 
                     ${createAccessBadge(
-                        access
+                        course
                     )}
-
-                    ${comingSoon
-
-                        ? `
-                            <span
-                                class="student-course-badge coming-soon"
-                            >
-                                Coming Soon
-                            </span>
-                        `
-
-                        : ""
-                    }
 
                     ${enrolled
 
                         ? `
+
                             <span
                                 class="student-course-badge enrolled"
                             >
                                 Enrolled
                             </span>
+
                         `
 
                         : ""
                     }
 
+                    ${
+                        enrolled &&
+                        progress >= 100
+
+                            ? `
+
+                                <span
+                                    class="student-course-badge enrolled"
+                                >
+                                    Completed
+                                </span>
+
+                            `
+
+                            : ""
+                    }
+
                 </div>
 
 
-                <div class="student-course-card-header">
+                <!-- =========================================
+                     HEADER
+                ========================================== -->
+
+                <div
+                    class="student-course-card-header"
+                >
 
 
-                    <div class="student-course-icon">
+                    <div
+                        class="student-course-icon"
+                    >
+
                         ${escapeHtml(
                             icon
                         )}
+
                     </div>
 
 
                     <div>
 
+
                         <h3>
+
                             ${escapeHtml(
                                 course.title ||
                                 "CodeLab Course"
                             )}
+
                         </h3>
 
-                        <span class="student-course-category">
+
+                        <span
+                            class="student-course-category"
+                        >
+
                             ${escapeHtml(
                                 course.category ||
                                 "Software Development"
                             )}
+
                         </span>
+
 
                     </div>
 
@@ -1113,15 +1592,25 @@ function createCourseCard(
                 </div>
 
 
-                <p class="student-course-description">
+                <!-- =========================================
+                     DESCRIPTION
+                ========================================== -->
+
+                <p
+                    class="student-course-description"
+                >
 
                     ${escapeHtml(
                         course.description ||
-                        "Build practical development skills through structured lessons and projects."
+                        "Build practical software development skills."
                     )}
 
                 </p>
 
+
+                <!-- =========================================
+                     META
+                ========================================== -->
 
                 <div class="student-course-meta">
 
@@ -1130,10 +1619,8 @@ function createCourseCard(
 
                         <strong>
                             ${escapeHtml(
-                                String(
-                                    course.duration ||
-                                    "—"
-                                )
+                                course.duration ||
+                                "Self-paced"
                             )}
                         </strong>
 
@@ -1147,12 +1634,7 @@ function createCourseCard(
                     <div>
 
                         <strong>
-                            ${escapeHtml(
-                                String(
-                                    course.modules ??
-                                    "—"
-                                )
-                            )}
+                            ${modules}
                         </strong>
 
                         <span>
@@ -1165,11 +1647,8 @@ function createCourseCard(
                     <div>
 
                         <strong>
-                            ${escapeHtml(
-                                String(
-                                    course.projects ??
-                                    "—"
-                                )
+                            ${safeNumber(
+                                course.projects
                             )}
                         </strong>
 
@@ -1183,20 +1662,34 @@ function createCourseCard(
                 </div>
 
 
-                ${enrolled && !comingSoon
+                <!-- =========================================
+                     PROGRESS
+                ========================================== -->
 
-                    ? createProgressMarkup(
-                        progress
-                    )
+                ${
+                    enrolled &&
+                    !comingSoon
 
-                    : ""
+                        ? createProgressMarkup(
+                            progress
+                        )
+
+                        : ""
                 }
 
 
-                <div class="student-course-card-footer">
+                <!-- =========================================
+                     FOOTER
+                ========================================== -->
+
+                <div
+                    class="student-course-card-footer"
+                >
 
 
-                    <span class="student-course-level">
+                    <span
+                        class="student-course-level"
+                    >
 
                         ${escapeHtml(
                             course.level ||
@@ -1206,17 +1699,43 @@ function createCourseCard(
                     </span>
 
 
-                    ${createCourseAction(
-                        course,
-                        enrolled,
-                        comingSoon
-                    )}
+                    <div
+                        class="student-course-actions"
+                    >
+
+
+                        <!-- DETAILS -->
+
+                        <button
+                            type="button"
+                            class="student-course-action"
+                            data-course-action="details"
+                            data-course-id="${escapeHtml(
+                                course.id
+                            )}"
+                        >
+                            Details
+                        </button>
+
+
+                        <!-- PRIMARY ACTION -->
+
+                        ${createPrimaryCourseAction(
+                            course,
+                            enrolled,
+                            comingSoon,
+                            progress
+                        )}
+
+
+                    </div>
 
 
                 </div>
 
 
             </div>
+
 
         </article>
 
@@ -1231,20 +1750,50 @@ function createCourseCard(
 ========================================================= */
 
 function createAccessBadge(
-    access
+    course
 ) {
 
 
-    const value =
+    /* =====================================================
+       COMING SOON
+    ===================================================== */
+
+    if (
+        isComingSoon(
+            course
+        )
+    ) {
+
+
+        return `
+
+            <span
+                class="student-course-badge coming-soon"
+            >
+                Coming Soon
+            </span>
+
+        `;
+
+
+    }
+
+
+    /* =====================================================
+       FREE / PRO
+    ===================================================== */
+
+    const access =
         String(
-            access ||
+            course.access ||
             "Free"
         );
 
 
     const className =
-        value.toLowerCase() ===
-        "pro"
+        access
+            .toLowerCase() ===
+            "pro"
 
             ? "pro"
 
@@ -1256,9 +1805,11 @@ function createAccessBadge(
         <span
             class="student-course-badge ${className}"
         >
+
             ${escapeHtml(
-                value
+                access
             )}
+
         </span>
 
     `;
@@ -1268,68 +1819,20 @@ function createAccessBadge(
 
 
 /* =========================================================
-   PROGRESS MARKUP
+   PRIMARY COURSE ACTION
 ========================================================= */
 
-function createProgressMarkup(
+function createPrimaryCourseAction(
+    course,
+    enrolled,
+    comingSoon,
     progress
 ) {
 
 
-    const value =
-        clamp(
-            progress,
-            0,
-            100
-        );
-
-
-    return `
-
-        <div class="student-course-progress">
-
-
-            <div class="student-course-progress-header">
-
-                <span>
-                    Course progress
-                </span>
-
-                <strong>
-                    ${value}%
-                </strong>
-
-            </div>
-
-
-            <div class="student-course-progress-track">
-
-                <div
-                    class="student-course-progress-bar"
-                    style="width: ${value}%;"
-                ></div>
-
-            </div>
-
-
-        </div>
-
-    `;
-
-
-}
-
-
-/* =========================================================
-   COURSE ACTION
-========================================================= */
-
-function createCourseAction(
-    course,
-    enrolled,
-    comingSoon
-) {
-
+    /* =====================================================
+       COMING SOON
+    ===================================================== */
 
     if (comingSoon) {
 
@@ -1350,7 +1853,23 @@ function createCourseAction(
     }
 
 
+    /* =====================================================
+       ENROLLED
+    ===================================================== */
+
     if (enrolled) {
+
+
+        const label =
+            progress >= 100
+
+                ? "Review Course"
+
+                : progress > 0
+
+                    ? "Continue"
+
+                    : "Start Course";
 
 
         return `
@@ -1363,8 +1882,13 @@ function createCourseAction(
                     course.id
                 )}"
             >
-                Continue
-                <span aria-hidden="true">→</span>
+
+                ${label}
+
+                <span aria-hidden="true">
+                    →
+                </span>
+
             </button>
 
         `;
@@ -1372,6 +1896,10 @@ function createCourseAction(
 
     }
 
+
+    /* =====================================================
+       PRO
+    ===================================================== */
 
     if (
         String(
@@ -1402,6 +1930,10 @@ function createCourseAction(
     }
 
 
+    /* =====================================================
+       FREE ENROLMENT
+    ===================================================== */
+
     const loading =
         state.enrollingCourseId ===
         course.id;
@@ -1416,12 +1948,19 @@ function createCourseAction(
             data-course-id="${escapeHtml(
                 course.id
             )}"
-            ${loading ? "disabled" : ""}
-        >
-            ${loading
-                ? "Enrolling..."
-                : "Enroll Free"
+            ${
+                loading
+                    ? "disabled"
+                    : ""
             }
+        >
+
+            ${
+                loading
+                    ? "Enrolling..."
+                    : "Enroll Free"
+            }
+
         </button>
 
     `;
@@ -1431,7 +1970,64 @@ function createCourseAction(
 
 
 /* =========================================================
-   COURSE ACTIONS
+   PROGRESS MARKUP
+========================================================= */
+
+function createProgressMarkup(
+    progress
+) {
+
+
+    const value =
+        clamp(
+            progress,
+            0,
+            100
+        );
+
+
+    return `
+
+        <div class="student-course-progress">
+
+
+            <div
+                class="student-course-progress-header"
+            >
+
+                <span>
+                    Course progress
+                </span>
+
+                <strong>
+                    ${value}%
+                </strong>
+
+            </div>
+
+
+            <div
+                class="student-course-progress-track"
+            >
+
+                <div
+                    class="student-course-progress-bar"
+                    style="width:${value}%;"
+                ></div>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+}
+
+
+/* =========================================================
+   COURSE ACTION LISTENERS
 ========================================================= */
 
 function initialiseCourseActions() {
@@ -1460,30 +2056,51 @@ function initialiseCourseActions() {
                                 .courseId;
 
 
-                        if (
-                            !courseId
-                        ) {
-
-                            return;
-
-                        }
-
-
                         const course =
-                            state.courses
-                                .find(
-                                    item =>
-                                        item.id ===
-                                        courseId
-                                );
+                            getCourseById(
+                                courseId
+                            );
 
 
                         if (!course) {
 
+
+                            showMessage(
+                                "CodeLab could not find that course.",
+                                "error"
+                            );
+
+
                             return;
+
 
                         }
 
+
+                        /* =========================================
+                           DETAILS
+                        ========================================== */
+
+                        if (
+                            action ===
+                            "details"
+                        ) {
+
+
+                            openCourseDetails(
+                                course
+                            );
+
+
+                            return;
+
+
+                        }
+
+
+                        /* =========================================
+                           ENROL
+                        ========================================== */
 
                         if (
                             action ===
@@ -1498,8 +2115,13 @@ function initialiseCourseActions() {
 
                             return;
 
+
                         }
 
+
+                        /* =========================================
+                           CONTINUE / RESUME
+                        ========================================== */
 
                         if (
                             action ===
@@ -1507,16 +2129,20 @@ function initialiseCourseActions() {
                         ) {
 
 
-                            showMessage(
-                                `${course.title} is enrolled. The lesson workspace is the next student page we will connect.`,
-                                "info"
+                            openLessonWorkspace(
+                                course
                             );
 
 
                             return;
 
+
                         }
 
+
+                        /* =========================================
+                           PRO
+                        ========================================== */
 
                         if (
                             action ===
@@ -1524,8 +2150,9 @@ function initialiseCourseActions() {
                         ) {
 
 
-                            window.location.href =
-                                PRICING_URL;
+                            openCourseDetails(
+                                course
+                            );
 
 
                         }
@@ -1551,6 +2178,10 @@ async function enrolInFreeCourse(
 ) {
 
 
+    /* =====================================================
+       AUTH CHECK
+    ===================================================== */
+
     if (
         !state.user?.uid
     ) {
@@ -1563,11 +2194,37 @@ async function enrolInFreeCourse(
 
         return;
 
+
     }
 
 
     /* =====================================================
-       NEVER GRANT PRO FROM CLIENT
+       STATUS
+    ===================================================== */
+
+    if (
+        isComingSoon(
+            course
+        )
+    ) {
+
+
+        showMessage(
+            "This course is not available yet.",
+            "info"
+        );
+
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       FREE ONLY
+
+       Never allow frontend code to grant Pro access.
     ===================================================== */
 
     if (
@@ -1581,15 +2238,20 @@ async function enrolInFreeCourse(
 
 
         showMessage(
-            "Pro courses require CodeLab Pro access.",
+            "This course requires CodeLab Pro.",
             "error"
         );
 
 
         return;
 
+
     }
 
+
+    /* =====================================================
+       ALREADY ENROLLED
+    ===================================================== */
 
     if (
         isCourseEnrolled(
@@ -1597,10 +2259,21 @@ async function enrolInFreeCourse(
         )
     ) {
 
+
+        openLessonWorkspace(
+            course
+        );
+
+
         return;
+
 
     }
 
+
+    /* =====================================================
+       LOADING
+    ===================================================== */
 
     state.enrollingCourseId =
         course.id;
@@ -1629,6 +2302,9 @@ async function enrolInFreeCourse(
                         course.id
                     ),
 
+                lastActiveCourseId:
+                    course.id,
+
                 updatedAt:
                     serverTimestamp()
 
@@ -1636,18 +2312,22 @@ async function enrolInFreeCourse(
         );
 
 
-        const currentEnrolments =
+        /* =================================================
+           LOCAL STATE
+        ================================================= */
+
+        const enrolments =
             getEnrolledCourses();
 
 
         if (
-            !currentEnrolments.includes(
+            !enrolments.includes(
                 course.id
             )
         ) {
 
 
-            currentEnrolments.push(
+            enrolments.push(
                 course.id
             );
 
@@ -1656,7 +2336,11 @@ async function enrolInFreeCourse(
 
 
         state.profile.enrolledCourses =
-            currentEnrolments;
+            enrolments;
+
+
+        state.profile.lastActiveCourseId =
+            course.id;
 
 
         showMessage(
@@ -1699,18 +2383,20 @@ async function enrolInFreeCourse(
 
 
 /* =========================================================
-   ENROLMENT
+   ENROLLED COURSES
 ========================================================= */
 
 function getEnrolledCourses() {
 
 
     return Array.isArray(
-        state.profile.enrolledCourses
+        state.profile
+            .enrolledCourses
     )
 
         ? [
-            ...state.profile.enrolledCourses
+            ...state.profile
+                .enrolledCourses
         ]
 
         : [];
@@ -1718,6 +2404,10 @@ function getEnrolledCourses() {
 
 }
 
+
+/* =========================================================
+   IS ENROLLED
+========================================================= */
 
 function isCourseEnrolled(
     courseId
@@ -1734,7 +2424,59 @@ function isCourseEnrolled(
 
 
 /* =========================================================
-   COURSE PROGRESS
+   COURSE PROGRESS OBJECT
+========================================================= */
+
+function getCourseProgressData(
+    courseId
+) {
+
+
+    const progressMap =
+        state.profile
+            .courseProgress;
+
+
+    if (
+        !progressMap ||
+        typeof progressMap !==
+            "object"
+    ) {
+
+
+        return null;
+
+
+    }
+
+
+    const value =
+        progressMap[
+            courseId
+        ];
+
+
+    if (
+        value &&
+        typeof value ===
+            "object"
+    ) {
+
+
+        return value;
+
+
+    }
+
+
+    return null;
+
+
+}
+
+
+/* =========================================================
+   COURSE PERCENTAGE
 ========================================================= */
 
 function getCourseProgress(
@@ -1743,16 +2485,19 @@ function getCourseProgress(
 
 
     const progressMap =
-        state.profile.courseProgress;
+        state.profile
+            .courseProgress;
 
 
     if (
         !progressMap ||
         typeof progressMap !==
-        "object"
+            "object"
     ) {
 
+
         return 0;
+
 
     }
 
@@ -1764,7 +2509,7 @@ function getCourseProgress(
 
 
     /* =====================================================
-       NUMBER FORMAT
+       OLD NUMBER FORMAT
     ===================================================== */
 
     if (
@@ -1786,40 +2531,22 @@ function getCourseProgress(
 
 
     /* =====================================================
-       OBJECT FORMAT
-
-       Allows future structure:
-
-       courseProgress: {
-           courseId: {
-               percentage: 50
-           }
-       }
+       NEW OBJECT FORMAT
     ===================================================== */
 
     if (
         value &&
         typeof value ===
-        "object"
+            "object"
     ) {
 
 
-        const percentage =
-            Number(
+        return clamp(
+            safeNumber(
                 value.percentage ??
                 value.progress ??
                 0
-            );
-
-
-        return clamp(
-            Number.isFinite(
-                percentage
-            )
-                ? Math.round(
-                    percentage
-                )
-                : 0,
+            ),
             0,
             100
         );
@@ -1835,7 +2562,78 @@ function getCourseProgress(
 
 
 /* =========================================================
-   STATS
+   OPEN LESSON WORKSPACE
+========================================================= */
+
+function openLessonWorkspace(
+    course
+) {
+
+
+    if (
+        !isCourseEnrolled(
+            course.id
+        )
+    ) {
+
+
+        showMessage(
+            "Enrol in this course before opening lessons.",
+            "error"
+        );
+
+
+        return;
+
+
+    }
+
+
+    const progress =
+        getCourseProgressData(
+            course.id
+        );
+
+
+    const url =
+        new URL(
+            LESSON_URL
+        );
+
+
+    url.searchParams.set(
+        "course",
+        course.id
+    );
+
+
+    /* =====================================================
+       RESUME LAST LESSON
+    ===================================================== */
+
+    if (
+        progress?.currentLessonId
+    ) {
+
+
+        url.searchParams.set(
+            "lesson",
+            progress.currentLessonId
+        );
+
+
+    }
+
+
+    window.location.href =
+        url.href;
+
+
+}
+
+
+/* =========================================================
+   STATISTICS
 ========================================================= */
 
 function updateStatistics() {
@@ -1925,23 +2723,19 @@ function updateResultInformation(
 ) {
 
 
-    if (resultCount) {
+    if (
+        elements.resultCount
+    ) {
 
 
-        resultCount.textContent =
-            count === 1
+        elements.resultCount
+            .textContent =
+                count === 1
 
-                ? "1 course"
+                    ? "1 course"
 
-                : `${count} courses`;
+                    : `${count} courses`;
 
-
-    }
-
-
-    if (!sectionTitle) {
-
-        return;
 
     }
 
@@ -1966,11 +2760,20 @@ function updateResultInformation(
     };
 
 
-    sectionTitle.textContent =
-        titles[
-            state.activeFilter
-        ] ||
-        "Courses";
+    if (
+        elements.sectionTitle
+    ) {
+
+
+        elements.sectionTitle
+            .textContent =
+                titles[
+                    state.activeFilter
+                ] ||
+                "Courses";
+
+
+    }
 
 
 }
@@ -1995,39 +2798,1108 @@ function resetFilters() {
         "all";
 
 
-    if (searchInput) {
+    if (
+        elements.searchInput
+    ) {
 
-        searchInput.value =
+
+        elements.searchInput.value =
             "";
 
+
     }
 
 
-    if (categoryFilter) {
+    if (
+        elements.categoryFilter
+    ) {
 
-        categoryFilter.value =
+
+        elements.categoryFilter.value =
             "all";
 
+
     }
 
 
-    filterButtons.forEach(
-        button => {
+    updateActiveFilterTab();
 
 
-            button.classList.toggle(
-                "active",
-                button.dataset
-                    .courseFilter ===
-                    "all"
+    updateURLFilter();
+
+
+    renderCourses();
+
+
+}
+
+
+/* =========================================================
+   COURSE DETAIL DIALOG
+========================================================= */
+
+function initialiseCourseDialog() {
+
+
+    elements.courseDialogClose
+        ?.addEventListener(
+            "click",
+            closeCourseDetails
+        );
+
+
+    elements.courseDialog
+        ?.addEventListener(
+            "click",
+            event => {
+
+
+                if (
+                    event.target ===
+                    elements.courseDialog
+                ) {
+
+
+                    closeCourseDetails();
+
+
+                }
+
+
+            }
+        );
+
+
+}
+
+
+/* =========================================================
+   OPEN COURSE DETAILS
+========================================================= */
+
+function openCourseDetails(
+    course
+) {
+
+
+    if (
+        !elements.courseDialog
+    ) {
+
+
+        /* =================================================
+           FALLBACK
+        ================================================= */
+
+        if (
+            isCourseEnrolled(
+                course.id
+            )
+        ) {
+
+
+            openLessonWorkspace(
+                course
             );
 
 
         }
+
+
+        return;
+
+
+    }
+
+
+    state.selectedCourseId =
+        course.id;
+
+
+    const enrolled =
+        isCourseEnrolled(
+            course.id
+        );
+
+
+    const progress =
+        getCourseProgress(
+            course.id
+        );
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    setText(
+        "course-detail-kicker",
+        `${course.category || "Course"} · ${course.level || "Beginner"}`
     );
 
 
-    renderCourses();
+    setText(
+        "course-detail-title",
+        course.title ||
+        "CodeLab Course"
+    );
+
+
+    setText(
+        "course-detail-description",
+        course.description ||
+        ""
+    );
+
+
+    /* =====================================================
+       OUTCOME
+    ===================================================== */
+
+    setText(
+        "course-detail-outcome",
+        course.outcome ||
+        "Build practical software-development skills through structured learning."
+    );
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    renderCourseDetailBadges(
+        course,
+        enrolled
+    );
+
+
+    renderCourseDetailMeta(
+        course,
+        progress
+    );
+
+
+    renderCourseDetailSkills(
+        course
+    );
+
+
+    renderCourseDetailPrerequisites(
+        course
+    );
+
+
+    renderCourseCurriculum(
+        course
+    );
+
+
+    renderCourseDialogAction(
+        course,
+        enrolled,
+        progress
+    );
+
+
+    /* =====================================================
+       SHOW
+    ===================================================== */
+
+    if (
+        typeof elements.courseDialog
+            .showModal ===
+        "function"
+    ) {
+
+
+        elements.courseDialog
+            .showModal();
+
+
+    } else {
+
+
+        elements.courseDialog
+            .setAttribute(
+                "open",
+                ""
+            );
+
+
+    }
+
+
+}
+
+
+/* =========================================================
+   CLOSE COURSE DETAILS
+========================================================= */
+
+function closeCourseDetails() {
+
+
+    if (
+        elements.courseDialog
+    ) {
+
+
+        if (
+            typeof elements.courseDialog
+                .close ===
+            "function" &&
+            elements.courseDialog.open
+        ) {
+
+
+            elements.courseDialog
+                .close();
+
+
+        } else {
+
+
+            elements.courseDialog
+                .removeAttribute(
+                    "open"
+                );
+
+
+        }
+
+
+    }
+
+
+    state.selectedCourseId =
+        null;
+
+
+}
+
+
+/* =========================================================
+   DETAIL BADGES
+========================================================= */
+
+function renderCourseDetailBadges(
+    course,
+    enrolled
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-badges"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    container.innerHTML = `
+
+        ${createAccessBadge(
+            course
+        )}
+
+        ${enrolled
+
+            ? `
+
+                <span
+                    class="student-course-badge enrolled"
+                >
+                    Enrolled
+                </span>
+
+            `
+
+            : ""
+        }
+
+        ${
+            enrolled &&
+            getCourseProgress(
+                course.id
+            ) >= 100
+
+                ? `
+
+                    <span
+                        class="student-course-badge enrolled"
+                    >
+                        Completed
+                    </span>
+
+                `
+
+                : ""
+        }
+
+    `;
+
+
+}
+
+
+/* =========================================================
+   DETAIL META
+========================================================= */
+
+function renderCourseDetailMeta(
+    course,
+    progress
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-meta"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    container.innerHTML = `
+
+        <div>
+
+            <strong>
+                ${escapeHtml(
+                    course.duration ||
+                    "Self-paced"
+                )}
+            </strong>
+
+            <span>
+                Duration
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${safeNumber(
+                    course.hours
+                )}
+            </strong>
+
+            <span>
+                Hours
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${getModuleCount(
+                    course
+                )}
+            </strong>
+
+            <span>
+                Modules
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${safeNumber(
+                    course.projects
+                )}
+            </strong>
+
+            <span>
+                Projects
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${safeNumber(
+                    course.assessments
+                )}
+            </strong>
+
+            <span>
+                Assessments
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${progress}%
+            </strong>
+
+            <span>
+                Progress
+            </span>
+
+        </div>
+
+    `;
+
+
+}
+
+
+/* =========================================================
+   DETAIL SKILLS
+========================================================= */
+
+function renderCourseDetailSkills(
+    course
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-skills"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    const skills =
+        Array.isArray(
+            course.skills
+        )
+
+            ? course.skills
+
+            : [];
+
+
+    container.innerHTML =
+        skills.length > 0
+
+            ? skills
+                .map(
+                    skill => `
+
+                        <span>
+                            ${escapeHtml(
+                                skill
+                            )}
+                        </span>
+
+                    `
+                )
+                .join("")
+
+            : `
+
+                <span>
+                    Course Fundamentals
+                </span>
+
+            `;
+
+
+}
+
+
+/* =========================================================
+   DETAIL PREREQUISITES
+========================================================= */
+
+function renderCourseDetailPrerequisites(
+    course
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-prerequisites"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    const prerequisites =
+        Array.isArray(
+            course.prerequisites
+        )
+
+            ? course.prerequisites
+
+            : [];
+
+
+    container.innerHTML =
+        prerequisites.length > 0
+
+            ? prerequisites
+                .map(
+                    requirement => `
+
+                        <li>
+
+                            ${escapeHtml(
+                                requirement
+                            )}
+
+                        </li>
+
+                    `
+                )
+                .join("")
+
+            : `
+
+                <li>
+                    No prerequisites required.
+                </li>
+
+            `;
+
+
+}
+
+
+/* =========================================================
+   COURSE CURRICULUM
+========================================================= */
+
+function renderCourseCurriculum(
+    course
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-curriculum"
+        );
+
+
+    const countElement =
+        document.getElementById(
+            "course-detail-module-count"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    const curriculum =
+        Array.isArray(
+            course.curriculum
+        )
+
+            ? course.curriculum
+
+            : [];
+
+
+    /* =====================================================
+       COUNT
+    ===================================================== */
+
+    if (
+        countElement
+    ) {
+
+
+        countElement.textContent =
+            `${curriculum.length} ${
+                curriculum.length === 1
+                    ? "module"
+                    : "modules"
+            }`;
+
+
+    }
+
+
+    /* =====================================================
+       NO CURRICULUM
+    ===================================================== */
+
+    if (
+        curriculum.length ===
+        0
+    ) {
+
+
+        container.innerHTML = `
+
+            <div
+                class="course-detail-empty-curriculum"
+            >
+
+                Curriculum will be published
+                when this course becomes available.
+
+            </div>
+
+        `;
+
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       MODULES
+    ===================================================== */
+
+    container.innerHTML =
+        curriculum
+            .map(
+                (
+                    courseModule,
+                    moduleIndex
+                ) => {
+
+
+                    const lessons =
+                        Array.isArray(
+                            courseModule.lessons
+                        )
+
+                            ? courseModule.lessons
+
+                            : [];
+
+
+                    return `
+
+                        <details
+                            class="course-detail-module"
+                            ${
+                                moduleIndex === 0
+                                    ? "open"
+                                    : ""
+                            }
+                        >
+
+
+                            <summary>
+
+
+                                <span>
+
+                                    Module ${
+                                        moduleIndex + 1
+                                    }
+
+                                </span>
+
+
+                                <strong>
+
+                                    ${escapeHtml(
+                                        courseModule.title ||
+                                        `Module ${
+                                            moduleIndex + 1
+                                        }`
+                                    )}
+
+                                </strong>
+
+
+                                <small>
+
+                                    ${lessons.length}
+
+                                    ${
+                                        lessons.length === 1
+                                            ? "lesson"
+                                            : "lessons"
+                                    }
+
+                                </small>
+
+
+                            </summary>
+
+
+                            ${
+                                courseModule.description
+
+                                    ? `
+
+                                        <p
+                                            class="course-detail-module-description"
+                                        >
+
+                                            ${escapeHtml(
+                                                courseModule.description
+                                            )}
+
+                                        </p>
+
+                                    `
+
+                                    : ""
+                            }
+
+
+                            <div
+                                class="course-detail-lessons"
+                            >
+
+
+                                ${lessons
+                                    .map(
+                                        (
+                                            lesson,
+                                            lessonIndex
+                                        ) => `
+
+                                            <div
+                                                class="course-detail-lesson"
+                                            >
+
+
+                                                <span>
+
+                                                    ${
+                                                        lessonIndex + 1
+                                                    }
+
+                                                </span>
+
+
+                                                <div>
+
+
+                                                    <strong>
+
+                                                        ${escapeHtml(
+                                                            lesson.title ||
+                                                            "Lesson"
+                                                        )}
+
+                                                    </strong>
+
+
+                                                    <small>
+
+                                                        ${escapeHtml(
+                                                            formatLessonType(
+                                                                lesson.type
+                                                            )
+                                                        )}
+
+                                                        ·
+
+                                                        ${escapeHtml(
+                                                            lesson.duration ||
+                                                            "20 min"
+                                                        )}
+
+                                                        ${
+                                                            lesson.preview
+
+                                                                ? " · Preview"
+
+                                                                : ""
+                                                        }
+
+                                                    </small>
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        `
+                                    )
+                                    .join("")}
+
+
+                            </div>
+
+
+                        </details>
+
+                    `;
+
+
+                }
+            )
+            .join("");
+
+
+}
+
+
+/* =========================================================
+   COURSE DIALOG ACTION
+========================================================= */
+
+function renderCourseDialogAction(
+    course,
+    enrolled,
+    progress
+) {
+
+
+    const container =
+        document.getElementById(
+            "course-detail-action"
+        );
+
+
+    if (!container) {
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       COMING SOON
+    ===================================================== */
+
+    if (
+        isComingSoon(
+            course
+        )
+    ) {
+
+
+        container.innerHTML = `
+
+            <button
+                type="button"
+                class="student-course-action"
+                disabled
+            >
+                Course Coming Soon
+            </button>
+
+        `;
+
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       ENROLLED
+    ===================================================== */
+
+    if (enrolled) {
+
+
+        const label =
+            progress >= 100
+
+                ? "Review Course →"
+
+                : progress > 0
+
+                    ? "Continue Course →"
+
+                    : "Start Course →";
+
+
+        container.innerHTML = `
+
+            <button
+                type="button"
+                class="student-course-action primary"
+                id="course-detail-continue"
+            >
+                ${label}
+            </button>
+
+        `;
+
+
+        document
+            .getElementById(
+                "course-detail-continue"
+            )
+            ?.addEventListener(
+                "click",
+                () => {
+
+
+                    openLessonWorkspace(
+                        course
+                    );
+
+
+                }
+            );
+
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       PRO COURSE
+    ===================================================== */
+
+    if (
+        String(
+            course.access ||
+            ""
+        )
+            .toLowerCase() ===
+        "pro"
+    ) {
+
+
+        container.innerHTML = `
+
+            <a
+                href="${PRICING_URL}"
+                class="student-course-action pro"
+            >
+                View CodeLab Pro
+            </a>
+
+        `;
+
+
+        return;
+
+
+    }
+
+
+    /* =====================================================
+       FREE ENROLMENT
+    ===================================================== */
+
+    container.innerHTML = `
+
+        <button
+            type="button"
+            class="student-course-action primary"
+            id="course-detail-enroll"
+        >
+            Enroll Free
+        </button>
+
+    `;
+
+
+    document
+        .getElementById(
+            "course-detail-enroll"
+        )
+        ?.addEventListener(
+            "click",
+            async () => {
+
+
+                closeCourseDetails();
+
+
+                await enrolInFreeCourse(
+                    course
+                );
+
+
+            }
+        );
+
+
+}
+
+
+/* =========================================================
+   GET COURSE
+========================================================= */
+
+function getCourseById(
+    courseId
+) {
+
+
+    return state.courses.find(
+        course =>
+            course.id ===
+            courseId
+    ) || null;
+
+
+}
+
+
+/* =========================================================
+   MODULE COUNT
+========================================================= */
+
+function getModuleCount(
+    course
+) {
+
+
+    if (
+        Array.isArray(
+            course.curriculum
+        ) &&
+        course.curriculum.length > 0
+    ) {
+
+
+        return course.curriculum
+            .length;
+
+
+    }
+
+
+    return safeNumber(
+        course.modules
+    );
 
 
 }
@@ -2052,15 +3924,19 @@ function isComingSoon(
 
 
     return (
+
         status.includes(
             "coming"
         ) ||
+
         status.includes(
             "soon"
         ) ||
+
         status.includes(
             "upcoming"
         )
+
     );
 
 
@@ -2102,7 +3978,9 @@ function getCourseIcon(
 
     const words =
         title
-            .split(/\s+/)
+            .split(
+                /\s+/
+            )
             .filter(
                 Boolean
             );
@@ -2135,6 +4013,33 @@ function getCourseIcon(
 
 
 /* =========================================================
+   LESSON TYPE
+========================================================= */
+
+function formatLessonType(
+    value
+) {
+
+
+    return String(
+        value ||
+        "lesson"
+    )
+        .replaceAll(
+            "-",
+            " "
+        )
+        .replace(
+            /\b\w/g,
+            character =>
+                character.toUpperCase()
+        );
+
+
+}
+
+
+/* =========================================================
    ACCENT
 ========================================================= */
 
@@ -2160,6 +4065,7 @@ function sanitiseAccent(
 
 
         return accent;
+
 
     }
 
@@ -2201,6 +4107,10 @@ function initialiseSidebar() {
         );
 
 
+    /* =====================================================
+       OPEN
+    ===================================================== */
+
     function openSidebar() {
 
 
@@ -2220,8 +4130,17 @@ function initialiseSidebar() {
         );
 
 
+        document.body.classList.add(
+            "student-nav-open"
+        );
+
+
     }
 
+
+    /* =====================================================
+       CLOSE
+    ===================================================== */
 
     function closeSidebar() {
 
@@ -2239,6 +4158,11 @@ function initialiseSidebar() {
         toggle?.setAttribute(
             "aria-expanded",
             "false"
+        );
+
+
+        document.body.classList.remove(
+            "student-nav-open"
         );
 
 
@@ -2299,6 +4223,17 @@ function initialiseSidebar() {
                 closeSidebar();
 
 
+                if (
+                    elements.courseDialog?.open
+                ) {
+
+
+                    closeCourseDetails();
+
+
+                }
+
+
             }
 
 
@@ -2347,7 +4282,10 @@ function initialiseFuturePages() {
 
                 button.addEventListener(
                     "click",
-                    () => {
+                    event => {
+
+
+                        event.preventDefault();
 
 
                         const label =
@@ -2365,7 +4303,7 @@ function initialiseFuturePages() {
                         showMessage(
                             `${capitaliseWords(
                                 label
-                            )} will be connected as we build the student portal.`,
+                            )} will be connected as we continue building the CodeLab student portal.`,
                             "info"
                         );
 
@@ -2452,6 +4390,33 @@ signOutButton?.addEventListener(
 
 
 /* =========================================================
+   COURSE LIBRARY SCROLL
+========================================================= */
+
+function scrollToCourseLibrary() {
+
+
+    document
+        .getElementById(
+            "course-library"
+        )
+        ?.scrollIntoView(
+            {
+
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
+
+            }
+        );
+
+
+}
+
+
+/* =========================================================
    MESSAGE
 ========================================================= */
 
@@ -2462,14 +4427,13 @@ function showMessage(
 
 
     const element =
-        document.getElementById(
-            "student-courses-message"
-        );
+        elements.message;
 
 
     if (!element) {
 
         return;
+
 
     }
 
@@ -2489,12 +4453,17 @@ function showMessage(
         allowedTypes.includes(
             type
         )
+
             ? type
+
             : "info";
 
 
     element.textContent =
-        message;
+        String(
+            message ||
+            ""
+        );
 
 
     element.className =
@@ -2536,15 +4505,16 @@ function setLoading(
 ) {
 
 
-    if (!loadingScreen) {
+    if (
+        elements.loadingScreen
+    ) {
 
-        return;
+
+        elements.loadingScreen.hidden =
+            !loading;
+
 
     }
-
-
-    loadingScreen.hidden =
-        !loading;
 
 
 }
@@ -2560,45 +4530,41 @@ function getErrorMessage(
 
 
     const code =
-        error?.code ||
-        error?.message ||
-        "";
+        String(
+            error?.code ||
+            error?.message ||
+            ""
+        );
 
 
     if (
-        String(
-            code
-        ).includes(
+        code.includes(
             "permission-denied"
         )
     ) {
 
 
-        return "CodeLab could not access your student course information. Check the Firestore security rules.";
+        return "CodeLab could not access your course information. Check the Firestore security rules.";
 
 
     }
 
 
     if (
-        String(
-            code
-        ).includes(
+        code.includes(
             "student-profile-not-found"
         )
     ) {
 
 
-        return "Your Firebase account exists, but the CodeLab student profile could not be found.";
+        return "Your Firebase account exists, but your CodeLab student profile could not be found.";
 
 
     }
 
 
     if (
-        String(
-            code
-        ).includes(
+        code.includes(
             "network"
         )
     ) {
@@ -2625,15 +4591,20 @@ function normaliseName(
 ) {
 
 
-    return String(
-        value ||
-        ""
-    )
-        .trim()
-        .replace(
-            /\s+/g,
-            " "
-        );
+    const name =
+        String(
+            value ||
+            ""
+        )
+            .trim()
+            .replace(
+                /\s+/g,
+                " "
+            );
+
+
+    return name ||
+        "Student";
 
 
 }
@@ -2646,7 +4617,9 @@ function deriveNameFromEmail(
 
     if (!email) {
 
+
         return "";
+
 
     }
 
@@ -2714,6 +4687,45 @@ function formatPlan(
 
 
 /* =========================================================
+   NUMBER
+========================================================= */
+
+function safeNumber(
+    value
+) {
+
+
+    const number =
+        Number(
+            value
+        );
+
+
+    if (
+        !Number.isFinite(
+            number
+        )
+    ) {
+
+
+        return 0;
+
+
+    }
+
+
+    return Math.max(
+        0,
+        Math.round(
+            number
+        )
+    );
+
+
+}
+
+
+/* =========================================================
    CLAMP
 ========================================================= */
 
@@ -2724,7 +4736,7 @@ function clamp(
 ) {
 
 
-    const numeric =
+    const value =
         Number(
             number
         );
@@ -2732,11 +4744,13 @@ function clamp(
 
     if (
         !Number.isFinite(
-            numeric
+            value
         )
     ) {
 
+
         return minimum;
+
 
     }
 
@@ -2745,7 +4759,7 @@ function clamp(
         maximum,
         Math.max(
             minimum,
-            numeric
+            value
         )
     );
 
@@ -2773,12 +4787,14 @@ function setText(
 
         return;
 
+
     }
 
 
     element.textContent =
         String(
-            value ?? ""
+            value ??
+            ""
         );
 
 
@@ -2809,7 +4825,7 @@ function capitaliseWords(
 
 
 /* =========================================================
-   ESCAPE HTML
+   HTML ESCAPE
 ========================================================= */
 
 function escapeHtml(
@@ -2855,14 +4871,29 @@ window.CWSStudentCourses = {
 
     getUser() {
 
+
         return state.user;
+
 
     },
 
 
     getProfile() {
 
+
         return state.profile;
+
+
+    },
+
+
+    getCourses() {
+
+
+        return [
+            ...state.courses
+        ];
+
 
     },
 
@@ -2870,9 +4901,68 @@ window.CWSStudentCourses = {
     getEnrolledCourses,
 
 
+    getCourseProgress,
+
+
+    openCourse(
+        courseId
+    ) {
+
+
+        const course =
+            getCourseById(
+                courseId
+            );
+
+
+        if (
+            course
+        ) {
+
+
+            openCourseDetails(
+                course
+            );
+
+
+        }
+
+
+    },
+
+
+    continueCourse(
+        courseId
+    ) {
+
+
+        const course =
+            getCourseById(
+                courseId
+            );
+
+
+        if (
+            course
+        ) {
+
+
+            openLessonWorkspace(
+                course
+            );
+
+
+        }
+
+
+    },
+
+
     refresh() {
 
+
         renderCourses();
+
 
     }
 
@@ -2902,4 +4992,13 @@ window.addEventListener(
 
 
     }
+);
+
+
+/* =========================================================
+   DEBUG
+========================================================= */
+
+console.log(
+    "CWS CodeLab student-courses.js loaded."
 );
