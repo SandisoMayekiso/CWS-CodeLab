@@ -7,28 +7,42 @@ Phase 2 converts the original concept homepage into the beginning of a data-driv
 ## Current structure
 
 ```text
-CWS-CodeLab-Phase2/
-├── index.html
-├── README.md
+CWS-CodeLab/
 │
-├── pages/
-│   └── courses.html
+├── index.html
+│
+├── pages/                 ← PUBLIC / OUTER WEBSITE
+│   ├── about.html
+│   ├── contact.html
+│   ├── courses.html
+│   ├── course-details.html
+│   ├── learning-paths.html
+│   ├── pricing.html
+│   ├── login.html
+│   ├── register.html
+│   ├── forgot-password.html
+│   ├── privacy-policy.html
+│   ├── cookie-policy.html
+│   └── verify-certificate.html
+│
+├── student/               ← AUTHENTICATED STUDENT PORTAL
+│   ├── dashboard.html
+│   ├── student-courses.html
+│   ├── course-details.html
+│   ├── lesson.html
+│   ├── projects.html
+│   ├── assessments.html
+│   ├── learning-paths.html
+│   ├── progress.html
+│   ├── certificates.html
+│   ├── certificate.html
+│   ├── profile.html
+│   └── subscription.html
 │
 ├── data/
-│   └── courses.js
-│
 ├── css/
-│   ├── style.css
-│   ├── courses.css
-│   └── responsive.css
-│
 ├── js/
-│   ├── main.js
-│   └── courses.js
-│
 └── assets/
-    ├── images/
-    └── icons/
 ```
 
 ## Phase 2 features
