@@ -1,12 +1,12 @@
 /* =========================================================
    CWS CODELAB
-   PUBLIC COURSE CATALOGUE
+   Public Course Catalogue
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
-       ELEMENTS
+       DOM ELEMENTS
     ===================================================== */
 
     const catalogueGrid =
@@ -38,41 +38,430 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CURRENT COURSE DATA
+       FALLBACK CURRENT COURSES
+
+       These ensure the public catalogue continues working
+       even if data/courses.js fails to load.
+
+       If window.CWS_COURSES loads correctly, its versions
+       will automatically replace these fallback versions.
     ===================================================== */
 
-    const existingCourses =
-        Array.isArray(window.CWS_COURSES)
-            ? window.CWS_COURSES
-            : [];
+    const fallbackCurrentCourses = [
+
+        /* -------------------------------------------------
+           PROGRAMMING FUNDAMENTALS
+        ------------------------------------------------- */
+
+        {
+            id: "programming-fundamentals",
+
+            title:
+                "Programming Fundamentals",
+
+            shortTitle:
+                "Programming Fundamentals",
+
+            category:
+                "Foundation",
+
+            level:
+                "Beginner",
+
+            access:
+                "Free",
+
+            status:
+                "available",
+
+            duration:
+                "6 weeks",
+
+            hours:
+                18,
+
+            modules:
+                8,
+
+            projects:
+                3,
+
+            assessments:
+                5,
+
+            icon:
+                "PF",
+
+            accent:
+                "violet",
+
+            description:
+                "Build strong programming foundations through variables, data types, operators, conditions, loops, functions, algorithms and debugging.",
+
+            skills: [
+                "Programming Logic",
+                "Variables",
+                "Conditions",
+                "Loops",
+                "Functions"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           HTML & CSS
+        ------------------------------------------------- */
+
+        {
+            id: "html-css",
+
+            title:
+                "HTML & CSS",
+
+            shortTitle:
+                "HTML & CSS",
+
+            category:
+                "Web Development",
+
+            level:
+                "Beginner",
+
+            access:
+                "Free",
+
+            status:
+                "available",
+
+            duration:
+                "6 weeks",
+
+            hours:
+                20,
+
+            modules:
+                9,
+
+            projects:
+                4,
+
+            assessments:
+                5,
+
+            icon:
+                "HC",
+
+            accent:
+                "orange",
+
+            description:
+                "Learn HTML structure, semantic markup, CSS styling, Flexbox, Grid, responsive design, forms and accessibility.",
+
+            skills: [
+                "HTML",
+                "CSS",
+                "Flexbox",
+                "CSS Grid",
+                "Responsive Design"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           JAVASCRIPT
+        ------------------------------------------------- */
+
+        {
+            id: "javascript-fundamentals",
+
+            title:
+                "JavaScript Fundamentals",
+
+            shortTitle:
+                "JavaScript",
+
+            category:
+                "Web Development",
+
+            level:
+                "Beginner",
+
+            access:
+                "Free",
+
+            status:
+                "available",
+
+            duration:
+                "8 weeks",
+
+            hours:
+                28,
+
+            modules:
+                10,
+
+            projects:
+                5,
+
+            assessments:
+                6,
+
+            icon:
+                "JS",
+
+            accent:
+                "yellow",
+
+            description:
+                "Learn JavaScript variables, logic, functions, arrays, objects, loops, DOM manipulation, events, APIs and asynchronous programming.",
+
+            skills: [
+                "JavaScript",
+                "DOM",
+                "Functions",
+                "Events",
+                "APIs"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           GIT & GITHUB
+        ------------------------------------------------- */
+
+        {
+            id: "git-github",
+
+            title:
+                "Git & GitHub",
+
+            shortTitle:
+                "Git & GitHub",
+
+            category:
+                "Developer Tools",
+
+            level:
+                "Beginner",
+
+            access:
+                "Free",
+
+            status:
+                "available",
+
+            duration:
+                "3 weeks",
+
+            hours:
+                10,
+
+            modules:
+                6,
+
+            projects:
+                2,
+
+            assessments:
+                3,
+
+            icon:
+                "GT",
+
+            accent:
+                "green",
+
+            description:
+                "Learn version control with Git, repositories, commits, branches, GitHub collaboration and professional developer workflows.",
+
+            skills: [
+                "Git",
+                "GitHub",
+                "Commits",
+                "Branches",
+                "Collaboration"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           PYTHON
+        ------------------------------------------------- */
+
+        {
+            id: "python-programming",
+
+            title:
+                "Python Programming",
+
+            shortTitle:
+                "Python",
+
+            category:
+                "Programming",
+
+            level:
+                "Beginner",
+
+            access:
+                "Pro",
+
+            status:
+                "available",
+
+            duration:
+                "10 weeks",
+
+            hours:
+                34,
+
+            modules:
+                12,
+
+            projects:
+                6,
+
+            assessments:
+                7,
+
+            icon:
+                "PY",
+
+            accent:
+                "blue",
+
+            description:
+                "Learn Python syntax, variables, conditions, loops, collections, functions, files, exceptions, OOP, modules, JSON and APIs.",
+
+            skills: [
+                "Python",
+                "Functions",
+                "OOP",
+                "Files",
+                "APIs"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           SQL & DATABASES
+        ------------------------------------------------- */
+
+        {
+            id: "sql-databases",
+
+            title:
+                "SQL & Databases",
+
+            shortTitle:
+                "SQL",
+
+            category:
+                "Databases",
+
+            level:
+                "Beginner",
+
+            access:
+                "Pro",
+
+            status:
+                "available",
+
+            duration:
+                "6 weeks",
+
+            hours:
+                20,
+
+            modules:
+                8,
+
+            projects:
+                4,
+
+            assessments:
+                5,
+
+            icon:
+                "DB",
+
+            accent:
+                "cyan",
+
+            description:
+                "Learn relational database design, tables, CRUD operations, filtering, sorting, relationships, joins and aggregate queries.",
+
+            skills: [
+                "SQL",
+                "Databases",
+                "CRUD",
+                "Joins",
+                "Data Modelling"
+            ]
+
+        }
+
+    ];
 
 
     /* =====================================================
-       FUTURE / EXPANDED CODELAB COURSES
-
-       These appear in the public catalogue but do not yet
-       link to lesson content until their curricula are built.
+       UPCOMING COURSES
     ===================================================== */
 
     const upcomingCourses = [
 
+        /* -------------------------------------------------
+           JAVA
+        ------------------------------------------------- */
+
         {
             id: "java-programming",
-            title: "Java Programming",
-            shortTitle: "Java",
-            category: "Programming",
-            level: "Beginner",
-            access: "Coming Soon",
-            status: "coming-soon",
-            duration: "10 weeks",
-            hours: 32,
-            modules: 10,
-            projects: 5,
-            icon: "JV",
-            accent: "orange",
+
+            title:
+                "Java Programming",
+
+            shortTitle:
+                "Java",
+
+            category:
+                "Programming",
+
+            level:
+                "Beginner",
+
+            access:
+                "Coming Soon",
+
+            status:
+                "coming-soon",
+
+            duration:
+                "10 weeks",
+
+            hours:
+                32,
+
+            modules:
+                10,
+
+            projects:
+                5,
+
+            icon:
+                "JV",
+
+            accent:
+                "orange",
 
             description:
-                "Learn Java syntax, object-oriented programming, collections, exceptions, file handling and application development.",
+                "Learn Java syntax, object-oriented programming, collections, exceptions, file handling and practical application development.",
 
             skills: [
                 "Java",
@@ -81,26 +470,55 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Exceptions",
                 "Files"
             ]
+
         },
 
 
+        /* -------------------------------------------------
+           C#
+        ------------------------------------------------- */
+
         {
             id: "csharp-dotnet",
-            title: "C# & .NET Fundamentals",
-            shortTitle: "C#",
-            category: "Programming",
-            level: "Beginner",
-            access: "Coming Soon",
-            status: "coming-soon",
-            duration: "10 weeks",
-            hours: 32,
-            modules: 10,
-            projects: 5,
-            icon: "C#",
-            accent: "violet",
+
+            title:
+                "C# & .NET Fundamentals",
+
+            shortTitle:
+                "C#",
+
+            category:
+                "Programming",
+
+            level:
+                "Beginner",
+
+            access:
+                "Coming Soon",
+
+            status:
+                "coming-soon",
+
+            duration:
+                "10 weeks",
+
+            hours:
+                32,
+
+            modules:
+                10,
+
+            projects:
+                5,
+
+            icon:
+                "C#",
+
+            accent:
+                "violet",
 
             description:
-                "Learn C# syntax, object-oriented programming, collections, LINQ and the foundations of building applications with .NET.",
+                "Learn C# syntax, object-oriented programming, collections, LINQ and the foundations of application development with .NET.",
 
             skills: [
                 "C#",
@@ -109,26 +527,112 @@ document.addEventListener("DOMContentLoaded", () => {
                 "LINQ",
                 "Collections"
             ]
+
         },
 
 
+        /* -------------------------------------------------
+           C++
+        ------------------------------------------------- */
+
         {
-            id: "react-development",
-            title: "React Development",
-            shortTitle: "React",
-            category: "Web Development",
-            level: "Intermediate",
-            access: "Coming Soon",
-            status: "coming-soon",
-            duration: "8 weeks",
-            hours: 28,
-            modules: 9,
-            projects: 5,
-            icon: "RE",
-            accent: "cyan",
+            id: "cpp-programming",
+
+            title:
+                "C++ Programming",
+
+            shortTitle:
+                "C++",
+
+            category:
+                "Programming",
+
+            level:
+                "Beginner",
+
+            access:
+                "Coming Soon",
+
+            status:
+                "coming-soon",
+
+            duration:
+                "10 weeks",
+
+            hours:
+                34,
+
+            modules:
+                11,
+
+            projects:
+                5,
+
+            icon:
+                "C++",
+
+            accent:
+                "blue",
 
             description:
-                "Build reusable components, manage application state, work with APIs and create modern front-end applications with React.",
+                "Learn C++ fundamentals, control flow, functions, pointers, memory management, classes, object-oriented programming and the Standard Template Library.",
+
+            skills: [
+                "C++",
+                "Pointers",
+                "Memory",
+                "OOP",
+                "STL"
+            ]
+
+        },
+
+
+        /* -------------------------------------------------
+           REACT
+        ------------------------------------------------- */
+
+        {
+            id: "react-development",
+
+            title:
+                "React Development",
+
+            shortTitle:
+                "React",
+
+            category:
+                "Web Development",
+
+            level:
+                "Intermediate",
+
+            access:
+                "Coming Soon",
+
+            status:
+                "coming-soon",
+
+            duration:
+                "8 weeks",
+
+            hours:
+                28,
+
+            modules:
+                9,
+
+            projects:
+                5,
+
+            icon:
+                "RE",
+
+            accent:
+                "cyan",
+
+            description:
+                "Build modern front-end applications using reusable components, React Hooks, state, forms, routing and APIs.",
 
             skills: [
                 "React",
@@ -137,26 +641,55 @@ document.addEventListener("DOMContentLoaded", () => {
                 "State",
                 "APIs"
             ]
+
         },
 
 
+        /* -------------------------------------------------
+           NODE.JS
+        ------------------------------------------------- */
+
         {
             id: "nodejs-backend",
-            title: "Node.js Backend Development",
-            shortTitle: "Node.js",
-            category: "Web Development",
-            level: "Intermediate",
-            access: "Coming Soon",
-            status: "coming-soon",
-            duration: "8 weeks",
-            hours: 30,
-            modules: 9,
-            projects: 5,
-            icon: "ND",
-            accent: "green",
+
+            title:
+                "Node.js Backend Development",
+
+            shortTitle:
+                "Node.js",
+
+            category:
+                "Web Development",
+
+            level:
+                "Intermediate",
+
+            access:
+                "Coming Soon",
+
+            status:
+                "coming-soon",
+
+            duration:
+                "8 weeks",
+
+            hours:
+                30,
+
+            modules:
+                9,
+
+            projects:
+                5,
+
+            icon:
+                "ND",
+
+            accent:
+                "green",
 
             description:
-                "Learn server-side JavaScript, REST APIs, Express, middleware, authentication and backend application development.",
+                "Learn server-side JavaScript, Node.js, Express, REST APIs, middleware, authentication and backend development.",
 
             skills: [
                 "Node.js",
@@ -165,89 +698,214 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Authentication",
                 "Backend"
             ]
+
         }
 
     ];
 
 
     /* =====================================================
-       COMPLETE PUBLIC CATALOGUE
+       READ CENTRAL COURSE DATA
     ===================================================== */
 
-    const catalogueCourses = [
-        ...existingCourses,
-        ...upcomingCourses
-    ];
+    const loadedCourses =
+        Array.isArray(window.CWS_COURSES)
+            ? window.CWS_COURSES
+            : [];
+
+
+    /* =====================================================
+       MERGE FALLBACK + CENTRAL DATA
+
+       Start with fallback courses.
+
+       If data/courses.js contains the same course ID,
+       replace the fallback object with the richer central
+       version.
+    ===================================================== */
+
+    const currentCourseMap =
+        new Map();
+
+
+    fallbackCurrentCourses.forEach(course => {
+
+        currentCourseMap.set(
+            course.id,
+            course
+        );
+
+    });
+
+
+    loadedCourses.forEach(course => {
+
+        if (!course || !course.id) {
+            return;
+        }
+
+
+        const fallback =
+            currentCourseMap.get(
+                course.id
+            ) || {};
+
+
+        currentCourseMap.set(
+            course.id,
+            {
+                ...fallback,
+                ...course
+            }
+        );
+
+    });
+
+
+    const currentCourses =
+        Array.from(
+            currentCourseMap.values()
+        );
+
+
+    /* =====================================================
+       COMPLETE CATALOGUE
+
+       Prevent duplicate IDs.
+    ===================================================== */
+
+    const completeCourseMap =
+        new Map();
+
+
+    currentCourses.forEach(course => {
+
+        completeCourseMap.set(
+            course.id,
+            course
+        );
+
+    });
+
+
+    upcomingCourses.forEach(course => {
+
+        if (
+            !completeCourseMap.has(
+                course.id
+            )
+        ) {
+
+            completeCourseMap.set(
+                course.id,
+                course
+            );
+
+        }
+
+    });
+
+
+    const catalogueCourses =
+        Array.from(
+            completeCourseMap.values()
+        );
 
 
     /* =====================================================
        FILTER STATE
     ===================================================== */
 
-    let activeCategory = "all";
+    let activeCategory =
+        "all";
 
 
     /* =====================================================
-       NORMALIZE EXISTING DATA
+       NORMALIZE COURSE
     ===================================================== */
 
     function normalizeCourse(course) {
+
+        const curriculum =
+            Array.isArray(course.curriculum)
+                ? course.curriculum
+                : [];
+
 
         return {
 
             id:
                 course.id || "",
 
+
             title:
-                course.title || "Untitled Course",
+                course.title ||
+                "Untitled Course",
+
 
             shortTitle:
                 course.shortTitle ||
                 course.title ||
                 "Course",
 
+
             category:
                 course.category ||
                 "Programming",
+
 
             level:
                 course.level ||
                 "Beginner",
 
+
             access:
                 course.access ||
                 "Free",
+
 
             status:
                 course.status ||
                 "available",
 
+
             duration:
                 course.duration ||
                 "Self-paced",
 
+
             hours:
                 Number(course.hours) || 0,
 
+
             modules:
-                Array.isArray(course.curriculum)
-                    ? course.curriculum.length
+                curriculum.length > 0
+                    ? curriculum.length
                     : Number(course.modules) || 0,
+
 
             projects:
                 Number(course.projects) || 0,
+
+
+            assessments:
+                Number(course.assessments) || 0,
+
 
             icon:
                 course.icon ||
                 "CD",
 
+
             accent:
                 course.accent ||
                 "violet",
 
+
             description:
                 course.description ||
                 "",
+
 
             skills:
                 Array.isArray(course.skills)
@@ -260,13 +918,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       RENDER
+       RENDER COURSE CATALOGUE
     ===================================================== */
 
     function renderCourses() {
 
         if (!catalogueGrid) {
+
+            console.error(
+                "CWS CodeLab: #catalogue-grid was not found."
+            );
+
             return;
+
         }
 
 
@@ -277,17 +941,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const selectedLevel =
-            levelFilter?.value || "all";
+            levelFilter?.value ||
+            "all";
 
 
         const selectedAccess =
-            accessFilter?.value || "all";
+            accessFilter?.value ||
+            "all";
 
 
         const filteredCourses =
             catalogueCourses
 
-                .map(normalizeCourse)
+                .map(
+                    normalizeCourse
+                )
 
                 .filter(course => {
 
@@ -295,11 +963,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     /* SEARCH */
 
                     const searchText = [
+
                         course.title,
+
+                        course.shortTitle,
+
                         course.category,
+
                         course.level,
+
                         course.description,
+
                         ...course.skills
+
                     ]
                         .join(" ")
                         .toLowerCase();
@@ -307,16 +983,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const matchesSearch =
                         !query ||
-                        searchText.includes(query);
+                        searchText.includes(
+                            query
+                        );
 
 
                     /* CATEGORY */
 
+                    const courseCategory =
+                        course.category
+                            .trim()
+                            .toLowerCase();
+
+
                     const matchesCategory =
                         activeCategory === "all" ||
-
-                        course.category
-                            .toLowerCase() ===
+                        courseCategory ===
                             activeCategory;
 
 
@@ -326,50 +1008,80 @@ document.addEventListener("DOMContentLoaded", () => {
                         selectedLevel === "all" ||
 
                         course.level
+                            .trim()
                             .toLowerCase() ===
                             selectedLevel;
 
 
                     /* ACCESS */
 
-                    const accessValue =
-                        course.status === "coming-soon"
+                    const normalizedAccess =
+                        course.status ===
+                        "coming-soon"
+
                             ? "coming-soon"
-                            : course.access.toLowerCase();
+
+                            : course.access
+                                .trim()
+                                .toLowerCase();
 
 
                     const matchesAccess =
                         selectedAccess === "all" ||
-                        accessValue === selectedAccess;
+                        normalizedAccess ===
+                            selectedAccess;
 
 
                     return (
+
                         matchesSearch &&
+
                         matchesCategory &&
+
                         matchesLevel &&
+
                         matchesAccess
+
                     );
 
                 });
 
 
+        /* =================================================
+           RENDER CARDS
+        ================================================= */
+
         catalogueGrid.innerHTML =
             filteredCourses
-                .map(createCourseCard)
+                .map(
+                    createCourseCard
+                )
                 .join("");
 
 
+        /* =================================================
+           RESULT COUNT
+        ================================================= */
+
         if (resultsStatus) {
 
+            const count =
+                filteredCourses.length;
+
+
             resultsStatus.textContent =
-                `${filteredCourses.length} ${
-                    filteredCourses.length === 1
+                `${count} ${
+                    count === 1
                         ? "course"
                         : "courses"
                 } found`;
 
         }
 
+
+        /* =================================================
+           EMPTY STATE
+        ================================================= */
 
         if (emptyState) {
 
@@ -386,67 +1098,134 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       COURSE CARD
+       CREATE COURSE CARD
     ===================================================== */
 
     function createCourseCard(course) {
 
         const isComingSoon =
-            course.status === "coming-soon";
+            course.status ===
+            "coming-soon";
 
 
-        const accessClass =
-            isComingSoon
-                ? "pro"
-                : course.access
-                    .toLowerCase() === "pro"
-                    ? "pro"
-                    : "free";
+        /* =================================================
+           ACCESS BADGE
+        ================================================= */
+
+        let accessClass =
+            "free";
 
 
-        const accessLabel =
-            isComingSoon
-                ? "Coming Soon"
-                : course.access;
+        let accessLabel =
+            course.access;
 
+
+        if (isComingSoon) {
+
+            accessClass =
+                "coming-soon";
+
+            accessLabel =
+                "Coming Soon";
+
+        }
+
+        else if (
+            course.access
+                .toLowerCase() ===
+            "pro"
+        ) {
+
+            accessClass =
+                "pro";
+
+        }
+
+
+        /* =================================================
+           SKILLS
+        ================================================= */
 
         const skills =
             course.skills
-                .slice(0, 4)
+
+                .slice(
+                    0,
+                    5
+                )
+
                 .map(skill => `
+
                     <span>
                         ${escapeHtml(skill)}
                     </span>
+
                 `)
+
                 .join("");
 
 
-        const action =
-            isComingSoon
-                ? `
-                    <span class="course-action">
-                        Coming Soon
-                    </span>
-                `
-                : `
-                    <a
-                        href="course-details.html?course=${encodeURIComponent(
-                            course.id
-                        )}"
-                        class="course-action"
-                        aria-label="View ${escapeHtml(
-                            course.title
-                        )}"
-                    >
-                        View Course →
-                    </a>
-                `;
+        /* =================================================
+           COURSE ACTION
+        ================================================= */
 
+        let action;
+
+
+        if (isComingSoon) {
+
+            action = `
+
+                <span
+                    class="course-action course-coming-soon"
+                >
+                    Coming Soon
+                </span>
+
+            `;
+
+        }
+
+        else {
+
+            action = `
+
+                <a
+                    href="course-details.html?course=${encodeURIComponent(
+                        course.id
+                    )}"
+                    class="course-action"
+                    aria-label="View ${escapeHtml(
+                        course.title
+                    )}"
+                >
+                    View Course →
+                </a>
+
+            `;
+
+        }
+
+
+        /* =================================================
+           HTML
+        ================================================= */
 
         return `
-            <article class="catalogue-card">
+
+            <article
+                class="catalogue-card"
+                data-course-id="${escapeHtml(
+                    course.id
+                )}"
+                data-status="${escapeHtml(
+                    course.status
+                )}"
+            >
+
 
                 <div class="catalogue-card-top">
+
 
                     <div
                         class="catalogue-icon"
@@ -468,6 +1247,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         )}
                     </span>
 
+
                 </div>
 
 
@@ -476,7 +1256,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${escapeHtml(
                         course.category
                     )}
+
                     ·
+
                     ${escapeHtml(
                         course.level
                     )}
@@ -554,17 +1336,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <div class="catalogue-card-footer">
 
+
                     <span class="course-duration">
+
                         ${escapeHtml(
                             course.duration
                         )}
+
                     </span>
+
 
                     ${action}
 
+
                 </div>
 
+
             </article>
+
         `;
 
     }
@@ -580,18 +1369,25 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
+
                 activeCategory =
-                    button.dataset.category ||
-                    "all";
+                    (
+                        button.dataset.category ||
+                        "all"
+                    )
+                        .trim()
+                        .toLowerCase();
 
 
-                categoryButtons.forEach(item => {
+                categoryButtons.forEach(
+                    item => {
 
-                    item.classList.remove(
-                        "active"
-                    );
+                        item.classList.remove(
+                            "active"
+                        );
 
-                });
+                    }
+                );
 
 
                 button.classList.add(
@@ -618,7 +1414,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       SELECT FILTERS
+       LEVEL FILTER
     ===================================================== */
 
     levelFilter?.addEventListener(
@@ -626,6 +1422,10 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCourses
     );
 
+
+    /* =====================================================
+       ACCESS FILTER
+    ===================================================== */
 
     accessFilter?.addEventListener(
         "change",
@@ -641,32 +1441,46 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
+
             if (searchInput) {
-                searchInput.value = "";
+
+                searchInput.value =
+                    "";
+
             }
 
 
             if (levelFilter) {
-                levelFilter.value = "all";
+
+                levelFilter.value =
+                    "all";
+
             }
 
 
             if (accessFilter) {
-                accessFilter.value = "all";
+
+                accessFilter.value =
+                    "all";
+
             }
 
 
-            activeCategory = "all";
+            activeCategory =
+                "all";
 
 
-            categoryButtons.forEach(button => {
+            categoryButtons.forEach(
+                button => {
 
-                button.classList.toggle(
-                    "active",
-                    button.dataset.category === "all"
-                );
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.category ===
+                            "all"
+                    );
 
-            });
+                }
+            );
 
 
             renderCourses();
@@ -682,7 +1496,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (totalCourseCount) {
 
         totalCourseCount.textContent =
-            `${catalogueCourses.length}+`;
+            `${catalogueCourses.length}`;
 
     }
 
@@ -693,17 +1507,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function escapeHtml(value) {
 
-        return String(value ?? "")
+        return String(
+            value ?? ""
+        )
 
-            .replaceAll("&", "&amp;")
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
 
-            .replaceAll("<", "&lt;")
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
 
-            .replaceAll(">", "&gt;")
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
 
-            .replaceAll('"', "&quot;")
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
 
-            .replaceAll("'", "&#039;");
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
 
     }
 
@@ -715,8 +1546,49 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCourses();
 
 
+    /* =====================================================
+       DEBUG INFORMATION
+    ===================================================== */
+
     console.log(
-        `CWS CodeLab catalogue loaded: ${catalogueCourses.length} courses.`
+        "CWS CodeLab catalogue initialized."
     );
+
+
+    console.log(
+        "CWS_COURSES loaded:",
+        loadedCourses.length
+    );
+
+
+    console.log(
+        "Current courses:",
+        currentCourses.length
+    );
+
+
+    console.log(
+        "Upcoming courses:",
+        upcomingCourses.length
+    );
+
+
+    console.log(
+        "Total catalogue:",
+        catalogueCourses.length
+    );
+
+
+    /* =====================================================
+       WARNING IF CENTRAL DATA FAILED
+    ===================================================== */
+
+    if (loadedCourses.length === 0) {
+
+        console.warn(
+            "CWS CodeLab: data/courses.js did not expose window.CWS_COURSES. Fallback course data is currently being used."
+        );
+
+    }
 
 });
