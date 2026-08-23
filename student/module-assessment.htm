@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CWS CodeLab assessment workspace.">
+  <title>Module Assessment | CWS CodeLab</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/assessment.css">
+
+  <script src="../data/course-experience.js" defer></script>
+  <script src="../data/assessment-config.js" defer></script>
+  <script src="../data/courses.js" defer></script>
+  <script type="module" src="../js/assessment-engine.js"></script>
+</head>
+
+<body class="assessment-body" data-default-assessment-mode="quiz">
+  <div class="assessment-app">
+
+    <header class="assessment-header">
+      <a href="student-courses.html" class="assessment-brand">
+        <span aria-hidden="true">&lt;/&gt;</span>
+        <div>
+          <strong>CWS CodeLab</strong>
+          <small>Assessment Workspace</small>
+        </div>
+      </a>
+
+      <div class="assessment-account">
+        <div>
+          <strong id="assessment-student-name">Student</strong>
+          <span id="assessment-student-email">Loading account...</span>
+        </div>
+        <div id="assessment-student-avatar" class="assessment-avatar" aria-hidden="true">S</div>
+      </div>
+    </header>
+
+    <main class="assessment-main">
+
+      <div id="assessment-message" class="assessment-message" role="status" aria-live="polite" hidden></div>
+
+      <nav class="assessment-breadcrumbs" aria-label="Breadcrumb">
+        <a href="student-courses.html">My Courses</a>
+        <span>/</span>
+        <a id="assessment-course-link" href="student-courses.html">Course</a>
+        <span>/</span>
+        <strong id="assessment-breadcrumb-title">Assessment</strong>
+      </nav>
+
+      <section class="assessment-hero">
+        <div>
+          <p id="assessment-kicker" class="assessment-kicker">Module Assessment</p>
+          <h1 id="assessment-title">Loading assessment...</h1>
+          <p id="assessment-description">Preparing your CodeLab assessment.</p>
+        </div>
+
+        <div class="assessment-hero-meta">
+          <div>
+            <strong id="assessment-question-count">—</strong>
+            <span>Questions</span>
+          </div>
+          <div>
+            <strong id="assessment-pass-mark">—</strong>
+            <span>Pass Mark</span>
+          </div>
+          <div>
+            <strong id="assessment-attempt-count">0</strong>
+            <span>Attempts</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="assessment-question-workspace" class="assessment-workspace" hidden>
+        <div class="assessment-progress-header">
+          <div>
+            <span id="assessment-progress-label">Question 1 of 1</span>
+            <strong id="assessment-progress-percent">0%</strong>
+          </div>
+          <div class="assessment-progress-track">
+            <div id="assessment-progress-bar" class="assessment-progress-bar"></div>
+          </div>
+        </div>
+
+        <article class="assessment-question-card">
+          <div class="assessment-question-meta">
+            <span id="assessment-question-type">Concept</span>
+            <span id="assessment-question-difficulty">Beginner</span>
+          </div>
+
+          <h2 id="assessment-question-text">Question</h2>
+
+          <form id="assessment-question-form" class="assessment-question-form">
+            <div id="assessment-options" class="assessment-options"></div>
+          </form>
+
+          <div id="assessment-question-feedback" class="assessment-question-feedback" hidden></div>
+
+          <div class="assessment-question-actions">
+            <button type="button" id="assessment-previous" class="assessment-button secondary">← Previous</button>
+
+            <div class="assessment-question-actions-right">
+              <button type="button" id="assessment-next" class="assessment-button secondary">Next →</button>
+              <button type="button" id="assessment-submit" class="assessment-button primary" hidden>Submit Assessment</button>
+            </div>
+          </div>
+        </article>
+
+        <aside class="assessment-question-map">
+          <div class="assessment-question-map-heading">
+            <strong>Question Map</strong>
+            <span>Answer every question before submitting.</span>
+          </div>
+          <div id="assessment-question-map" class="assessment-question-map-grid"></div>
+        </aside>
+      </section>
+
+      <section id="assessment-practical-workspace" class="assessment-practical" hidden>
+        <article class="assessment-practical-card">
+          <p class="assessment-section-kicker">Practical Scenario</p>
+          <h2>Your Task</h2>
+          <p id="assessment-practical-scenario"></p>
+        </article>
+
+        <article class="assessment-practical-card">
+          <p class="assessment-section-kicker">Requirements</p>
+          <h2>Submission Requirements</h2>
+          <ul id="assessment-practical-instructions"></ul>
+        </article>
+
+        <article class="assessment-practical-card">
+          <p class="assessment-section-kicker">Work Notes</p>
+          <h2>Explain your solution</h2>
+
+          <label for="assessment-practical-solution" class="assessment-field-label">Solution, code notes or pseudocode</label>
+          <textarea id="assessment-practical-solution" rows="12" placeholder="Describe your approach, paste pseudocode, or record the important parts of your solution..."></textarea>
+
+          <label for="assessment-practical-testing" class="assessment-field-label">Testing evidence</label>
+          <textarea id="assessment-practical-testing" rows="8" placeholder="List normal, boundary and invalid test cases and the results you observed..."></textarea>
+
+          <label for="assessment-practical-reflection" class="assessment-field-label">Reflection</label>
+          <textarea id="assessment-practical-reflection" rows="6" placeholder="What was difficult? What did you debug? What would you improve?"></textarea>
+
+          <div class="assessment-practical-actions">
+            <button type="button" id="assessment-save-draft" class="assessment-button secondary">Save Draft</button>
+            <button type="button" id="assessment-submit-practical" class="assessment-button primary">Submit Practice</button>
+          </div>
+
+          <p class="assessment-practical-note">
+            Free practical submissions are saved as learning evidence. They are not yet certificate-authoritative grades.
+          </p>
+        </article>
+      </section>
+
+      <section id="assessment-result" class="assessment-result" hidden>
+        <div id="assessment-result-mark" class="assessment-result-mark">✓</div>
+        <p id="assessment-result-kicker" class="assessment-section-kicker">Assessment Result</p>
+        <h2 id="assessment-result-title">Assessment complete</h2>
+        <p id="assessment-result-copy"></p>
+
+        <div class="assessment-result-score">
+          <strong id="assessment-result-score">0%</strong>
+          <span>Score</span>
+        </div>
+
+        <div class="assessment-result-actions">
+          <button type="button" id="assessment-review" class="assessment-button secondary">Review Answers</button>
+          <button type="button" id="assessment-retry" class="assessment-button secondary">Retry</button>
+          <a id="assessment-return-course" href="student-courses.html" class="assessment-button primary">Return to Course →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="assessment-footer">
+      <p>CWS CodeLab · Learn. Build. Ship.</p>
+      <p>&copy; <span id="assessment-year"></span> CyberWithSandiso</p>
+    </footer>
+
+    <div id="assessment-loading" class="assessment-loading">
+      <div class="assessment-loader"></div>
+      <strong>Loading assessment...</strong>
+      <span>Checking access and preparing your questions</span>
+    </div>
+  </div>
+</body>
+</html>
