@@ -69,9 +69,10 @@
         src="../js/dashboard.js"
         defer
     ></script>
+
     <script
-    type="module"
-    src="../js/auth-guard.js"
+        type="module"
+        src="../js/auth-guard.js"
     ></script>
 
 </head>
@@ -111,16 +112,16 @@
 
 
             <!-- =============================================
-                 SIDEBAR BRAND
+                 BRAND
             ============================================== -->
 
             <div class="dashboard-sidebar-header">
 
 
                 <a
-                    href="../index.html"
+                    href="dashboard.html"
                     class="dashboard-brand"
-                    aria-label="CWS CodeLab home"
+                    aria-label="CWS CodeLab student dashboard"
                 >
 
                     <span
@@ -160,7 +161,7 @@
 
 
             <!-- =============================================
-                 STUDENT
+                 STUDENT ACCOUNT
             ============================================== -->
 
             <div class="sidebar-student-card">
@@ -181,7 +182,7 @@
                         Student
                     </strong>
 
-                    <span>
+                    <span id="sidebar-student-plan">
                         CodeLab Learner
                     </span>
 
@@ -222,12 +223,11 @@
                 </a>
 
 
-                <!-- COURSES -->
+                <!-- MY COURSES -->
 
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="student-courses"
+                <a
+                    href="student-courses.html"
+                    class="dashboard-nav-link"
                 >
 
                     <span class="dashboard-nav-icon">
@@ -238,11 +238,7 @@
                         My Courses
                     </span>
 
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
+                </a>
 
 
                 <!-- LEARNING PATHS -->
@@ -398,6 +394,8 @@
             <div class="dashboard-sidebar-footer">
 
 
+                <!-- PUBLIC WEBSITE -->
+
                 <a
                     href="../index.html"
                     class="sidebar-external-link"
@@ -414,13 +412,15 @@
                         </strong>
 
                         <small>
-                            Return to public site
+                            Public website
                         </small>
 
                     </div>
 
                 </a>
 
+
+                <!-- CWS ACADEMY -->
 
                 <a
                     href="https://sandisomayekiso.github.io/CyberWithSandiso/"
@@ -447,6 +447,8 @@
 
                 </a>
 
+
+                <!-- SIGN OUT -->
 
                 <button
                     type="button"
@@ -482,7 +484,7 @@
 
 
         <!-- =================================================
-             MAIN
+             CONTENT
         ================================================== -->
 
         <div class="dashboard-content">
@@ -542,7 +544,7 @@
                         </strong>
 
                         <span id="student-email">
-                            student@codelab.local
+                            Loading account...
                         </span>
 
                     </div>
@@ -564,7 +566,7 @@
 
 
             <!-- =================================================
-                 DASHBOARD MAIN
+                 MAIN
             ================================================== -->
 
             <main
@@ -574,7 +576,7 @@
 
 
                 <!-- =============================================
-                     AUTH / SYSTEM MESSAGE
+                     MESSAGE
                 ============================================== -->
 
                 <div
@@ -622,24 +624,33 @@
                         </p>
 
 
+                        <!-- =====================================
+                             STUDENT COURSE ACTIONS
+                        ====================================== -->
+
                         <div class="dashboard-welcome-actions">
 
 
                             <a
-                                href="../pages/courses.html"
+                                href="student-courses.html"
                                 class="btn btn-primary"
                             >
-                                Explore Courses
+
+                                Browse Courses
+
+                                <span aria-hidden="true">
+                                    →
+                                </span>
+
                             </a>
 
 
-                            <button
-                                type="button"
+                            <a
+                                href="student-courses.html?filter=enrolled"
                                 class="btn dashboard-secondary-button"
-                                data-future-page="student-courses"
                             >
-                                My Courses
-                            </button>
+                                My Enrolled Courses
+                            </a>
 
 
                         </div>
@@ -694,7 +705,7 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
 
                 <!-- =============================================
-                     STATS
+                     LEARNING STATISTICS
                 ============================================== -->
 
                 <section
@@ -702,6 +713,8 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                     aria-label="Learning statistics"
                 >
 
+
+                    <!-- COURSES -->
 
                     <article class="dashboard-stat-card">
 
@@ -724,6 +737,8 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                     </article>
 
 
+                    <!-- PROGRESS -->
+
                     <article class="dashboard-stat-card">
 
                         <span class="dashboard-stat-icon">
@@ -745,6 +760,8 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                     </article>
 
 
+                    <!-- PROJECTS -->
+
                     <article class="dashboard-stat-card">
 
                         <span class="dashboard-stat-icon">
@@ -765,6 +782,8 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
                     </article>
 
+
+                    <!-- CERTIFICATES -->
 
                     <article class="dashboard-stat-card">
 
@@ -820,19 +839,23 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                             </div>
 
 
-                            <button
-                                type="button"
+                            <a
+                                href="student-courses.html?filter=enrolled"
                                 class="dashboard-panel-link"
-                                data-future-page="student-courses"
                             >
                                 View all
-                            </button>
+                            </a>
 
 
                         </div>
 
 
-                        <!-- EMPTY STATE UNTIL FIREBASE -->
+                        <!-- =====================================
+                             COURSE AREA
+
+                             Later we can dynamically replace this
+                             with the most recently accessed course.
+                        ====================================== -->
 
                         <div
                             id="continue-learning-container"
@@ -845,25 +868,25 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                             </div>
 
 
-                            <h3>
-                                No active course yet
+                            <h3 id="continue-learning-title">
+                                Your courses live here
                             </h3>
 
 
-                            <p>
+                            <p id="continue-learning-description">
 
-                                Once you enrol in a CodeLab course,
-                                your latest lesson and progress will
-                                appear here.
+                                Browse the CodeLab course library,
+                                enrol in free courses and return here
+                                as your progress grows.
 
                             </p>
 
 
                             <a
-                                href="../pages/courses.html"
+                                href="student-courses.html"
                                 class="dashboard-inline-action"
                             >
-                                Browse Courses →
+                                Browse Student Courses →
                             </a>
 
 
@@ -918,7 +941,7 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                                 </strong>
 
                                 <span id="profile-student-email">
-                                    student@codelab.local
+                                    Loading account...
                                 </span>
 
                             </div>
@@ -949,7 +972,7 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                                     Learning status
                                 </span>
 
-                                <strong>
+                                <strong id="profile-learning-status">
                                     Active
                                 </strong>
 
@@ -985,7 +1008,7 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
 
                     <!-- =========================================
-                         LEARNING PATH
+                         DEVELOPER JOURNEY
                     ========================================== -->
 
                     <section class="dashboard-panel dashboard-path-panel">
@@ -1132,7 +1155,9 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                         <div class="dashboard-quick-links">
 
 
-                            <a href="../pages/courses.html">
+                            <!-- STUDENT COURSE LIBRARY -->
+
+                            <a href="student-courses.html">
 
                                 <span>
                                     CR
@@ -1141,11 +1166,11 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                                 <div>
 
                                     <strong>
-                                        Browse Courses
+                                        Course Library
                                     </strong>
 
                                     <small>
-                                        Find your next course
+                                        Browse CodeLab courses
                                     </small>
 
                                 </div>
@@ -1153,7 +1178,36 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                             </a>
 
 
-                            <a href="../index.html#paths">
+                            <!-- ENROLLED COURSES -->
+
+                            <a href="student-courses.html?filter=enrolled">
+
+                                <span>
+                                    EN
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        My Enrolled Courses
+                                    </strong>
+
+                                    <small>
+                                        Continue your learning
+                                    </small>
+
+                                </div>
+
+                            </a>
+
+
+                            <!-- LEARNING PATH -->
+
+                            <button
+                                type="button"
+                                class="dashboard-quick-action-button"
+                                data-future-page="learning-paths"
+                            >
 
                                 <span>
                                     LP
@@ -1166,13 +1220,15 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
                                     </strong>
 
                                     <small>
-                                        Explore developer paths
+                                        Developer roadmaps
                                     </small>
 
                                 </div>
 
-                            </a>
+                            </button>
 
+
+                            <!-- PRICING -->
 
                             <a href="../pages/pricing.html">
 
@@ -1194,6 +1250,8 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
                             </a>
 
+
+                            <!-- CWS ACADEMY -->
 
                             <a
                                 href="https://sandisomayekiso.github.io/CyberWithSandiso/"
@@ -1234,10 +1292,11 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
 
             <!-- =================================================
-                 DASHBOARD FOOTER
+                 FOOTER
             ================================================== -->
 
             <footer class="dashboard-footer">
+
 
                 <p>
 
@@ -1247,9 +1306,11 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
 
                 </p>
 
+
                 <p>
                     CWS CodeLab · Learn. Build. Ship.
                 </p>
+
 
             </footer>
 
@@ -1260,13 +1321,16 @@ student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre
         <!-- =================================================
              AUTH LOADING SCREEN
 
-             Firebase auth guard will control this next.
+             IMPORTANT:
+             Do not add "hidden" here.
+
+             auth-guard.js hides this only after Firebase has
+             confirmed the current authentication state.
         ================================================== -->
 
         <div
             id="dashboard-loading"
             class="dashboard-loading"
-            hidden
         >
 
             <div class="dashboard-loader"></div>
