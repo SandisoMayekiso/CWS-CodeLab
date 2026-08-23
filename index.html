@@ -1,36 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
   <meta
     name="description"
     content="CWS CodeLab — practical software development education by CyberWithSandiso. Learn programming, build real projects, and ship working applications."
   />
-  <title>CWS CodeLab | Learn. Build. Ship.</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta
+    name="keywords"
+    content="CWS CodeLab, CyberWithSandiso, programming, coding, software development, HTML, CSS, JavaScript, Python, SQL, Git, GitHub, web development"
+  />
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
+  <meta
+    name="author"
+    content="CyberWithSandiso"
+  />
 
-  <script src="js/main.js" defer></script>
+
+  <title>
+    CWS CodeLab | Learn. Build. Ship.
+  </title>
+
+
+  <!-- =====================================================
+       GOOGLE FONTS
+  ====================================================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =====================================================
+       STYLES
+  ====================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="css/responsive.css"
+  />
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script
+    src="js/main.js"
+    defer
+  ></script>
+
 </head>
 
+
 <body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
+
+
+  <!-- =====================================================
+       SKIP LINK
+  ====================================================== -->
+
+  <a
+    class="skip-link"
+    href="#main-content"
+  >
+    Skip to content
+  </a>
+
+
+  <!-- =====================================================
+       HEADER / NAVIGATION
+  ====================================================== -->
 
   <header class="site-header">
+
     <div class="container nav-wrap">
-      <a href="index.html" class="brand" aria-label="CWS CodeLab home">
-        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-        <span class="brand-copy">
-          <strong>CWS CodeLab</strong>
-          <small>CyberWithSandiso</small>
+
+
+      <!-- BRAND -->
+
+      <a
+        href="index.html"
+        class="brand"
+        aria-label="CWS CodeLab home"
+      >
+
+        <span
+          class="brand-mark"
+          aria-hidden="true"
+        >
+          &lt;/&gt;
         </span>
+
+
+        <span class="brand-copy">
+
+          <strong>
+            CWS CodeLab
+          </strong>
+
+          <small>
+            CyberWithSandiso
+          </small>
+
+        </span>
+
       </a>
+
+
+      <!-- MOBILE NAVIGATION BUTTON -->
 
       <button
         class="nav-toggle"
@@ -39,68 +143,236 @@
         aria-controls="primary-navigation"
         aria-label="Open navigation"
       >
+
         <span></span>
         <span></span>
         <span></span>
+
       </button>
 
-      <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-        <a href="#home">Home</a>
-        <a href="#paths">Learning Paths</a>
-        <a href="pages/courses.html">Courses</a>
-        <a href="#projects">Projects</a>
-        <a href="#ecosystem">CWS Academy</a>
-        <a href="#about">About</a>
-        <a href="pages/courses.html" class="nav-cta">Start Coding</a>
+
+      <!-- PRIMARY NAVIGATION -->
+
+      <nav
+        id="primary-navigation"
+        class="primary-nav"
+        aria-label="Primary navigation"
+      >
+
+        <a
+          href="#home"
+          aria-current="page"
+        >
+          Home
+        </a>
+
+
+        <a href="pages/courses.html">
+          Courses
+        </a>
+
+
+        <a href="#paths">
+          Learning Paths
+        </a>
+
+
+        <a href="#projects">
+          Projects
+        </a>
+
+
+        <a
+          href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+          class="academy-nav-link"
+        >
+          CWS Academy
+        </a>
+
+
+        <a href="#about">
+          About
+        </a>
+
+
+        <a
+          href="pages/login.html"
+          class="nav-signin"
+        >
+          Sign In
+        </a>
+
+
+        <a
+          href="pages/register.html"
+          class="nav-cta"
+        >
+          Start Learning
+        </a>
+
       </nav>
+
     </div>
+
   </header>
 
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
   <main id="main-content">
-    <section class="hero" id="home">
+
+
+    <!-- ===================================================
+         HERO
+    ==================================================== -->
+
+    <section
+      class="hero"
+      id="home"
+    >
+
       <div class="container hero-grid">
+
+
+        <!-- HERO CONTENT -->
+
         <div class="hero-content">
-          <p class="eyebrow">A CyberWithSandiso Learning Platform</p>
 
-          <h1>
-            Learn.
-            <span>Build.</span>
-            Ship.
-          </h1>
-
-          <p class="hero-lead">
-            Practical software-development education built around real code,
-            real projects, debugging, and deployment.
+          <p class="eyebrow">
+            A CyberWithSandiso Learning Platform
           </p>
 
+
+          <h1>
+
+            Learn.
+
+            <span>
+              Build.
+            </span>
+
+            Ship.
+
+          </h1>
+
+
+          <p class="hero-lead">
+
+            Practical software-development education built
+            around real code, real projects, debugging,
+            and deployment.
+
+          </p>
+
+
+          <!-- HERO ACTIONS -->
+
           <div class="hero-actions">
-            <a class="btn btn-primary" href="pages/courses.html">Start Coding Free</a>
-            <a class="btn btn-secondary" href="#paths">Explore Learning Paths</a>
+
+
+            <a
+              class="btn btn-primary"
+              href="pages/register.html"
+            >
+              Start Learning Free
+            </a>
+
+
+            <a
+              class="btn btn-secondary"
+              href="pages/courses.html"
+            >
+              Explore Courses
+            </a>
+
+
+            <a
+              class="btn btn-secondary"
+              href="pages/login.html"
+            >
+              Sign In
+            </a>
+
+
           </div>
 
-          <div class="hero-stats" aria-label="Platform highlights">
+
+          <!-- HERO STATS -->
+
+          <div
+            class="hero-stats"
+            aria-label="Platform highlights"
+          >
+
+
             <div>
-              <strong>6</strong>
-              <span>Foundation courses</span>
+
+              <strong>
+                6
+              </strong>
+
+              <span>
+                Foundation courses
+              </span>
+
             </div>
+
+
             <div>
-              <strong>3</strong>
-              <span>Developer paths</span>
+
+              <strong>
+                3
+              </strong>
+
+              <span>
+                Developer paths
+              </span>
+
             </div>
+
+
             <div>
-              <strong>100%</strong>
-              <span>Project focused</span>
+
+              <strong>
+                100%
+              </strong>
+
+              <span>
+                Project focused
+              </span>
+
             </div>
+
+
           </div>
+
         </div>
 
-        <div class="hero-code-card" aria-label="Example CodeLab workflow">
+
+        <!-- =================================================
+             HERO CODE CARD
+        ================================================== -->
+
+        <div
+          class="hero-code-card"
+          aria-label="Example CodeLab workflow"
+        >
+
+
           <div class="terminal-bar">
+
             <span></span>
             <span></span>
             <span></span>
-            <p>cws-codelab / student-project</p>
+
+            <p>
+              cws-codelab / student-project
+            </p>
+
           </div>
+
 
           <pre><code><span class="code-comment">// CWS CodeLab</span>
 
@@ -120,355 +392,1152 @@
 
 <span class="code-comment">// Ready when you are.</span></code></pre>
 
+
           <div class="terminal-footer">
+
             <span class="status-dot"></span>
-            <span>Project environment ready</span>
+
+            <span>
+              Project environment ready
+            </span>
+
           </div>
+
+
         </div>
+
       </div>
+
     </section>
 
-    <section class="section section-soft" id="about">
+
+    <!-- ===================================================
+         WHY CODELAB
+    ==================================================== -->
+
+    <section
+      class="section section-soft"
+      id="about"
+    >
+
       <div class="container">
+
+
         <div class="section-heading centered">
-          <p class="eyebrow">Why CodeLab?</p>
-          <h2>From concept to working software</h2>
-          <p>
-            CWS CodeLab is designed around active practice. You do not only watch
-            lessons — you write code, solve problems, build projects, and learn how
-            software moves from an idea to deployment.
+
+          <p class="eyebrow">
+            Why CodeLab?
           </p>
+
+
+          <h2>
+            From concept to working software
+          </h2>
+
+
+          <p>
+
+            CWS CodeLab is designed around active practice.
+
+            You do not only watch lessons — you write code,
+            solve problems, build projects, debug applications
+            and learn how software moves from an idea to
+            deployment.
+
+          </p>
+
         </div>
+
+
+        <!-- WORKFLOW -->
 
         <div class="workflow-grid">
-          <article class="workflow-card">
-            <span>01</span>
-            <div class="workflow-icon">&lt;/&gt;</div>
-            <h3>Learn the concept</h3>
-            <p>Understand the programming idea with clear, practical explanations.</p>
-          </article>
+
 
           <article class="workflow-card">
-            <span>02</span>
-            <div class="workflow-icon">{ }</div>
-            <h3>Write the code</h3>
-            <p>Apply the concept immediately through guided coding activities.</p>
+
+            <span>
+              01
+            </span>
+
+            <div class="workflow-icon">
+              &lt;/&gt;
+            </div>
+
+            <h3>
+              Learn the concept
+            </h3>
+
+            <p>
+              Understand the programming idea with clear,
+              practical explanations.
+            </p>
+
           </article>
 
-          <article class="workflow-card">
-            <span>03</span>
-            <div class="workflow-icon">▣</div>
-            <h3>Build the project</h3>
-            <p>Combine skills into portfolio-ready applications and developer tasks.</p>
-          </article>
 
           <article class="workflow-card">
-            <span>04</span>
-            <div class="workflow-icon">!</div>
-            <h3>Debug it</h3>
-            <p>Learn to inspect errors, troubleshoot behaviour, and improve your code.</p>
+
+            <span>
+              02
+            </span>
+
+            <div class="workflow-icon">
+              { }
+            </div>
+
+            <h3>
+              Write the code
+            </h3>
+
+            <p>
+              Apply the concept immediately through guided
+              coding activities.
+            </p>
+
           </article>
 
+
           <article class="workflow-card">
-            <span>05</span>
-            <div class="workflow-icon">↑</div>
-            <h3>Ship it</h3>
-            <p>Publish your work and learn the foundations of real-world deployment.</p>
+
+            <span>
+              03
+            </span>
+
+            <div class="workflow-icon">
+              ▣
+            </div>
+
+            <h3>
+              Build the project
+            </h3>
+
+            <p>
+              Combine skills into portfolio-ready applications
+              and developer tasks.
+            </p>
+
           </article>
+
+
+          <article class="workflow-card">
+
+            <span>
+              04
+            </span>
+
+            <div class="workflow-icon">
+              !
+            </div>
+
+            <h3>
+              Debug it
+            </h3>
+
+            <p>
+              Learn to inspect errors, troubleshoot behaviour
+              and improve your code.
+            </p>
+
+          </article>
+
+
+          <article class="workflow-card">
+
+            <span>
+              05
+            </span>
+
+            <div class="workflow-icon">
+              ↑
+            </div>
+
+            <h3>
+              Ship it
+            </h3>
+
+            <p>
+              Publish your work and learn the foundations
+              of real-world deployment.
+            </p>
+
+          </article>
+
+
         </div>
+
       </div>
+
     </section>
 
-    <section class="section" id="paths">
+
+    <!-- ===================================================
+         LEARNING PATHS
+    ==================================================== -->
+
+    <section
+      class="section"
+      id="paths"
+    >
+
       <div class="container">
+
+
         <div class="section-heading">
-          <p class="eyebrow">Learning Paths</p>
-          <h2>Choose where you want to build</h2>
-          <p>
-            Start with developer foundations, then follow a structured path toward
-            the type of software you want to create.
+
+          <p class="eyebrow">
+            Learning Paths
           </p>
+
+
+          <h2>
+            Choose where you want to build
+          </h2>
+
+
+          <p>
+
+            Start with developer foundations, then follow
+            a structured path toward the type of software
+            you want to create.
+
+          </p>
+
         </div>
+
 
         <div class="path-grid">
+
+
+          <!-- FRONT-END -->
+
           <article class="path-card">
+
             <div class="path-top">
-              <span class="path-icon">FE</span>
-              <span class="badge">Beginner → Advanced</span>
+
+              <span class="path-icon">
+                FE
+              </span>
+
+              <span class="badge">
+                Beginner → Advanced
+              </span>
+
             </div>
-            <h3>Front-End Developer</h3>
+
+
+            <h3>
+              Front-End Developer
+            </h3>
+
+
             <p>
-              Learn to build responsive, interactive websites and modern user interfaces.
+
+              Learn to build responsive, interactive websites
+              and modern user interfaces.
+
             </p>
+
+
             <ul>
-              <li>HTML &amp; CSS</li>
-              <li>JavaScript</li>
-              <li>Responsive Web Design</li>
-              <li>APIs</li>
-              <li>React</li>
-              <li>Portfolio Capstone</li>
+
+              <li>
+                HTML &amp; CSS
+              </li>
+
+              <li>
+                JavaScript
+              </li>
+
+              <li>
+                Responsive Web Design
+              </li>
+
+              <li>
+                APIs
+              </li>
+
+              <li>
+                React
+              </li>
+
+              <li>
+                Portfolio Capstone
+              </li>
+
             </ul>
-            <a href="pages/courses.html" class="text-link">View pathway <span>→</span></a>
+
+
+            <a
+              href="pages/courses.html"
+              class="text-link"
+            >
+              View pathway
+              <span>→</span>
+            </a>
+
           </article>
+
+
+          <!-- PYTHON -->
 
           <article class="path-card featured">
+
             <div class="path-top">
-              <span class="path-icon">PY</span>
-              <span class="badge">Popular Path</span>
+
+              <span class="path-icon">
+                PY
+              </span>
+
+              <span class="badge">
+                Popular Path
+              </span>
+
             </div>
-            <h3>Python Developer</h3>
+
+
+            <h3>
+              Python Developer
+            </h3>
+
+
             <p>
-              Build strong programming foundations and progress into backend development.
+
+              Build strong programming foundations and
+              progress into backend development.
+
             </p>
+
+
             <ul>
-              <li>Programming Fundamentals</li>
-              <li>Python Fundamentals</li>
-              <li>Object-Oriented Programming</li>
-              <li>Files, JSON &amp; APIs</li>
-              <li>SQL &amp; Databases</li>
-              <li>Flask Backend</li>
+
+              <li>
+                Programming Fundamentals
+              </li>
+
+              <li>
+                Python Fundamentals
+              </li>
+
+              <li>
+                Object-Oriented Programming
+              </li>
+
+              <li>
+                Files, JSON &amp; APIs
+              </li>
+
+              <li>
+                SQL &amp; Databases
+              </li>
+
+              <li>
+                Flask Backend
+              </li>
+
             </ul>
-            <a href="pages/courses.html" class="text-link">View pathway <span>→</span></a>
+
+
+            <a
+              href="pages/courses.html"
+              class="text-link"
+            >
+              View pathway
+              <span>→</span>
+            </a>
+
           </article>
+
+
+          <!-- FULL STACK -->
 
           <article class="path-card">
+
             <div class="path-top">
-              <span class="path-icon">FS</span>
-              <span class="badge">Career Track</span>
+
+              <span class="path-icon">
+                FS
+              </span>
+
+              <span class="badge">
+                Career Track
+              </span>
+
             </div>
-            <h3>Full-Stack Developer</h3>
+
+
+            <h3>
+              Full-Stack Developer
+            </h3>
+
+
             <p>
-              Combine front-end, backend, databases, authentication, APIs, and deployment.
+
+              Combine front-end, backend, databases,
+              authentication, APIs and deployment.
+
             </p>
+
+
             <ul>
-              <li>HTML, CSS &amp; JavaScript</li>
-              <li>Git &amp; GitHub</li>
-              <li>React</li>
-              <li>Python &amp; Flask</li>
-              <li>REST APIs</li>
-              <li>Full-Stack Capstone</li>
+
+              <li>
+                HTML, CSS &amp; JavaScript
+              </li>
+
+              <li>
+                Git &amp; GitHub
+              </li>
+
+              <li>
+                React
+              </li>
+
+              <li>
+                Python &amp; Flask
+              </li>
+
+              <li>
+                REST APIs
+              </li>
+
+              <li>
+                Full-Stack Capstone
+              </li>
+
             </ul>
-            <a href="pages/courses.html" class="text-link">View pathway <span>→</span></a>
+
+
+            <a
+              href="pages/courses.html"
+              class="text-link"
+            >
+              View pathway
+              <span>→</span>
+            </a>
+
           </article>
+
+
         </div>
+
       </div>
+
     </section>
 
-    <section class="section section-dark" id="courses">
+
+    <!-- ===================================================
+         FOUNDATION COURSES
+    ==================================================== -->
+
+    <section
+      class="section section-dark"
+      id="courses"
+    >
+
       <div class="container">
+
+
         <div class="section-heading light">
-          <p class="eyebrow">Developer Foundations</p>
-          <h2>Your first six courses</h2>
-          <p>
-            Build the core skills needed before specialising in front-end, Python,
-            or full-stack development.
+
+          <p class="eyebrow">
+            Developer Foundations
           </p>
+
+          <h2>
+            Your first six courses
+          </h2>
+
+          <p>
+
+            Build the core skills needed before specialising
+            in front-end, Python or full-stack development.
+
+          </p>
+
         </div>
+
 
         <div class="course-grid">
-          <article class="course-card">
-            <div class="course-number">01</div>
-            <div class="course-icon">PF</div>
-            <h3>Programming Fundamentals</h3>
-            <p>Variables, logic, conditions, loops, functions, problem solving, and algorithms.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Foundation</span>
-            </div>
-          </article>
+
+
+          <!-- COURSE 01 -->
 
           <article class="course-card">
-            <div class="course-number">02</div>
-            <div class="course-icon">HC</div>
-            <h3>HTML &amp; CSS</h3>
-            <p>Structure modern web pages and design responsive interfaces from scratch.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Web</span>
+
+            <div class="course-number">
+              01
             </div>
+
+            <div class="course-icon">
+              PF
+            </div>
+
+            <h3>
+              Programming Fundamentals
+            </h3>
+
+            <p>
+              Variables, logic, conditions, loops,
+              functions, problem solving and algorithms.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Foundation
+              </span>
+
+            </div>
+
           </article>
 
-          <article class="course-card">
-            <div class="course-number">03</div>
-            <div class="course-icon">JS</div>
-            <h3>JavaScript Fundamentals</h3>
-            <p>Add behaviour, logic, DOM interaction, events, and dynamic functionality.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Web</span>
-            </div>
-          </article>
+
+          <!-- COURSE 02 -->
 
           <article class="course-card">
-            <div class="course-number">04</div>
-            <div class="course-icon">GT</div>
-            <h3>Git &amp; GitHub</h3>
-            <p>Track changes, use repositories, collaborate, and manage developer workflows.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Tools</span>
+
+            <div class="course-number">
+              02
             </div>
+
+            <div class="course-icon">
+              HC
+            </div>
+
+            <h3>
+              HTML &amp; CSS
+            </h3>
+
+            <p>
+              Structure modern web pages and design
+              responsive interfaces from scratch.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Web
+              </span>
+
+            </div>
+
           </article>
 
-          <article class="course-card">
-            <div class="course-number">05</div>
-            <div class="course-icon">PY</div>
-            <h3>Python Programming</h3>
-            <p>Learn Python syntax, data structures, functions, OOP, files, and practical scripts.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Programming</span>
-            </div>
-          </article>
+
+          <!-- COURSE 03 -->
 
           <article class="course-card">
-            <div class="course-number">06</div>
-            <div class="course-icon">DB</div>
-            <h3>SQL &amp; Databases</h3>
-            <p>Model data, write SQL queries, work with relational databases, and connect apps.</p>
-            <div class="course-meta">
-              <span>Beginner</span>
-              <span>Data</span>
+
+            <div class="course-number">
+              03
             </div>
+
+            <div class="course-icon">
+              JS
+            </div>
+
+            <h3>
+              JavaScript Fundamentals
+            </h3>
+
+            <p>
+              Add behaviour, logic, DOM interaction,
+              events and dynamic functionality.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Web
+              </span>
+
+            </div>
+
           </article>
+
+
+          <!-- COURSE 04 -->
+
+          <article class="course-card">
+
+            <div class="course-number">
+              04
+            </div>
+
+            <div class="course-icon">
+              GT
+            </div>
+
+            <h3>
+              Git &amp; GitHub
+            </h3>
+
+            <p>
+              Track changes, use repositories,
+              collaborate and manage developer workflows.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Tools
+              </span>
+
+            </div>
+
+          </article>
+
+
+          <!-- COURSE 05 -->
+
+          <article class="course-card">
+
+            <div class="course-number">
+              05
+            </div>
+
+            <div class="course-icon">
+              PY
+            </div>
+
+            <h3>
+              Python Programming
+            </h3>
+
+            <p>
+              Learn Python syntax, data structures,
+              functions, OOP, files and practical scripts.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Programming
+              </span>
+
+            </div>
+
+          </article>
+
+
+          <!-- COURSE 06 -->
+
+          <article class="course-card">
+
+            <div class="course-number">
+              06
+            </div>
+
+            <div class="course-icon">
+              DB
+            </div>
+
+            <h3>
+              SQL &amp; Databases
+            </h3>
+
+            <p>
+              Model data, write SQL queries,
+              work with relational databases
+              and connect applications.
+            </p>
+
+            <div class="course-meta">
+
+              <span>
+                Beginner
+              </span>
+
+              <span>
+                Data
+              </span>
+
+            </div>
+
+          </article>
+
+
         </div>
+
+
+        <!-- COURSES CTA -->
+
+        <div
+          class="section-action"
+          style="margin-top: 40px; text-align: center;"
+        >
+
+          <a
+            href="pages/courses.html"
+            class="btn btn-primary"
+          >
+            Explore All Courses
+          </a>
+
+        </div>
+
+
       </div>
+
     </section>
 
-    <section class="section" id="projects">
+
+    <!-- ===================================================
+         PROJECT BASED LEARNING
+    ==================================================== -->
+
+    <section
+      class="section"
+      id="projects"
+    >
+
       <div class="container project-layout">
+
+
         <div>
+
+
           <div class="section-heading">
-            <p class="eyebrow">Project-Based Learning</p>
-            <h2>Build work you can actually show</h2>
-            <p>
-              Every major path should lead to practical work that demonstrates what
-              you can build without relying on certificates alone.
+
+            <p class="eyebrow">
+              Project-Based Learning
             </p>
+
+            <h2>
+              Build work you can actually show
+            </h2>
+
+            <p>
+
+              Every major path should lead to practical work
+              that demonstrates what you can build without
+              relying on certificates alone.
+
+            </p>
+
           </div>
+
 
           <div class="project-list">
-            <div><span>01</span><p>Portfolio websites</p></div>
-            <div><span>02</span><p>JavaScript applications</p></div>
-            <div><span>03</span><p>Python applications</p></div>
-            <div><span>04</span><p>REST APIs</p></div>
-            <div><span>05</span><p>Database-driven systems</p></div>
-            <div><span>06</span><p>Full-stack applications</p></div>
+
+            <div>
+              <span>01</span>
+              <p>Portfolio websites</p>
+            </div>
+
+            <div>
+              <span>02</span>
+              <p>JavaScript applications</p>
+            </div>
+
+            <div>
+              <span>03</span>
+              <p>Python applications</p>
+            </div>
+
+            <div>
+              <span>04</span>
+              <p>REST APIs</p>
+            </div>
+
+            <div>
+              <span>05</span>
+              <p>Database-driven systems</p>
+            </div>
+
+            <div>
+              <span>06</span>
+              <p>Full-stack applications</p>
+            </div>
+
           </div>
+
+
         </div>
+
+
+        <!-- EXAMPLE PROJECT -->
 
         <div class="project-panel">
-          <p class="panel-kicker">Example learner journey</p>
-          <h3>Personal Task Manager</h3>
-          <p>
-            A student could begin with a static interface and progressively turn it into
-            a full application as new skills are unlocked.
+
+          <p class="panel-kicker">
+            Example learner journey
           </p>
+
+
+          <h3>
+            Personal Task Manager
+          </h3>
+
+
+          <p>
+
+            A student could begin with a static interface
+            and progressively turn it into a full application
+            as new skills are unlocked.
+
+          </p>
+
 
           <div class="project-steps">
+
+
             <div>
-              <strong>HTML/CSS</strong>
-              <span>Build the interface</span>
+
+              <strong>
+                HTML/CSS
+              </strong>
+
+              <span>
+                Build the interface
+              </span>
+
             </div>
+
+
             <div>
-              <strong>JavaScript</strong>
-              <span>Add interactions</span>
+
+              <strong>
+                JavaScript
+              </strong>
+
+              <span>
+                Add interactions
+              </span>
+
             </div>
+
+
             <div>
-              <strong>Python + Flask</strong>
-              <span>Create the backend</span>
+
+              <strong>
+                Python + Flask
+              </strong>
+
+              <span>
+                Create the backend
+              </span>
+
             </div>
+
+
             <div>
-              <strong>SQL</strong>
-              <span>Store tasks and users</span>
+
+              <strong>
+                SQL
+              </strong>
+
+              <span>
+                Store tasks and users
+              </span>
+
             </div>
+
+
             <div>
-              <strong>Deployment</strong>
-              <span>Ship the finished project</span>
+
+              <strong>
+                Deployment
+              </strong>
+
+              <span>
+                Ship the finished project
+              </span>
+
             </div>
+
+
           </div>
+
         </div>
+
+
       </div>
+
     </section>
 
-    <section class="section section-ecosystem" id="ecosystem">
+
+    <!-- ===================================================
+         CWS ECOSYSTEM
+    ==================================================== -->
+
+    <section
+      class="section section-ecosystem"
+      id="ecosystem"
+    >
+
       <div class="container ecosystem-card">
+
+
+        <!-- COPY -->
+
         <div class="ecosystem-copy">
-          <p class="eyebrow">The CWS Ecosystem</p>
-          <h2>Build software here. Learn to secure it next.</h2>
-          <p>
-            CWS CodeLab teaches how applications are built. CWS Academy continues the
-            journey with cybersecurity, secure coding, web application security,
-            ethical hacking, and penetration testing.
+
+          <p class="eyebrow">
+            The CWS Ecosystem
           </p>
 
+
+          <h2>
+            Build software here.
+            Learn to secure it next.
+          </h2>
+
+
+          <p>
+
+            CWS CodeLab teaches how applications are built.
+
+            CWS Academy continues the journey with
+            cybersecurity, secure coding, web application
+            security, ethical hacking and penetration testing.
+
+          </p>
+
+
           <div class="ecosystem-actions">
+
+
             <a
               class="btn btn-primary"
               href="https://sandisomayekiso.github.io/CyberWithSandiso/"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Explore CWS Academy
             </a>
+
+
           </div>
+
         </div>
 
-        <div class="ecosystem-map" aria-label="CyberWithSandiso ecosystem">
-          <div class="eco-parent">CyberWithSandiso</div>
-          <div class="eco-line"></div>
-          <div class="eco-children">
-            <div class="eco-box">
-              <strong>CWS Academy</strong>
-              <span>Cybersecurity</span>
-            </div>
-            <div class="eco-box active">
-              <strong>CWS CodeLab</strong>
-              <span>Software Development</span>
-            </div>
+
+        <!-- ECOSYSTEM MAP -->
+
+        <div
+          class="ecosystem-map"
+          aria-label="CyberWithSandiso ecosystem"
+        >
+
+          <div class="eco-parent">
+            CyberWithSandiso
           </div>
+
+
+          <div class="eco-line"></div>
+
+
+          <div class="eco-children">
+
+
+            <div class="eco-box">
+
+              <strong>
+                CWS Academy
+              </strong>
+
+              <span>
+                Cybersecurity
+              </span>
+
+            </div>
+
+
+            <div class="eco-box active">
+
+              <strong>
+                CWS CodeLab
+              </strong>
+
+              <span>
+                Software Development
+              </span>
+
+            </div>
+
+
+          </div>
+
         </div>
+
+
       </div>
+
     </section>
+
+
+    <!-- ===================================================
+         ACCOUNT CTA
+    ==================================================== -->
 
     <section class="final-cta">
+
       <div class="container final-cta-inner">
+
+
         <div>
-          <p class="eyebrow">Start with the foundations</p>
-          <h2>Your first line of code can become your first deployed project.</h2>
+
+          <p class="eyebrow">
+            Start with the foundations
+          </p>
+
+
+          <h2>
+            Your first line of code can become
+            your first deployed project.
+          </h2>
+
         </div>
-        <a class="btn btn-light" href="pages/courses.html">Start Coding Free</a>
+
+
+        <a
+          class="btn btn-light"
+          href="pages/register.html"
+        >
+          Create Free Account
+        </a>
+
+
       </div>
+
     </section>
+
+
   </main>
 
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
   <footer class="site-footer">
+
+
     <div class="container footer-grid">
+
+
+      <!-- BRAND -->
+
       <div>
-        <a href="index.html" class="brand footer-brand">
-          <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-          <span class="brand-copy">
-            <strong>CWS CodeLab</strong>
-            <small>A CyberWithSandiso Learning Platform</small>
+
+        <a
+          href="index.html"
+          class="brand footer-brand"
+        >
+
+          <span
+            class="brand-mark"
+            aria-hidden="true"
+          >
+            &lt;/&gt;
           </span>
+
+
+          <span class="brand-copy">
+
+            <strong>
+              CWS CodeLab
+            </strong>
+
+            <small>
+              A CyberWithSandiso Learning Platform
+            </small>
+
+          </span>
+
         </a>
+
+
         <p class="footer-note">
-          Practical developer education built around learning, building, debugging, and shipping.
+
+          Practical developer education built around
+          learning, building, debugging and shipping.
+
         </p>
+
       </div>
+
+
+      <!-- FOOTER LINKS -->
 
       <div class="footer-links">
-        <a href="#paths">Learning Paths</a>
-        <a href="pages/courses.html">Courses</a>
-        <a href="#projects">Projects</a>
-        <a href="#ecosystem">CWS Academy</a>
+
+        <a href="pages/courses.html">
+          Courses
+        </a>
+
+        <a href="#paths">
+          Learning Paths
+        </a>
+
+        <a href="#projects">
+          Projects
+        </a>
+
+        <a href="pages/login.html">
+          Sign In
+        </a>
+
+        <a href="pages/register.html">
+          Create Account
+        </a>
+
+        <a
+          href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+        >
+          CWS Academy
+        </a>
+
       </div>
+
+
     </div>
 
+
+    <!-- FOOTER BOTTOM -->
+
     <div class="container footer-bottom">
-      <p>&copy; <span id="current-year"></span> CyberWithSandiso. All rights reserved.</p>
-      <p>Learn. Build. Ship.</p>
+
+      <p>
+
+        &copy;
+        <span id="current-year"></span>
+        CyberWithSandiso.
+        All rights reserved.
+
+      </p>
+
+
+      <p>
+        Learn. Build. Ship.
+      </p>
+
     </div>
+
+
   </footer>
+
+
 </body>
+
 </html>
