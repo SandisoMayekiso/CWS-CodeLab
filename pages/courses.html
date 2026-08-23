@@ -12,7 +12,7 @@
 
     <meta
         name="description"
-        content="Explore programming, web development, Python, JavaScript, Java, C#, SQL and developer courses at CWS CodeLab."
+        content="Explore CWS CodeLab programming and software-development courses including HTML, CSS, JavaScript, Python, SQL, Git, Java, C#, C++, React and Node.js."
     >
 
     <meta
@@ -25,9 +25,7 @@
     </title>
 
 
-    <!-- =====================================================
-         GOOGLE FONTS
-    ====================================================== -->
+    <!-- GOOGLE FONTS -->
 
     <link
         rel="preconnect"
@@ -46,9 +44,7 @@
     >
 
 
-    <!-- =====================================================
-         STYLES
-    ====================================================== -->
+    <!-- STYLES -->
 
     <link
         rel="stylesheet"
@@ -66,9 +62,7 @@
     >
 
 
-    <!-- =====================================================
-         COURSE DATA
-    ====================================================== -->
+    <!-- COURSE DATA -->
 
     <script
         src="../data/courses.js"
@@ -76,14 +70,15 @@
     ></script>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+    <!-- GLOBAL JAVASCRIPT -->
 
     <script
         src="../js/main.js"
         defer
     ></script>
+
+
+    <!-- COURSE CATALOGUE -->
 
     <script
         src="../js/courses.js"
@@ -101,8 +96,8 @@
     ====================================================== -->
 
     <a
-        class="skip-link"
         href="#main-content"
+        class="skip-link"
     >
         Skip to content
     </a>
@@ -132,6 +127,7 @@
                     &lt;/&gt;
                 </span>
 
+
                 <span class="brand-copy">
 
                     <strong>
@@ -147,7 +143,7 @@
             </a>
 
 
-            <!-- MOBILE NAV -->
+            <!-- MOBILE NAVIGATION -->
 
             <button
                 class="nav-toggle"
@@ -164,7 +160,9 @@
             </button>
 
 
-            <!-- PRIMARY NAVIGATION -->
+            <!-- =================================================
+                 PRIMARY NAVIGATION
+            ================================================== -->
 
             <nav
                 id="primary-navigation"
@@ -172,9 +170,11 @@
                 aria-label="Primary navigation"
             >
 
+
                 <a href="../index.html">
                     Home
                 </a>
+
 
                 <a
                     href="courses.html"
@@ -183,24 +183,55 @@
                     Courses
                 </a>
 
+
                 <a href="../index.html#paths">
                     Learning Paths
                 </a>
 
-                <a href="../index.html#projects">
-                    Projects
+
+                <a href="pricing.html">
+                    Pricing
                 </a>
+
+
+                <!-- =============================================
+                     CWS ACADEMY
+                     Separate CyberWithSandiso school
+                ============================================== -->
 
                 <a
                     href="https://sandisomayekiso.github.io/CyberWithSandiso/"
                     class="academy-nav-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit CWS Academy Cybersecurity School - opens in a new tab"
                 >
-                    CWS Academy
+
+                    <span
+                        class="academy-nav-mark"
+                        aria-hidden="true"
+                    >
+                        CWS
+                    </span>
+
+
+                    <span class="academy-nav-copy">
+
+                        <strong>
+                            CWS Academy
+                        </strong>
+
+                        <small>
+                            Cybersecurity School
+                            <span aria-hidden="true">
+                                ↗
+                            </span>
+                        </small>
+
+                    </span>
+
                 </a>
 
-                <a href="../index.html#about">
-                    About
-                </a>
 
                 <a
                     href="login.html"
@@ -209,12 +240,14 @@
                     Sign In
                 </a>
 
+
                 <a
                     href="register.html"
                     class="nav-cta"
                 >
                     Start Learning
                 </a>
+
 
             </nav>
 
@@ -243,16 +276,20 @@
 
                 <div>
 
+
                     <p class="eyebrow">
                         CWS CodeLab Courses
                     </p>
 
 
                     <h1>
+
                         Learn the skills to
+
                         <span>
                             build software.
                         </span>
+
                     </h1>
 
 
@@ -260,13 +297,17 @@
 
                         Start with programming fundamentals and
                         progress into web development, Python,
-                        JavaScript, databases, Java, C# and
-                        full-stack application development.
+                        JavaScript, databases and professional
+                        developer tools.
+
+                        The CodeLab catalogue is also expanding
+                        into Java, C#, C++, React and Node.js.
 
                     </p>
 
 
                     <div class="courses-hero-actions">
+
 
                         <a
                             href="register.html"
@@ -275,6 +316,7 @@
                             Start Learning Free
                         </a>
 
+
                         <a
                             href="#course-catalogue"
                             class="btn btn-secondary"
@@ -282,21 +324,23 @@
                             Browse Courses
                         </a>
 
+
                     </div>
 
 
-                    <!-- PLATFORM SUMMARY -->
+                    <!-- CATALOGUE SUMMARY -->
 
                     <div class="catalogue-summary">
+
 
                         <div>
 
                             <strong id="total-course-count">
-                                8+
+                                11
                             </strong>
 
                             <span>
-                                Courses
+                                Total courses
                             </span>
 
                         </div>
@@ -305,11 +349,11 @@
                         <div>
 
                             <strong>
-                                3
+                                6
                             </strong>
 
                             <span>
-                                Learning paths
+                                Available now
                             </span>
 
                         </div>
@@ -318,23 +362,27 @@
                         <div>
 
                             <strong>
-                                100%
+                                5
                             </strong>
 
                             <span>
-                                Practical learning
+                                Coming soon
                             </span>
 
                         </div>
+
 
                     </div>
 
                 </div>
 
 
-                <!-- ROADMAP -->
+                <!-- =================================================
+                     ROADMAP
+                ================================================== -->
 
                 <aside class="course-roadmap-card">
+
 
                     <p class="roadmap-label">
                         Developer Roadmap
@@ -343,40 +391,97 @@
 
                     <div class="roadmap-list">
 
-                        <div>
-                            <span>01</span>
-                            <p>Programming Fundamentals</p>
-                        </div>
 
                         <div>
-                            <span>02</span>
-                            <p>HTML &amp; CSS</p>
+
+                            <span>
+                                01
+                            </span>
+
+                            <p>
+                                Programming Fundamentals
+                            </p>
+
                         </div>
 
-                        <div>
-                            <span>03</span>
-                            <p>JavaScript</p>
-                        </div>
 
                         <div>
-                            <span>04</span>
-                            <p>Git &amp; GitHub</p>
+
+                            <span>
+                                02
+                            </span>
+
+                            <p>
+                                HTML &amp; CSS
+                            </p>
+
                         </div>
 
-                        <div>
-                            <span>05</span>
-                            <p>Backend Development</p>
-                        </div>
 
                         <div>
-                            <span>06</span>
-                            <p>Databases</p>
+
+                            <span>
+                                03
+                            </span>
+
+                            <p>
+                                JavaScript
+                            </p>
+
                         </div>
 
+
                         <div>
-                            <span>07</span>
-                            <p>Projects &amp; Deployment</p>
+
+                            <span>
+                                04
+                            </span>
+
+                            <p>
+                                Git &amp; GitHub
+                            </p>
+
                         </div>
+
+
+                        <div>
+
+                            <span>
+                                05
+                            </span>
+
+                            <p>
+                                Programming &amp; Backend
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                06
+                            </span>
+
+                            <p>
+                                Databases
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                07
+                            </span>
+
+                            <p>
+                                Projects &amp; Deployment
+                            </p>
+
+                        </div>
+
 
                     </div>
 
@@ -384,6 +489,7 @@
                     <p class="roadmap-foot">
                         Learn → Code → Build → Debug → Ship
                     </p>
+
 
                 </aside>
 
@@ -452,7 +558,7 @@
                             for="level-filter"
                             class="sr-only"
                         >
-                            Filter by level
+                            Filter courses by level
                         </label>
 
                         <select id="level-filter">
@@ -482,7 +588,7 @@
                             for="access-filter"
                             class="sr-only"
                         >
-                            Filter by access
+                            Filter courses by access
                         </label>
 
                         <select id="access-filter">
@@ -505,18 +611,22 @@
 
                         </select>
 
+
                     </div>
 
                 </div>
 
 
-                <!-- CATEGORY FILTERS -->
+                <!-- =================================================
+                     CATEGORY FILTERS
+                ================================================== -->
 
                 <div
                     id="category-filters"
                     class="category-filters"
                     aria-label="Course categories"
                 >
+
 
                     <button
                         type="button"
@@ -526,6 +636,7 @@
                         All
                     </button>
 
+
                     <button
                         type="button"
                         class="category-filter"
@@ -533,6 +644,7 @@
                     >
                         Foundations
                     </button>
+
 
                     <button
                         type="button"
@@ -542,6 +654,7 @@
                         Web Development
                     </button>
 
+
                     <button
                         type="button"
                         class="category-filter"
@@ -549,6 +662,7 @@
                     >
                         Programming
                     </button>
+
 
                     <button
                         type="button"
@@ -558,6 +672,7 @@
                         Developer Tools
                     </button>
 
+
                     <button
                         type="button"
                         class="category-filter"
@@ -565,6 +680,7 @@
                     >
                         Databases
                     </button>
+
 
                 </div>
 
@@ -580,7 +696,7 @@
                 </p>
 
 
-                <!-- DYNAMIC GRID -->
+                <!-- DYNAMIC COURSE GRID -->
 
                 <div
                     id="catalogue-grid"
@@ -606,7 +722,7 @@
                     </h3>
 
                     <p>
-                        Try changing your search or course filters.
+                        Try another search or change your filters.
                     </p>
 
                     <button
@@ -618,6 +734,7 @@
                     </button>
 
                 </div>
+
 
             </div>
 
@@ -635,19 +752,25 @@
 
                 <div class="section-heading">
 
+
                     <p class="eyebrow">
                         Developer Learning Paths
                     </p>
+
 
                     <h2>
                         Learn in the right order
                     </h2>
 
+
                     <p>
+
                         Individual courses teach specific skills.
-                        Learning paths combine those skills into
-                        a structured developer journey.
+                        Learning paths connect those skills into
+                        structured developer journeys.
+
                     </p>
+
 
                 </div>
 
@@ -659,48 +782,68 @@
 
                     <article class="path-selector-card">
 
+
                         <p class="eyebrow">
                             Front-End
                         </p>
+
 
                         <h3>
                             Front-End Developer
                         </h3>
 
+
                         <p>
+
                             Build responsive and interactive
                             web applications.
+
                         </p>
 
 
                         <div class="path-course-list">
+
 
                             <div>
                                 <span>01</span>
                                 <p>Programming Fundamentals</p>
                             </div>
 
+
                             <div>
                                 <span>02</span>
                                 <p>HTML &amp; CSS</p>
                             </div>
+
 
                             <div>
                                 <span>03</span>
                                 <p>JavaScript Fundamentals</p>
                             </div>
 
+
                             <div>
                                 <span>04</span>
                                 <p>Git &amp; GitHub</p>
                             </div>
+
 
                             <div>
                                 <span>05</span>
                                 <p>React Development</p>
                             </div>
 
+
                         </div>
+
+
+                        <a
+                            href="../index.html#paths"
+                            class="path-selector-action"
+                        >
+                            Explore learning path →
+                        </a>
+
 
                     </article>
 
@@ -709,48 +852,68 @@
 
                     <article class="path-selector-card">
 
+
                         <p class="eyebrow">
                             Python
                         </p>
+
 
                         <h3>
                             Python Developer
                         </h3>
 
+
                         <p>
+
                             Learn Python programming, databases,
-                            APIs and backend development.
+                            APIs and backend-development concepts.
+
                         </p>
 
 
                         <div class="path-course-list">
+
 
                             <div>
                                 <span>01</span>
                                 <p>Programming Fundamentals</p>
                             </div>
 
+
                             <div>
                                 <span>02</span>
                                 <p>Python Programming</p>
                             </div>
+
 
                             <div>
                                 <span>03</span>
                                 <p>Git &amp; GitHub</p>
                             </div>
 
+
                             <div>
                                 <span>04</span>
                                 <p>SQL &amp; Databases</p>
                             </div>
 
+
                             <div>
                                 <span>05</span>
-                                <p>Python Web Development</p>
+                                <p>Backend Development</p>
                             </div>
 
+
                         </div>
+
+
+                        <a
+                            href="../index.html#paths"
+                            class="path-selector-action"
+                        >
+                            Explore learning path →
+                        </a>
+
 
                     </article>
 
@@ -759,55 +922,77 @@
 
                     <article class="path-selector-card">
 
+
                         <p class="eyebrow">
                             Full Stack
                         </p>
+
 
                         <h3>
                             Full-Stack Developer
                         </h3>
 
+
                         <p>
+
                             Combine interfaces, programming,
                             APIs, databases and deployment.
+
                         </p>
 
 
                         <div class="path-course-list">
+
 
                             <div>
                                 <span>01</span>
                                 <p>HTML &amp; CSS</p>
                             </div>
 
+
                             <div>
                                 <span>02</span>
                                 <p>JavaScript</p>
                             </div>
+
 
                             <div>
                                 <span>03</span>
                                 <p>Git &amp; GitHub</p>
                             </div>
 
+
                             <div>
                                 <span>04</span>
                                 <p>Backend Programming</p>
                             </div>
+
 
                             <div>
                                 <span>05</span>
                                 <p>SQL &amp; Databases</p>
                             </div>
 
+
                             <div>
                                 <span>06</span>
                                 <p>Full-Stack Capstone</p>
                             </div>
 
+
                         </div>
 
+
+                        <a
+                            href="../index.html#paths"
+                            class="path-selector-action"
+                        >
+                            Explore learning path →
+                        </a>
+
+
                     </article>
+
 
                 </div>
 
@@ -817,7 +1002,7 @@
 
 
         <!-- =================================================
-             COURSE PHILOSOPHY
+             CODELAB METHOD
         ================================================== -->
 
         <section class="course-philosophy">
@@ -827,73 +1012,118 @@
 
                 <div>
 
+
                     <p class="eyebrow">
                         CWS CodeLab Method
                     </p>
+
 
                     <h2>
                         Don't just watch code.
                         Write it.
                     </h2>
 
+
                     <p class="course-philosophy-copy">
-                        Each learning track is designed around
-                        practical development. Concepts are followed
-                        by code, exercises, debugging and projects.
+
+                        CodeLab learning is designed around
+                        practical software development.
+
+                        Concepts are followed by code, exercises,
+                        debugging, projects and deployment.
+
                     </p>
+
 
                 </div>
 
 
                 <div class="philosophy-steps">
 
+
                     <div>
-                        <span>01</span>
+
+                        <span>
+                            01
+                        </span>
+
                         <p>
                             <strong>Learn</strong>
                             the concept.
                         </p>
+
                     </div>
 
+
                     <div>
-                        <span>02</span>
+
+                        <span>
+                            02
+                        </span>
+
                         <p>
                             <strong>Write</strong>
                             the code.
                         </p>
+
                     </div>
 
+
                     <div>
-                        <span>03</span>
+
+                        <span>
+                            03
+                        </span>
+
                         <p>
                             <strong>Practise</strong>
                             with exercises.
                         </p>
+
                     </div>
 
+
                     <div>
-                        <span>04</span>
+
+                        <span>
+                            04
+                        </span>
+
                         <p>
                             <strong>Debug</strong>
                             your mistakes.
                         </p>
+
                     </div>
 
+
                     <div>
-                        <span>05</span>
+
+                        <span>
+                            05
+                        </span>
+
                         <p>
                             <strong>Build</strong>
                             a real project.
                         </p>
+
                     </div>
 
+
                     <div>
-                        <span>06</span>
+
+                        <span>
+                            06
+                        </span>
+
                         <p>
                             <strong>Ship</strong>
                             the result.
                         </p>
+
                     </div>
+
 
                 </div>
 
@@ -913,24 +1143,31 @@
 
                 <div class="catalogue-account-copy">
 
+
                     <p class="eyebrow">
                         Start Your Developer Journey
                     </p>
+
 
                     <h2>
                         Learn programming by building.
                     </h2>
 
+
                     <p>
-                        Create your CodeLab account to access
-                        lessons, projects, assessments and your
-                        student learning dashboard.
+
+                        Create your CodeLab account to begin
+                        accessing lessons, projects, assessments
+                        and your future student learning dashboard.
+
                     </p>
+
 
                 </div>
 
 
                 <div class="catalogue-account-actions">
+
 
                     <a
                         href="register.html"
@@ -939,6 +1176,7 @@
                         Create Free Account
                     </a>
 
+
                     <a
                         href="login.html"
                         class="btn btn-secondary"
@@ -946,7 +1184,9 @@
                         Sign In
                     </a>
 
+
                 </div>
+
 
             </div>
 
@@ -967,6 +1207,7 @@
 
             <div>
 
+
                 <a
                     href="../index.html"
                     class="brand footer-brand"
@@ -978,6 +1219,7 @@
                     >
                         &lt;/&gt;
                     </span>
+
 
                     <span class="brand-copy">
 
@@ -995,40 +1237,70 @@
 
 
                 <p class="footer-note">
-                    Practical developer education built around
-                    learning, building, debugging and shipping.
+
+                    Practical software-development education
+                    built around learning, building, debugging
+                    and shipping.
+
                 </p>
+
 
             </div>
 
 
             <div class="footer-links">
 
+
                 <a href="courses.html">
                     Courses
                 </a>
+
 
                 <a href="../index.html#paths">
                     Learning Paths
                 </a>
 
+
+                <a href="pricing.html">
+                    Pricing
+                </a>
+
+
                 <a href="../index.html#projects">
                     Projects
                 </a>
+
+
+                <a href="../index.html#about">
+                    About CodeLab
+                </a>
+
 
                 <a href="login.html">
                     Sign In
                 </a>
 
+
                 <a href="register.html">
                     Create Account
                 </a>
 
+
                 <a
                     href="https://sandisomayekiso.github.io/CyberWithSandiso/"
+                    class="footer-academy-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
+
                     CWS Academy
+
+                    <span>
+                        Cybersecurity School ↗
+                    </span>
+
                 </a>
+
 
             </div>
 
@@ -1037,16 +1309,21 @@
 
         <div class="container footer-bottom">
 
+
             <p>
+
                 &copy;
                 <span id="current-year"></span>
                 CyberWithSandiso.
                 All rights reserved.
+
             </p>
+
 
             <p>
                 Learn. Build. Ship.
             </p>
+
 
         </div>
 
