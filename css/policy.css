@@ -1,0 +1,518 @@
+/* =========================================================
+   CWS CODELAB
+   POLICY PAGES
+========================================================= */
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.cws-policy-main {
+
+    min-height:
+        100vh;
+
+    padding:
+        82px 20px 105px;
+
+    background:
+        #f6f7fb;
+
+    color:
+        var(--dark-text);
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.cws-policy-hero {
+
+    max-width:
+        900px;
+
+    margin:
+        0 auto 34px;
+
+    text-align:
+        center;
+
+}
+
+
+.cws-policy-label {
+
+    display:
+        inline-block;
+
+    color:
+        #6977dc;
+
+    font-family:
+        "JetBrains Mono",
+        monospace;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.12em;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.cws-policy-hero h1 {
+
+    margin-top:
+        13px;
+
+    color:
+        #142338;
+
+    font-size:
+        clamp(
+            42px,
+            6vw,
+            70px
+        );
+
+    line-height:
+        1;
+
+    letter-spacing:
+        -0.055em;
+
+}
+
+
+.cws-policy-hero > p {
+
+    max-width:
+        720px;
+
+    margin:
+        19px auto 0;
+
+    color:
+        #667487;
+
+    font-size:
+        15px;
+
+    line-height:
+        1.75;
+
+}
+
+
+.cws-policy-meta {
+
+    display:
+        inline-flex;
+
+    margin-top:
+        21px;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        #e0e4ec;
+
+    border-radius:
+        999px;
+
+    background:
+        #fff;
+
+    color:
+        #7b8797;
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   POLICY CARD
+========================================================= */
+
+.cws-policy-card {
+
+    max-width:
+        920px;
+
+    margin:
+        0 auto;
+
+    padding:
+        46px;
+
+    border:
+        1px solid
+        #e2e6ed;
+
+    border-radius:
+        26px;
+
+    background:
+        #fff;
+
+    box-shadow:
+        0 24px 70px
+        rgba(24, 37, 61, 0.06);
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.cws-policy-section {
+
+    padding:
+        30px 0;
+
+    border-bottom:
+        1px solid
+        #edf0f4;
+
+}
+
+
+.cws-policy-section:first-child {
+
+    padding-top:
+        0;
+
+}
+
+
+.cws-policy-section:last-child {
+
+    padding-bottom:
+        0;
+
+    border-bottom:
+        0;
+
+}
+
+
+.cws-policy-section h2 {
+
+    color:
+        #1b2b40;
+
+    font-size:
+        20px;
+
+    letter-spacing:
+        -0.025em;
+
+}
+
+
+.cws-policy-section p {
+
+    margin-top:
+        12px;
+
+    color:
+        #647286;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.8;
+
+}
+
+
+.cws-policy-section a {
+
+    color:
+        #5968dc;
+
+    font-weight:
+        700;
+
+}
+
+
+.cws-policy-section a:hover {
+
+    text-decoration:
+        underline;
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.cws-policy-table-wrapper {
+
+    margin-top:
+        20px;
+
+    overflow-x:
+        auto;
+
+    border:
+        1px solid
+        #e3e7ee;
+
+    border-radius:
+        16px;
+
+}
+
+
+.cws-policy-table {
+
+    width:
+        100%;
+
+    min-width:
+        650px;
+
+    border-collapse:
+        collapse;
+
+}
+
+
+.cws-policy-table th,
+.cws-policy-table td {
+
+    padding:
+        15px 17px;
+
+    border-bottom:
+        1px solid
+        #edf0f4;
+
+    text-align:
+        left;
+
+    vertical-align:
+        top;
+
+    font-size:
+        11px;
+
+}
+
+
+.cws-policy-table th {
+
+    background:
+        #f6f7fb;
+
+    color:
+        #36465a;
+
+    font-weight:
+        800;
+
+}
+
+
+.cws-policy-table td {
+
+    color:
+        #667487;
+
+    line-height:
+        1.65;
+
+}
+
+
+.cws-policy-table tbody tr:last-child td {
+
+    border-bottom:
+        0;
+
+}
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.cws-policy-notice {
+
+    margin-top:
+        18px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        rgba(108, 124, 255, 0.18);
+
+    border-radius:
+        14px;
+
+    background:
+        #f6f7ff;
+
+}
+
+
+.cws-policy-notice strong {
+
+    color:
+        #4554c2;
+
+    font-size:
+        12px;
+
+}
+
+
+.cws-policy-notice p {
+
+    margin-top:
+        7px;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.cws-policy-actions {
+
+    max-width:
+        920px;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        10px;
+
+    margin:
+        30px auto 0;
+
+}
+
+
+.cws-policy-actions .btn-secondary {
+
+    border-color:
+        #dfe3eb;
+
+    background:
+        #fff;
+
+    color:
+        #455267;
+
+}
+
+
+.cws-policy-actions .btn-secondary:hover {
+
+    border-color:
+        #bac3d3;
+
+    background:
+        #fafbfc;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .cws-policy-main {
+
+        padding:
+            60px 14px 75px;
+
+    }
+
+
+    .cws-policy-hero h1 {
+
+        font-size:
+            43px;
+
+    }
+
+
+    .cws-policy-card {
+
+        padding:
+            28px 22px;
+
+        border-radius:
+            20px;
+
+    }
+
+
+    .cws-policy-section {
+
+        padding:
+            25px 0;
+
+    }
+
+
+    .cws-policy-section h2 {
+
+        font-size:
+            18px;
+
+    }
+
+
+    .cws-policy-actions {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .cws-policy-actions .btn {
+
+        width:
+            100%;
+
+    }
+
+}
