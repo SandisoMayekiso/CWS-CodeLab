@@ -1,4 +1,11 @@
 /* =========================================================
+   LIGHT THEME NOTE
+   Student pages keep the dark sidebar/hero identity while
+   their reading/content area uses the global light hierarchy
+   from css/style.css.
+========================================================= */
+
+/* =========================================================
    CWS CODELAB
    STUDENT COURSES
 ========================================================= */
@@ -660,9 +667,9 @@
 
     flex-direction: column;
 
-    background: #f5f7fb;
+    background: var(--page-light, #e9eef5);
 
-    color: #17263a;
+    color: var(--dark-text, #162337);
 
 }
 
@@ -693,10 +700,14 @@
 
     border-bottom:
         1px solid
-        #e4e8ef;
+        var(--light-border, #d4dde8);
 
     background:
-        rgba(255, 255, 255, 0.95);
+        color-mix(
+            in srgb,
+            var(--surface-raised, #fbfcfe) 95%,
+            transparent
+        );
 
     backdrop-filter:
         blur(15px);
@@ -759,11 +770,11 @@
 
     border:
         1px solid
-        #e0e5ec;
+        var(--light-border, #d4dde8);
 
     border-radius: 10px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
     cursor: pointer;
 
@@ -903,13 +914,13 @@
 
     border:
         1px solid
-        #dce2eb;
+        var(--light-border, #d4dde8);
 
     border-radius: 12px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
-    color: #637184;
+    color: var(--dark-muted, #526174);
 
     font-size: 10px;
 
@@ -1117,11 +1128,11 @@
 
     border:
         1px solid
-        #e1e6ee;
+        var(--light-border, #d4dde8);
 
     border-radius: 16px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
 }
 
@@ -1208,11 +1219,11 @@
 
     border:
         1px solid
-        #dde3eb;
+        var(--light-border, #d4dde8);
 
     border-radius: 13px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
 }
 
@@ -1272,9 +1283,9 @@
 
     outline: 0;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
-    color: #536174;
+    color: var(--dark-muted, #526174);
 
     font: inherit;
 
@@ -1314,9 +1325,9 @@
 
     border-radius: 999px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
-    color: #778597;
+    color: var(--dark-muted, #526174);
 
     font-family: inherit;
 
@@ -1409,7 +1420,7 @@
 
 .student-course-section-header > p {
 
-    color: #8a96a6;
+    color: var(--dark-muted, #526174);
 
     font-size: 9px;
 
@@ -1453,11 +1464,11 @@
 
     border:
         1px solid
-        #e0e5ed;
+        var(--light-border, #d4dde8);
 
     border-radius: 19px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
     transition:
         transform 0.2s ease,
@@ -1666,7 +1677,7 @@
 
     margin-top: 14px;
 
-    color: #738092;
+    color: var(--reading-text, #334155);
 
     font-size: 9px;
 
@@ -1702,11 +1713,11 @@
 
     border:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
     border-radius: 10px;
 
-    background: #fafbfc;
+    background: var(--surface-soft, #edf2f7);
 
 }
 
@@ -1787,7 +1798,7 @@
 
     border-radius: 999px;
 
-    background: #edf0f5;
+    background: var(--surface-muted, #e5ebf2);
 
 }
 
@@ -1860,7 +1871,7 @@
 
     border-radius: 10px;
 
-    background: #f8f9fc;
+    background: var(--surface-light, #f3f6fa);
 
     color: #5967ce;
 
@@ -1927,7 +1938,7 @@
 
     border-radius: 18px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
     text-align: center;
 
@@ -2032,7 +2043,7 @@
         1px solid
         #e3e8ef;
 
-    background: #fff;
+    background: var(--surface-light, #f3f6fa);
 
     color: #8b97a7;
 
@@ -2415,13 +2426,13 @@
 
     overflow: hidden;
 
-    border: 1px solid #dfe4ec;
+    border: 1px solid var(--light-border, #d4dde8);
 
     border-radius: 22px;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
-    color: #243449;
+    color: var(--dark-text, #162337);
 
     box-shadow:
         0 30px 90px
@@ -2513,7 +2524,7 @@
 
     border-radius: 11px;
 
-    background: #f8f9fb;
+    background: var(--surface-soft, #edf2f7);
 
     color: #667386;
 
@@ -2541,7 +2552,7 @@
 
     margin-top: 17px;
 
-    color: #69788b;
+    color: var(--reading-text, #334155);
 
     font-size: 11px;
 
@@ -2572,7 +2583,7 @@
 
     border-radius: 12px;
 
-    background: #fafbfc;
+    background: var(--surface-soft, #edf2f7);
 
 }
 
@@ -2627,7 +2638,7 @@
 
     margin-top: 8px;
 
-    color: #748193;
+    color: var(--reading-text, #334155);
 
     font-size: 10px;
 
@@ -2676,7 +2687,7 @@
 
     padding-left: 19px;
 
-    color: #748193;
+    color: var(--reading-text, #334155);
 
     font-size: 9px;
 
@@ -2726,7 +2737,7 @@
 
     border-radius: 13px;
 
-    background: #fafbfc;
+    background: var(--surface-soft, #edf2f7);
 
 }
 
@@ -2812,7 +2823,7 @@
 
     border-top: 1px solid #e9edf2;
 
-    background: #fff;
+    background: var(--surface-raised, #fbfcfe);
 
 }
 
