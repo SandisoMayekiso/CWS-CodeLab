@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const MOBILE_NAV_BREAKPOINT = 900;
 
+  const reducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
 
   /* =======================================================
      CURRENT YEAR
@@ -50,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!siteHeader) {
       return;
     }
+
 
     siteHeader.classList.toggle(
       "scrolled",
@@ -77,25 +83,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (navToggle && primaryNav) {
 
+
     /* -----------------------------------------------------
-       OPEN NAVIGATION
+       OPEN NAV
     ----------------------------------------------------- */
 
     function openNavigation() {
 
-      primaryNav.classList.add("open");
+      primaryNav.classList.add(
+        "open"
+      );
 
-      navToggle.classList.add("active");
+
+      navToggle.classList.add(
+        "active"
+      );
+
 
       navToggle.setAttribute(
         "aria-expanded",
         "true"
       );
 
+
       navToggle.setAttribute(
         "aria-label",
         "Close navigation"
       );
+
 
       document.body.classList.add(
         "nav-open"
@@ -105,24 +120,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       CLOSE NAVIGATION
+       CLOSE NAV
     ----------------------------------------------------- */
 
     function closeNavigation() {
 
-      primaryNav.classList.remove("open");
+      primaryNav.classList.remove(
+        "open"
+      );
 
-      navToggle.classList.remove("active");
+
+      navToggle.classList.remove(
+        "active"
+      );
+
 
       navToggle.setAttribute(
         "aria-expanded",
         "false"
       );
 
+
       navToggle.setAttribute(
         "aria-label",
         "Open navigation"
       );
+
 
       document.body.classList.remove(
         "nav-open"
@@ -132,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       TOGGLE NAVIGATION
+       TOGGLE NAV
     ----------------------------------------------------- */
 
     function toggleNavigation() {
@@ -157,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       NAV BUTTON CLICK
+       TOGGLE BUTTON
     ----------------------------------------------------- */
 
     navToggle.addEventListener(
@@ -173,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       CLOSE NAV AFTER LINK CLICK
+       NAV LINK CLICK
     ----------------------------------------------------- */
 
     primaryNav
@@ -184,7 +207,14 @@ document.addEventListener("DOMContentLoaded", () => {
           "click",
           () => {
 
-            closeNavigation();
+            if (
+              window.innerWidth <=
+              MOBILE_NAV_BREAKPOINT
+            ) {
+
+              closeNavigation();
+
+            }
 
           }
         );
@@ -193,25 +223,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       CLICK OUTSIDE NAV
+       CLICK OUTSIDE
     ----------------------------------------------------- */
 
     document.addEventListener(
       "click",
       (event) => {
 
-        const navIsOpen =
-          primaryNav.classList.contains(
+        if (
+          !primaryNav.classList.contains(
             "open"
-          );
+          )
+        ) {
 
-
-        if (!navIsOpen) {
           return;
+
         }
 
 
-        const clickedInsideNav =
+        const clickedNav =
           primaryNav.contains(
             event.target
           );
@@ -224,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-          !clickedInsideNav &&
+          !clickedNav &&
           !clickedToggle
         ) {
 
@@ -247,18 +277,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
           event.key !== "Escape"
         ) {
+
           return;
+
         }
 
 
-        const navIsOpen =
-          primaryNav.classList.contains(
+        if (
+          !primaryNav.classList.contains(
             "open"
-          );
+          )
+        ) {
 
-
-        if (!navIsOpen) {
           return;
+
         }
 
 
@@ -271,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -----------------------------------------------------
-       RESET NAVIGATION WHEN RETURNING TO DESKTOP
+       DESKTOP RESET
     ----------------------------------------------------- */
 
     window.addEventListener(
@@ -287,6 +319,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+      },
+      {
+        passive: true
       }
     );
 
@@ -294,98 +329,163 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =======================================================
-     SMOOTH SCROLL FOR SAME-PAGE LINKS
+     SAFE SAME-PAGE SCROLL
   ======================================================= */
 
-  const samePageLinks =
-    document.querySelectorAll(
+  document
+    .querySelectorAll(
       'a[href^="#"]'
-    );
+    )
+    .forEach((link) => {
+
+      link.addEventListener(
+        "click",
+        (event) => {
+
+          const targetId =
+            link.getAttribute(
+              "href"
+            );
 
 
-  samePageLinks.forEach((link) => {
+          if (
+            !targetId ||
+            targetId === "#"
+          ) {
 
-    link.addEventListener(
-      "click",
-      (event) => {
+            return;
 
-        const targetId =
-          link.getAttribute("href");
-
-
-        if (
-          !targetId ||
-          targetId === "#"
-        ) {
-          return;
-        }
+          }
 
 
-        const target =
-          document.querySelector(
+          let target;
+
+
+          try {
+
+            target =
+              document.querySelector(
+                targetId
+              );
+
+          } catch (error) {
+
+            console.warn(
+              "CWS CodeLab: Invalid section link.",
+              targetId
+            );
+
+            return;
+
+          }
+
+
+          if (!target) {
+
+            return;
+
+          }
+
+
+          event.preventDefault();
+
+
+          target.scrollIntoView({
+
+            behavior:
+              reducedMotion.matches
+                ? "auto"
+                : "smooth",
+
+            block:
+              "start"
+
+          });
+
+
+          if (
+            window.location.hash !==
             targetId
-          );
+          ) {
 
+            history.pushState(
+              null,
+              "",
+              targetId
+            );
 
-        if (!target) {
-          return;
+          }
+
         }
+      );
 
-
-        event.preventDefault();
-
-
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-
-        /*
-         * Update URL without causing another jump.
-         */
-
-        history.pushState(
-          null,
-          "",
-          targetId
-        );
-
-      }
-    );
-
-  });
+    });
 
 
   /* =======================================================
-     HANDLE PAGE LOAD WITH HASH
+     INITIAL HASH
   ======================================================= */
 
-  if (window.location.hash) {
+  function scrollToInitialHash() {
 
-    const hashTarget =
-      document.querySelector(
-        window.location.hash
-      );
+    const hash =
+      window.location.hash;
 
 
-    if (hashTarget) {
+    if (!hash) {
 
-      setTimeout(
-        () => {
-
-          hashTarget.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-
-        },
-        100
-      );
+      return;
 
     }
 
+
+    let target;
+
+
+    try {
+
+      target =
+        document.querySelector(
+          hash
+        );
+
+    } catch (error) {
+
+      return;
+
+    }
+
+
+    if (!target) {
+
+      return;
+
+    }
+
+
+    window.setTimeout(
+      () => {
+
+        target.scrollIntoView({
+
+          behavior:
+            reducedMotion.matches
+              ? "auto"
+              : "smooth",
+
+          block:
+            "start"
+
+        });
+
+      },
+      100
+    );
+
   }
+
+
+  scrollToInitialHash();
 
 
   /* =======================================================
@@ -394,7 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document
     .querySelectorAll(
-      'a[href^="http"]'
+      'a[href^="http://"], a[href^="https://"]'
     )
     .forEach((link) => {
 
@@ -408,21 +508,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-          url.origin !==
+          url.origin ===
           window.location.origin
         ) {
 
-          link.setAttribute(
-            "rel",
-            "noopener noreferrer"
-          );
+          return;
 
         }
+
+
+        const relValues =
+          new Set(
+            (
+              link.getAttribute("rel") ||
+              ""
+            )
+              .split(/\s+/)
+              .filter(Boolean)
+          );
+
+
+        relValues.add(
+          "noopener"
+        );
+
+
+        relValues.add(
+          "noreferrer"
+        );
+
+
+        link.setAttribute(
+          "rel",
+          Array
+            .from(relValues)
+            .join(" ")
+        );
 
       } catch (error) {
 
         console.warn(
-          "CWS CodeLab: Invalid link detected.",
+          "CWS CodeLab: Invalid external link.",
           link.href
         );
 
@@ -435,16 +561,48 @@ document.addEventListener("DOMContentLoaded", () => {
      ACTIVE PAGE NAVIGATION
   ======================================================= */
 
+  function normalisePath(path) {
+
+    let cleanPath =
+      path.replace(
+        /\/+$/,
+        ""
+      );
+
+
+    if (
+      cleanPath.endsWith(
+        "/index.html"
+      )
+    ) {
+
+      cleanPath =
+        cleanPath.slice(
+          0,
+          -"/index.html".length
+        );
+
+    }
+
+
+    return cleanPath || "/";
+
+  }
+
+
   function updateActiveNavigation() {
 
     if (!primaryNav) {
+
       return;
+
     }
 
 
     const currentPath =
-      window.location.pathname
-        .replace(/\/+$/, "");
+      normalisePath(
+        window.location.pathname
+      );
 
 
     primaryNav
@@ -452,21 +610,32 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((link) => {
 
         const rawHref =
-          link.getAttribute("href");
+          link.getAttribute(
+            "href"
+          );
+
+
+        if (!rawHref) {
+
+          return;
+
+        }
 
 
         if (
-          !rawHref ||
           rawHref.startsWith("#") ||
-          rawHref.startsWith("http")
+          rawHref.startsWith("http://") ||
+          rawHref.startsWith("https://")
         ) {
+
           return;
+
         }
 
 
         try {
 
-          const linkURL =
+          const linkUrl =
             new URL(
               link.href,
               window.location.href
@@ -474,23 +643,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           const linkPath =
-            linkURL.pathname
-              .replace(/\/+$/, "");
+            normalisePath(
+              linkUrl.pathname
+            );
 
 
           if (
-            linkPath === currentPath
+            linkPath ===
+            currentPath
           ) {
 
             link.classList.add(
               "active"
             );
 
-
-            /*
-             * Do not overwrite manually assigned
-             * aria-current values.
-             */
 
             if (
               !link.hasAttribute(
@@ -525,48 +691,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =======================================================
-     BUTTON FEEDBACK
+     BUTTON PRESS FEEDBACK
   ======================================================= */
 
   document
     .querySelectorAll(
-      ".btn, .nav-cta"
+      ".btn, .nav-cta, .pricing-button"
     )
     .forEach((button) => {
 
-      button.addEventListener(
-        "mousedown",
+
+      const addPressedState =
         () => {
 
           button.classList.add(
             "pressed"
           );
 
-        }
-      );
+        };
 
 
-      button.addEventListener(
-        "mouseup",
+      const removePressedState =
         () => {
 
           button.classList.remove(
             "pressed"
           );
 
-        }
+        };
+
+
+      button.addEventListener(
+        "pointerdown",
+        addPressedState
       );
 
 
       button.addEventListener(
-        "mouseleave",
-        () => {
+        "pointerup",
+        removePressedState
+      );
 
-          button.classList.remove(
-            "pressed"
-          );
 
-        }
+      button.addEventListener(
+        "pointercancel",
+        removePressedState
+      );
+
+
+      button.addEventListener(
+        "pointerleave",
+        removePressedState
+      );
+
+
+      button.addEventListener(
+        "blur",
+        removePressedState
       );
 
     });
