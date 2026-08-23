@@ -16,29 +16,16 @@
         );
 
     background:
-
         radial-gradient(
             circle at 15% 20%,
-            rgba(
-                108,
-                124,
-                255,
-                0.13
-            ),
+            rgba(108, 124, 255, 0.13),
             transparent 30%
         ),
-
         radial-gradient(
             circle at 90% 10%,
-            rgba(
-                164,
-                92,
-                255,
-                0.10
-            ),
+            rgba(164, 92, 255, 0.10),
             transparent 27%
         ),
-
         var(--bg);
 
 }
@@ -52,23 +39,21 @@
 }
 
 
+/* =========================================================
+   AUTH LAYOUT
+========================================================= */
+
 .auth-layout {
 
     display:
         grid;
 
     grid-template-columns:
-        minmax(
-            0,
-            1fr
-        )
-        minmax(
-            390px,
-            470px
-        );
+        minmax(0, 1fr)
+        minmax(390px, 480px);
 
     gap:
-        90px;
+        85px;
 
     align-items:
         center;
@@ -158,12 +143,23 @@
 
     box-shadow:
         0 18px 38px
-        rgba(
-            108,
-            124,
-            255,
-            0.20
-        );
+        rgba(108, 124, 255, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.auth-brand-mark:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 22px 45px
+        rgba(108, 124, 255, 0.27);
 
 }
 
@@ -230,6 +226,9 @@
     font-size:
         16px;
 
+    line-height:
+        1.75;
+
 }
 
 
@@ -258,10 +257,7 @@
 
     grid-template-columns:
         42px
-        minmax(
-            0,
-            1fr
-        );
+        minmax(0, 1fr);
 
     gap:
         14px;
@@ -288,23 +284,13 @@
 
     border:
         1px solid
-        rgba(
-            108,
-            124,
-            255,
-            0.20
-        );
+        rgba(108, 124, 255, 0.20);
 
     border-radius:
         11px;
 
     background:
-        rgba(
-            108,
-            124,
-            255,
-            0.07
-        );
+        rgba(108, 124, 255, 0.07);
 
     color:
         #939fff;
@@ -351,7 +337,7 @@
 
 
 /* =========================================================
-   ECOSYSTEM
+   CWS ECOSYSTEM
 ========================================================= */
 
 .auth-ecosystem {
@@ -360,33 +346,32 @@
         flex;
 
     align-items:
-        center;
+        flex-start;
 
     gap:
         13px;
 
     max-width:
-        520px;
+        540px;
 
     margin-top:
         36px;
 
     padding:
-        14px 16px;
+        15px 16px;
 
     border:
         1px solid
-        var(--line);
+        rgba(84, 210, 163, 0.11);
 
     border-radius:
-        13px;
+        14px;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.025
+        linear-gradient(
+            135deg,
+            rgba(84, 210, 163, 0.035),
+            rgba(255, 255, 255, 0.018)
         );
 
 }
@@ -401,10 +386,10 @@
         center;
 
     width:
-        36px;
+        38px;
 
     height:
-        36px;
+        38px;
 
     flex-shrink:
         0;
@@ -413,10 +398,14 @@
         10px;
 
     background:
-        #111f32;
+        linear-gradient(
+            135deg,
+            #3ca879,
+            #246c55
+        );
 
     color:
-        #909cff;
+        #fff;
 
     font-family:
         "JetBrains Mono",
@@ -431,10 +420,13 @@
 }
 
 
-.auth-ecosystem p {
+.auth-ecosystem strong {
+
+    display:
+        block;
 
     color:
-        #7f91a5;
+        #b9dfcf;
 
     font-size:
         10px;
@@ -442,8 +434,60 @@
 }
 
 
+.auth-ecosystem p {
+
+    margin-top:
+        3px;
+
+    color:
+        #7f91a5;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.6;
+
+}
+
+
+.auth-ecosystem a {
+
+    display:
+        inline-block;
+
+    margin-top:
+        7px;
+
+    color:
+        #78cba9;
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.auth-ecosystem a:hover {
+
+    color:
+        #abebd1;
+
+    transform:
+        translateX(2px);
+
+}
+
+
 /* =========================================================
-   CARD
+   CARD WRAPPER
 ========================================================= */
 
 .auth-card-wrapper {
@@ -456,52 +500,37 @@
 
 .auth-card {
 
+    position:
+        relative;
+
     padding:
         34px;
 
     border:
         1px solid
-        rgba(
-            144,
-            157,
-            255,
-            0.15
-        );
+        rgba(144, 157, 255, 0.15);
 
     border-radius:
         26px;
 
     background:
-
         linear-gradient(
             180deg,
-            rgba(
-                255,
-                255,
-                255,
-                0.04
-            ),
-            rgba(
-                255,
-                255,
-                255,
-                0.015
-            )
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.015)
         ),
-
         #0a1625;
 
     box-shadow:
         0 30px 80px
-        rgba(
-            0,
-            0,
-            0,
-            0.25
-        );
+        rgba(0, 0, 0, 0.25);
 
 }
 
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
 
 .auth-card-overline {
 
@@ -606,7 +635,7 @@
 
 
 /* =========================================================
-   BACK
+   BACK LINK
 ========================================================= */
 
 .auth-back-link {
@@ -638,6 +667,371 @@
 
 
 /* =========================================================
+   STATUS MESSAGE
+========================================================= */
+
+.auth-message {
+
+    margin-top:
+        20px;
+
+    padding:
+        12px 14px;
+
+    border-radius:
+        11px;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.6;
+
+}
+
+
+.auth-message.error {
+
+    border:
+        1px solid
+        rgba(255, 100, 124, 0.22);
+
+    background:
+        rgba(255, 100, 124, 0.07);
+
+    color:
+        #ff9bad;
+
+}
+
+
+.auth-message.success {
+
+    border:
+        1px solid
+        rgba(84, 210, 163, 0.22);
+
+    background:
+        rgba(84, 210, 163, 0.07);
+
+    color:
+        #79dbb7;
+
+}
+
+
+.auth-message.info {
+
+    border:
+        1px solid
+        rgba(108, 124, 255, 0.23);
+
+    background:
+        rgba(108, 124, 255, 0.07);
+
+    color:
+        #aeb6ff;
+
+}
+
+
+/* =========================================================
+   SOCIAL AUTHENTICATION
+========================================================= */
+
+.social-auth {
+
+    margin-top:
+        26px;
+
+}
+
+
+.social-auth-label {
+
+    margin-bottom:
+        12px;
+
+    color:
+        #718399;
+
+    font-family:
+        "JetBrains Mono",
+        monospace;
+
+    font-size:
+        8px;
+
+    font-weight:
+        800;
+
+    text-align:
+        center;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.10em;
+
+}
+
+
+.social-auth-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap:
+        9px;
+
+}
+
+
+/* =========================================================
+   SOCIAL AUTH BUTTON
+========================================================= */
+
+.social-auth-button {
+
+    min-width:
+        0;
+
+    min-height:
+        48px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    padding:
+        9px 10px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color:
+        #dce5ef;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.social-auth-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(144, 157, 255, 0.28);
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    box-shadow:
+        0 12px 28px
+        rgba(0, 0, 0, 0.12);
+
+}
+
+
+.social-auth-button:active {
+
+    transform:
+        translateY(0)
+        scale(0.98);
+
+}
+
+
+.social-auth-button:focus-visible {
+
+    outline:
+        3px solid
+        rgba(108, 124, 255, 0.28);
+
+    outline-offset:
+        3px;
+
+}
+
+
+/* =========================================================
+   SOCIAL ICON
+========================================================= */
+
+.social-auth-icon {
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+}
+
+
+.social-auth-icon svg {
+
+    display:
+        block;
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+}
+
+
+/* =========================================================
+   GOOGLE
+========================================================= */
+
+.social-auth-google {
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+}
+
+
+/* =========================================================
+   GITHUB
+========================================================= */
+
+.social-auth-github {
+
+    color:
+        #ffffff;
+
+}
+
+
+/* =========================================================
+   APPLE
+========================================================= */
+
+.social-auth-apple {
+
+    color:
+        #ffffff;
+
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.auth-divider {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    gap:
+        10px;
+
+    align-items:
+        center;
+
+    margin:
+        25px 0;
+
+}
+
+
+.auth-divider span {
+
+    height:
+        1px;
+
+    background:
+        var(--line);
+
+}
+
+
+.auth-divider p {
+
+    color:
+        #62758a;
+
+    font-size:
+        8px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.social-divider {
+
+    margin:
+        23px 0;
+
+}
+
+
+/* =========================================================
    FORM
 ========================================================= */
 
@@ -651,6 +1045,14 @@
 
     margin-top:
         30px;
+
+}
+
+
+.social-login-form {
+
+    margin-top:
+        0;
 
 }
 
@@ -711,6 +1113,18 @@
 }
 
 
+.forgot-password-link:hover {
+
+    color:
+        #b2baff;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
 .auth-form input {
 
     width:
@@ -724,12 +1138,7 @@
 
     border:
         1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.09
-        );
+        rgba(255, 255, 255, 0.09);
 
     border-radius:
         12px;
@@ -738,12 +1147,7 @@
         none;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.035
-        );
+        rgba(255, 255, 255, 0.035);
 
     color:
         #fff;
@@ -755,12 +1159,9 @@
         12px;
 
     transition:
-        border-color
-        0.2s
-        ease,
-        box-shadow
-        0.2s
-        ease;
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 
 }
 
@@ -773,19 +1174,25 @@
 }
 
 
+.auth-form input:hover {
+
+    border-color:
+        rgba(255, 255, 255, 0.14);
+
+}
+
+
 .auth-form input:focus {
 
     border-color:
         #7887ef;
 
+    background:
+        rgba(255, 255, 255, 0.045);
+
     box-shadow:
         0 0 0 4px
-        rgba(
-            108,
-            124,
-            255,
-            0.08
-        );
+        rgba(108, 124, 255, 0.08);
 
 }
 
@@ -830,9 +1237,7 @@
         12px;
 
     transform:
-        translateY(
-            -50%
-        );
+        translateY(-50%);
 
     border:
         0;
@@ -896,12 +1301,7 @@
         999px;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.04
-        );
+        rgba(255, 255, 255, 0.04);
 
     color:
         #6f8196;
@@ -918,12 +1318,7 @@
 .password-requirement.valid {
 
     background:
-        rgba(
-            84,
-            210,
-            163,
-            0.08
-        );
+        rgba(84, 210, 163, 0.08);
 
     color:
         #64d3aa;
@@ -942,10 +1337,7 @@
 
     grid-template-columns:
         18px
-        minmax(
-            0,
-            1fr
-        );
+        minmax(0, 1fr);
 
     gap:
         9px;
@@ -982,6 +1374,9 @@
     margin-top:
         1px;
 
+    padding:
+        0;
+
     accent-color:
         #7584ed;
 
@@ -992,6 +1387,14 @@
 
     color:
         #99a3ff;
+
+}
+
+
+.auth-checkbox a:hover {
+
+    text-decoration:
+        underline;
 
 }
 
@@ -1010,80 +1413,6 @@
 
     font-size:
         8px;
-
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-.auth-message {
-
-    margin-top:
-        20px;
-
-    padding:
-        12px 14px;
-
-    border-radius:
-        11px;
-
-    font-size:
-        10px;
-
-    line-height:
-        1.6;
-
-}
-
-
-.auth-message.error {
-
-    border:
-        1px solid
-        rgba(
-            255,
-            100,
-            124,
-            0.22
-        );
-
-    background:
-        rgba(
-            255,
-            100,
-            124,
-            0.07
-        );
-
-    color:
-        #ff9bad;
-
-}
-
-
-.auth-message.success {
-
-    border:
-        1px solid
-        rgba(
-            84,
-            210,
-            163,
-            0.22
-        );
-
-    background:
-        rgba(
-            84,
-            210,
-            163,
-            0.07
-        );
-
-    color:
-        #79dbb7;
 
 }
 
@@ -1142,20 +1471,12 @@
 
     box-shadow:
         0 16px 35px
-        rgba(
-            108,
-            124,
-            255,
-            0.18
-        );
+        rgba(108, 124, 255, 0.18);
 
     transition:
-        transform
-        0.2s
-        ease,
-        opacity
-        0.2s
-        ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
 
 }
 
@@ -1163,9 +1484,11 @@
 .auth-submit-button:hover {
 
     transform:
-        translateY(
-            -2px
-        );
+        translateY(-2px);
+
+    box-shadow:
+        0 20px 42px
+        rgba(108, 124, 255, 0.24);
 
 }
 
@@ -1185,49 +1508,27 @@
 
 
 /* =========================================================
-   DIVIDER
+   ACCOUNT PROMPT
 ========================================================= */
 
-.auth-divider {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        1fr
-        auto
-        1fr;
-
-    gap:
-        10px;
-
-    align-items:
-        center;
+.auth-account-prompt {
 
     margin:
-        25px 0;
+        25px 0 12px;
+
+    text-align:
+        center;
 
 }
 
 
-.auth-divider span {
-
-    height:
-        1px;
-
-    background:
-        var(--line);
-
-}
-
-
-.auth-divider p {
+.auth-account-prompt p {
 
     color:
-        #62758a;
+        #687a90;
 
     font-size:
-        8px;
+        9px;
 
 }
 
@@ -1258,12 +1559,7 @@
         12px;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.025
-        );
+        rgba(255, 255, 255, 0.025);
 
     color:
         #c7d1dd;
@@ -1275,33 +1571,23 @@
         700;
 
     transition:
-        border-color
-        0.2s
-        ease,
-        background
-        0.2s
-        ease;
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
 
 }
 
 
 .auth-secondary-button:hover {
 
+    transform:
+        translateY(-1px);
+
     border-color:
-        rgba(
-            108,
-            124,
-            255,
-            0.35
-        );
+        rgba(108, 124, 255, 0.35);
 
     background:
-        rgba(
-            108,
-            124,
-            255,
-            0.06
-        );
+        rgba(108, 124, 255, 0.06);
 
 }
 
@@ -1412,6 +1698,14 @@
 }
 
 
+.auth-recovery-help a:hover {
+
+    color:
+        #bbc1ff;
+
+}
+
+
 /* =========================================================
    CARD FOOTER
 ========================================================= */
@@ -1434,7 +1728,7 @@
 
 
 /* =========================================================
-   FOOTER LINKS
+   AUTH FOOTER LINKS
 ========================================================= */
 
 .auth-footer-links {
@@ -1448,6 +1742,17 @@
 }
 
 
+.auth-footer-links a {
+
+    color:
+        #68798d;
+
+    font-size:
+        10px;
+
+}
+
+
 .auth-footer-links a:hover {
 
     color:
@@ -1457,13 +1762,10 @@
 
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
-@media (
-    max-width:
-    900px
-) {
+@media (max-width: 900px) {
 
     .auth-layout {
 
@@ -1539,7 +1841,7 @@
         width:
             min(
                 100%,
-                500px
+                510px
             );
 
         margin-inline:
@@ -1550,10 +1852,11 @@
 }
 
 
-@media (
-    max-width:
-    560px
-) {
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
 
     .auth-section {
 
@@ -1591,10 +1894,106 @@
     }
 
 
+    .social-auth-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .social-auth-button {
+
+        justify-content:
+            flex-start;
+
+        min-height:
+            49px;
+
+        padding:
+            10px 17px;
+
+        font-size:
+            11px;
+
+    }
+
+
+    .social-auth-icon {
+
+        width:
+            20px;
+
+        height:
+            20px;
+
+    }
+
+
+    .social-auth-icon svg {
+
+        width:
+            20px;
+
+        height:
+            20px;
+
+    }
+
+
+    .auth-divider p {
+
+        white-space:
+            normal;
+
+        text-align:
+            center;
+
+    }
+
+
     .auth-footer-links {
 
         flex-wrap:
             wrap;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .auth-intro h1 {
+
+        font-size:
+            46px;
+
+    }
+
+
+    .auth-card {
+
+        padding:
+            23px 17px;
+
+    }
+
+
+    .form-label-row {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            4px;
 
     }
 
