@@ -1,4 +1,10 @@
 /* =========================================================
+   LIGHT THEME NOTE
+   Dashboard dark navigation remains unchanged. The main
+   workspace now uses the shared CWS CodeLab light surfaces.
+========================================================= */
+
+/* =========================================================
    CWS CODELAB
    STUDENT DASHBOARD
 ========================================================= */
@@ -803,10 +809,10 @@
         column;
 
     background:
-        #f5f7fb;
+        var(--page-light, #e9eef5);
 
     color:
-        #17263a;
+        var(--dark-text, #162337);
 
 }
 
@@ -837,10 +843,14 @@
 
     border-bottom:
         1px solid
-        #e4e8ef;
+        var(--light-border, #d4dde8);
 
     background:
-        rgba(255, 255, 255, 0.94);
+        color-mix(
+            in srgb,
+            var(--surface-raised, #fbfcfe) 94%,
+            transparent
+        );
 
     backdrop-filter:
         blur(15px);
@@ -928,13 +938,13 @@
 
     border:
         1px solid
-        #e0e5ec;
+        var(--light-border, #d4dde8);
 
     border-radius:
         10px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     cursor:
         pointer;
@@ -1114,16 +1124,16 @@
 
     border:
         1px solid
-        #dce2eb;
+        var(--light-border, #d4dde8);
 
     border-radius:
         12px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
     color:
-        #637184;
+        var(--dark-muted, #526174);
 
     font-size:
         11px;
@@ -1548,13 +1558,13 @@
 
     border:
         1px solid
-        #e1e6ee;
+        var(--light-border, #d4dde8);
 
     border-radius:
         17px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
 }
 
@@ -1656,13 +1666,13 @@
 
     border:
         1px solid
-        #e1e6ee;
+        var(--light-border, #d4dde8);
 
     border-radius:
         19px;
 
     background:
-        #fff;
+        var(--surface-raised, #fbfcfe);
 
 }
 
@@ -1777,13 +1787,13 @@
 
     border:
         1px dashed
-        #dce1e9;
+        var(--light-border, #d4dde8);
 
     border-radius:
         15px;
 
     background:
-        #fafbfc;
+        var(--surface-soft, #edf2f7);
 
     text-align:
         center;
@@ -1850,7 +1860,7 @@
         7px;
 
     color:
-        #7a8798;
+        var(--dark-muted, #526174);
 
     font-size:
         10px;
@@ -2074,7 +2084,7 @@
         10px;
 
     background:
-        #f9fafc;
+        var(--surface-light, #f3f6fa);
 
     color:
         #5362ce;
@@ -2132,7 +2142,7 @@
 
     border:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
     border-radius:
         12px;
@@ -2257,7 +2267,7 @@
 
     border:
         1px solid
-        #edf0f4;
+        var(--light-border, #d4dde8);
 
     border-radius:
         12px;
@@ -2279,7 +2289,7 @@
         #d5daf0;
 
     background:
-        #fafaff;
+        var(--surface-soft, #edf2f7);
 
 }
 
@@ -2401,10 +2411,10 @@
 
     border-top:
         1px solid
-        #e3e8ef;
+        var(--light-border, #d4dde8);
 
     background:
-        #fff;
+        var(--surface-light, #f3f6fa);
 
     color:
         #8b97a7;
