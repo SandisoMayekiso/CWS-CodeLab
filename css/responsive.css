@@ -1,3 +1,11 @@
+/* =========================================================
+   CWS CODELAB
+   RESPONSIVE LAYOUT
+
+   Reviewed for the light-theme refactor.
+   No light-surface changes are required here.
+========================================================= */
+
 @media (max-width: 1050px) {
   .primary-nav {
     gap: 16px;
