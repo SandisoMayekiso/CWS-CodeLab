@@ -153,6 +153,46 @@
           </article>
         </section>
 
+
+        <article id="lesson-knowledge-card" class="lesson-content-card lesson-knowledge-card">
+          <p class="lesson-section-kicker">Knowledge Check</p>
+          <h2>Check your understanding</h2>
+          <p id="lesson-knowledge-question"></p>
+
+          <form id="lesson-knowledge-form">
+            <div id="lesson-knowledge-options" class="lesson-knowledge-options"></div>
+            <button type="submit" id="lesson-knowledge-submit" class="lesson-knowledge-submit">
+              Check Answer
+            </button>
+          </form>
+
+          <div id="lesson-knowledge-result" class="lesson-knowledge-result" hidden></div>
+        </article>
+
+        <section id="module-assessment-callout" class="module-assessment-callout" hidden>
+          <div>
+            <p class="lesson-section-kicker">Module Complete</p>
+            <h2 id="module-assessment-title">Ready for the module check?</h2>
+            <p id="module-assessment-copy">
+              Complete the quiz and practical assessment before moving on.
+            </p>
+          </div>
+
+          <div class="module-assessment-actions">
+            <a id="module-quiz-link" href="#" class="module-assessment-button primary">
+              Take Module Quiz →
+            </a>
+
+            <a id="module-practical-link" href="#" class="module-assessment-button secondary">
+              Open Practical Assessment
+            </a>
+
+            <a id="module-final-link" href="#" class="module-assessment-button primary" hidden>
+              Take Final Assessment →
+            </a>
+          </div>
+        </section>
+
         <section class="lesson-completion">
           <div><p>Lesson Status</p><strong id="lesson-completion-status">Not completed</strong></div>
           <button type="button" id="mark-lesson-complete" class="lesson-complete-button">Mark Lesson Complete ✓</button>
