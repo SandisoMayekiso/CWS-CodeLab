@@ -1,16 +1,22 @@
 /* =========================================================
    CWS CODELAB
-   STUDENT DASHBOARD
+   STUDENT DASHBOARD UI
 
-   Firebase Authentication will be connected next.
+   Firebase responsibilities are handled by:
+   js/auth-guard.js
 
-   This file currently handles:
-   - Dashboard mobile navigation
+   This file handles:
+   - Mobile sidebar
    - Student UI rendering
-   - Dashboard statistics rendering
-   - Loading state
+   - Dashboard statistics
+   - Continue-learning UI
+   - Placeholder navigation for pages not built yet
+   - Loading screen
    - Dashboard messages
-   - Temporary pre-Firebase sign-out behaviour
+
+   IMPORTANT:
+   Real course navigation uses normal links.
+   Real sign out is handled by auth-guard.js.
 ========================================================= */
 
 
@@ -47,12 +53,6 @@ document.addEventListener(
             );
 
 
-        const signOutButton =
-            document.getElementById(
-                "sign-out-button"
-            );
-
-
         const dashboardYear =
             document.getElementById(
                 "dashboard-year"
@@ -71,8 +71,11 @@ document.addEventListener(
 
         if (dashboardYear) {
 
+
             dashboardYear.textContent =
-                new Date().getFullYear();
+                new Date()
+                    .getFullYear();
+
 
         }
 
@@ -227,6 +230,11 @@ document.addEventListener(
 
         /* =====================================================
            FUTURE PAGE PLACEHOLDERS
+
+           Only pages we genuinely haven't built yet should
+           use data-future-page.
+
+           Courses no longer use this system.
         ===================================================== */
 
         futurePageButtons.forEach(
@@ -235,7 +243,10 @@ document.addEventListener(
 
                 button.addEventListener(
                     "click",
-                    () => {
+                    event => {
+
+
+                        event.preventDefault();
 
 
                         const page =
@@ -246,9 +257,17 @@ document.addEventListener(
                         showDashboardMessage(
                             `${formatFuturePageName(
                                 page
-                            )} will be connected as we build the student portal.`,
+                            )} will be connected as we continue building the CodeLab student portal.`,
                             "info"
                         );
+
+
+                        /*
+                         * If opened through the mobile sidebar,
+                         * close the sidebar afterwards.
+                         */
+
+                        closeSidebar();
 
 
                     }
@@ -260,30 +279,10 @@ document.addEventListener(
 
 
         /* =====================================================
-           SIGN OUT
+           STUDENT
 
-           Firebase signOut() will replace this behaviour.
-        ===================================================== */
-
-        signOutButton?.addEventListener(
-            "click",
-            () => {
-
-
-                showDashboardMessage(
-                    "Sign out will become active when Firebase Authentication is connected.",
-                    "info"
-                );
-
-
-            }
-        );
-
-
-        /* =====================================================
-           SET STUDENT
-
-           Firebase auth will call this after onAuthStateChanged().
+           Called by auth-guard.js after Firebase authentication
+           and Firestore profile loading have completed.
         ===================================================== */
 
         function setStudent(
@@ -300,8 +299,21 @@ document.addEventListener(
 
 
             const email =
-                student.email ||
-                "student@codelab.local";
+                normaliseEmailDisplay(
+                    student.email
+                );
+
+
+            const plan =
+                normalisePlan(
+                    student.plan
+                );
+
+
+            const accountStatus =
+                normaliseAccountStatus(
+                    student.accountStatus
+                );
 
 
             const initial =
@@ -310,27 +322,13 @@ document.addEventListener(
                 );
 
 
+            /* =================================================
+               TOPBAR
+            ================================================= */
+
             setText(
                 "student-name",
                 name
-            );
-
-
-            setText(
-                "sidebar-student-name",
-                name
-            );
-
-
-            setText(
-                "profile-student-name",
-                name
-            );
-
-
-            setText(
-                "welcome-student-name",
-                `${firstName(name)}.`
             );
 
 
@@ -341,8 +339,24 @@ document.addEventListener(
 
 
             setText(
-                "profile-student-email",
-                email
+                "topbar-student-avatar",
+                initial
+            );
+
+
+            /* =================================================
+               SIDEBAR
+            ================================================= */
+
+            setText(
+                "sidebar-student-name",
+                name
+            );
+
+
+            setText(
+                "sidebar-student-plan",
+                `${plan} Learner`
             );
 
 
@@ -352,9 +366,31 @@ document.addEventListener(
             );
 
 
+            /* =================================================
+               WELCOME
+            ================================================= */
+
             setText(
-                "topbar-student-avatar",
-                initial
+                "welcome-student-name",
+                `${firstName(
+                    name
+                )}.`
+            );
+
+
+            /* =================================================
+               PROFILE
+            ================================================= */
+
+            setText(
+                "profile-student-name",
+                name
+            );
+
+
+            setText(
+                "profile-student-email",
+                email
             );
 
 
@@ -363,6 +399,22 @@ document.addEventListener(
                 initial
             );
 
+
+            setText(
+                "profile-account-status",
+                plan
+            );
+
+
+            setText(
+                "profile-learning-status",
+                accountStatus
+            );
+
+
+            /* =================================================
+               CREATED DATE
+            ================================================= */
 
             if (
                 student.createdAt
@@ -377,17 +429,12 @@ document.addEventListener(
                 );
 
 
-            }
-
-
-            if (
-                student.plan
-            ) {
+            } else {
 
 
                 setText(
-                    "profile-account-status",
-                    student.plan
+                    "profile-member-since",
+                    "—"
                 );
 
 
@@ -398,7 +445,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           SET DASHBOARD STATISTICS
+           DASHBOARD STATISTICS
         ===================================================== */
 
         function setDashboardStats(
@@ -458,14 +505,138 @@ document.addEventListener(
             );
 
 
+            updateContinueLearningState(
+                {
+
+                    courseCount:
+                        courses,
+
+                    progress
+
+                }
+            );
+
+
+        }
+
+
+        /* =====================================================
+           CONTINUE LEARNING
+
+           This provides a better dashboard state before we build
+           the full "recent course" Firestore functionality.
+        ===================================================== */
+
+        function updateContinueLearningState(
+            data = {}
+        ) {
+
+
+            const courseCount =
+                safeNumber(
+                    data.courseCount
+                );
+
+
+            const progress =
+                clamp(
+                    safeNumber(
+                        data.progress
+                    ),
+                    0,
+                    100
+                );
+
+
+            const title =
+                document.getElementById(
+                    "continue-learning-title"
+                );
+
+
+            const description =
+                document.getElementById(
+                    "continue-learning-description"
+                );
+
+
+            if (
+                courseCount <= 0
+            ) {
+
+
+                if (title) {
+
+
+                    title.textContent =
+                        "Choose your first course";
+
+
+                }
+
+
+                if (description) {
+
+
+                    description.textContent =
+                        "Browse all available CodeLab courses, enrol in a free course and begin your developer journey.";
+
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (title) {
+
+
+                title.textContent =
+                    courseCount === 1
+
+                        ? "1 course in your learning library"
+
+                        : `${courseCount} courses in your learning library`;
+
+
+            }
+
+
+            if (description) {
+
+
+                if (
+                    progress > 0
+                ) {
+
+
+                    description.textContent =
+                        `Your overall progress is currently ${progress}%. Open My Courses to continue where you left off.`;
+
+
+                } else {
+
+
+                    description.textContent =
+                        "Your enrolled courses are ready. Open My Courses and begin your next lesson.";
+
+
+                }
+
+
+            }
+
+
         }
 
 
         /* =====================================================
            LOADING STATE
 
-           Firebase auth guard will use this while checking
-           whether a user is logged in.
+           auth-guard.js calls this when authentication/profile
+           checks complete.
         ===================================================== */
 
         function setDashboardLoading(
@@ -516,12 +687,15 @@ document.addEventListener(
             }
 
 
-            const allowedTypes =
-                [
-                    "info",
-                    "success",
-                    "error"
-                ];
+            const allowedTypes = [
+
+                "info",
+
+                "success",
+
+                "error"
+
+            ];
 
 
             const safeType =
@@ -535,7 +709,10 @@ document.addEventListener(
 
 
             element.textContent =
-                message;
+                String(
+                    message ||
+                    ""
+                );
 
 
             element.className =
@@ -588,6 +765,11 @@ document.addEventListener(
             }
 
 
+            window.clearTimeout(
+                showDashboardMessage.timeout
+            );
+
+
             element.hidden =
                 true;
 
@@ -604,7 +786,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           HELPERS
+           SET TEXT
         ===================================================== */
 
         function setText(
@@ -628,12 +810,17 @@ document.addEventListener(
 
             element.textContent =
                 String(
-                    value ?? ""
+                    value ??
+                    ""
                 );
 
 
         }
 
+
+        /* =====================================================
+           NAME
+        ===================================================== */
 
         function normaliseName(
             value
@@ -642,9 +829,14 @@ document.addEventListener(
 
             const name =
                 String(
-                    value || ""
+                    value ||
+                    ""
                 )
-                    .trim();
+                    .trim()
+                    .replace(
+                        /\s+/g,
+                        " "
+                    );
 
 
             return name ||
@@ -662,7 +854,9 @@ document.addEventListener(
             return normaliseName(
                 name
             )
-                .split(/\s+/)[0];
+                .split(
+                    /\s+/
+                )[0];
 
 
         }
@@ -684,19 +878,143 @@ document.addEventListener(
         }
 
 
+        /* =====================================================
+           EMAIL DISPLAY
+        ===================================================== */
+
+        function normaliseEmailDisplay(
+            value
+        ) {
+
+
+            const email =
+                String(
+                    value ||
+                    ""
+                )
+                    .trim();
+
+
+            return email ||
+                "CodeLab Student";
+
+
+        }
+
+
+        /* =====================================================
+           PLAN
+        ===================================================== */
+
+        function normalisePlan(
+            value
+        ) {
+
+
+            const plan =
+                String(
+                    value ||
+                    "Free"
+                )
+                    .trim();
+
+
+            if (!plan) {
+
+                return "Free";
+
+            }
+
+
+            return (
+                plan.charAt(0)
+                    .toUpperCase() +
+                plan.slice(1)
+                    .toLowerCase()
+            );
+
+
+        }
+
+
+        /* =====================================================
+           ACCOUNT STATUS
+        ===================================================== */
+
+        function normaliseAccountStatus(
+            value
+        ) {
+
+
+            const status =
+                String(
+                    value ||
+                    "Active"
+                )
+                    .trim();
+
+
+            if (!status) {
+
+                return "Active";
+
+            }
+
+
+            return (
+                status.charAt(0)
+                    .toUpperCase() +
+                status.slice(1)
+                    .toLowerCase()
+            );
+
+
+        }
+
+
+        /* =====================================================
+           DATE
+        ===================================================== */
+
         function formatDate(
             dateValue
         ) {
 
 
-            const date =
-                dateValue instanceof Date
+            let date;
 
-                    ? dateValue
 
-                    : new Date(
+            if (
+                dateValue instanceof
+                Date
+            ) {
+
+
+                date =
+                    dateValue;
+
+
+            } else if (
+                dateValue &&
+                typeof dateValue.toDate ===
+                    "function"
+            ) {
+
+
+                date =
+                    dateValue.toDate();
+
+
+            } else {
+
+
+                date =
+                    new Date(
                         dateValue
                     );
+
+
+            }
 
 
             if (
@@ -705,7 +1023,9 @@ document.addEventListener(
                 )
             ) {
 
+
                 return "—";
+
 
             }
 
@@ -730,6 +1050,10 @@ document.addEventListener(
         }
 
 
+        /* =====================================================
+           NUMBER
+        ===================================================== */
+
         function safeNumber(
             value
         ) {
@@ -747,7 +1071,9 @@ document.addEventListener(
                 )
             ) {
 
+
                 return 0;
+
 
             }
 
@@ -762,6 +1088,10 @@ document.addEventListener(
 
         }
 
+
+        /* =====================================================
+           CLAMP
+        ===================================================== */
 
         function clamp(
             number,
@@ -781,6 +1111,10 @@ document.addEventListener(
 
         }
 
+
+        /* =====================================================
+           FUTURE PAGE NAME
+        ===================================================== */
 
         function formatFuturePageName(
             value
@@ -815,8 +1149,7 @@ document.addEventListener(
         /* =====================================================
            PUBLIC DASHBOARD API
 
-           Firebase files can use these functions without
-           duplicating dashboard UI logic.
+           auth-guard.js uses these functions.
         ===================================================== */
 
         window.CWSDashboard = {
@@ -838,14 +1171,21 @@ document.addEventListener(
 
 
             clearMessage:
-                clearDashboardMessage
+                clearDashboardMessage,
+
+
+            updateContinueLearning:
+                updateContinueLearningState
 
 
         };
 
 
         /* =====================================================
-           INITIAL PLACEHOLDER STATE
+           INITIAL VISUAL STATE
+
+           The Firebase loading overlay remains visible until
+           auth-guard.js authenticates the learner.
         ===================================================== */
 
         setStudent(
@@ -855,10 +1195,13 @@ document.addEventListener(
                     "Student",
 
                 email:
-                    "student@codelab.local",
+                    "Loading account...",
 
                 plan:
-                    "Free"
+                    "Free",
+
+                accountStatus:
+                    "Active"
 
             }
         );
@@ -884,7 +1227,7 @@ document.addEventListener(
 
 
         console.log(
-            "CWS CodeLab student dashboard initialized."
+            "CWS CodeLab student dashboard UI initialized."
         );
 
 
