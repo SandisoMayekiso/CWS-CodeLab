@@ -1,7 +1,6 @@
 /* =========================================================
    CWS CODELAB
-   LESSON WORKSPACE
-   Academy-style dedicated course-file loader
+   LESSON WORKSPACE + KNOWLEDGE CHECKS
 ========================================================= */
 
 import { auth, db } from "./firebase-config.js";
@@ -19,14 +18,28 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-const LOGIN_URL = new URL("../pages/login.html", import.meta.url).href;
-const COURSES_URL = new URL("../student/student-courses.html", import.meta.url).href;
-const PRICING_URL = new URL("../pages/pricing.html", import.meta.url).href;
+const LOGIN_URL =
+    new URL("../pages/login.html", import.meta.url).href;
 
-const params = new URLSearchParams(window.location.search);
+const COURSES_URL =
+    new URL("../student/student-courses.html", import.meta.url).href;
 
-const requestedCourseId = params.get("course");
-const requestedLessonId = params.get("lesson");
+const MODULE_ASSESSMENT_URL =
+    new URL("../student/module-assessment.html", import.meta.url).href;
+
+const FINAL_ASSESSMENT_URL =
+    new URL("../student/final-assessment.html", import.meta.url).href;
+
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const requestedCourseId =
+    params.get("course");
+
+const requestedLessonId =
+    params.get("lesson");
+
 
 const state = {
     user: null,
@@ -37,61 +50,78 @@ const state = {
     currentLesson: null,
     currentLessonIndex: -1,
     completedLessons: [],
-    percentage: 0
+    percentage: 0,
+    knowledgePassed: false,
+    knowledgeSelected: null,
+    knowledgeQuestion: null
 };
 
-const loadingScreen = document.getElementById("lesson-loading");
-const completeButton = document.getElementById("mark-lesson-complete");
-const previousButton = document.getElementById("previous-lesson-button");
-const nextButton = document.getElementById("next-lesson-button");
 
-setText("lesson-year", new Date().getFullYear());
+const loadingScreen =
+    document.getElementById("lesson-loading");
+
+const completeButton =
+    document.getElementById("mark-lesson-complete");
+
+const previousButton =
+    document.getElementById("previous-lesson-button");
+
+const nextButton =
+    document.getElementById("next-lesson-button");
+
+
+setText(
+    "lesson-year",
+    new Date().getFullYear()
+);
+
 initialiseSidebar();
 
 
-const unsubscribe = onAuthStateChanged(
-    auth,
+const unsubscribe =
+    onAuthStateChanged(
+        auth,
 
-    async user => {
+        async user => {
 
-        if (!user) {
+            if (!user) {
+                window.location.replace(LOGIN_URL);
+                return;
+            }
+
+            state.user = user;
+
+            try {
+                await waitForCatalogue();
+                await loadProfile();
+                resolveMetadata();
+                verifyAccess();
+                await loadCourse();
+                flattenLessons();
+                resolveCurrentLesson();
+                resolveKnowledgeState();
+                populateIdentity();
+                renderWorkspace();
+                await saveCurrentAccess();
+                setLoading(false);
+
+            } catch (error) {
+                console.error(
+                    "Lesson workspace error:",
+                    error
+                );
+                handleFatalError(error);
+            }
+        },
+
+        error => {
+            console.error(
+                "Lesson authentication failed:",
+                error
+            );
             window.location.replace(LOGIN_URL);
-            return;
         }
-
-        state.user = user;
-
-        try {
-
-            await waitForCatalogue();
-            await loadProfile(user);
-
-            resolveMetadata();
-            verifyAccess();
-
-            await loadCourseContent();
-
-            flattenLessons();
-            resolveCurrentLesson();
-            populateIdentity();
-            renderWorkspace();
-
-            await saveCurrentAccess();
-
-            setLoading(false);
-
-        } catch (error) {
-
-            console.error("Lesson workspace error:", error);
-            handleFatalError(error);
-        }
-    },
-
-    error => {
-        console.error("Auth observer error:", error);
-        window.location.replace(LOGIN_URL);
-    }
-);
+    );
 
 
 function waitForCatalogue(timeout = 6000) {
@@ -108,35 +138,47 @@ function waitForCatalogue(timeout = 6000) {
 
         const started = Date.now();
 
-        const timer = window.setInterval(() => {
+        const timer =
+            window.setInterval(() => {
 
-            if (
-                Array.isArray(window.CWS_COURSES) &&
-                window.CWS_COURSE_UTILS
-            ) {
-                window.clearInterval(timer);
-                resolve();
-                return;
-            }
+                if (
+                    Array.isArray(window.CWS_COURSES) &&
+                    window.CWS_COURSE_UTILS
+                ) {
+                    window.clearInterval(timer);
+                    resolve();
+                    return;
+                }
 
-            if (Date.now() - started >= timeout) {
-                window.clearInterval(timer);
-                reject(new Error("course-catalogue-unavailable"));
-            }
+                if (Date.now() - started >= timeout) {
+                    window.clearInterval(timer);
+                    reject(
+                        new Error(
+                            "course-catalogue-unavailable"
+                        )
+                    );
+                }
 
-        }, 40);
+            }, 40);
     });
 }
 
 
-async function loadProfile(user) {
+async function loadProfile() {
 
-    const snapshot = await getDoc(
-        doc(db, "users", user.uid)
-    );
+    const snapshot =
+        await getDoc(
+            doc(
+                db,
+                "users",
+                state.user.uid
+            )
+        );
 
     if (!snapshot.exists()) {
-        throw new Error("student-profile-not-found");
+        throw new Error(
+            "student-profile-not-found"
+        );
     }
 
     state.profile = {
@@ -149,7 +191,9 @@ async function loadProfile(user) {
 function resolveMetadata() {
 
     if (!requestedCourseId) {
-        throw new Error("course-not-specified");
+        throw new Error(
+            "course-not-specified"
+        );
     }
 
     state.metadata =
@@ -158,7 +202,9 @@ function resolveMetadata() {
         );
 
     if (!state.metadata) {
-        throw new Error("course-not-found");
+        throw new Error(
+            "course-not-found"
+        );
     }
 }
 
@@ -166,70 +212,53 @@ function resolveMetadata() {
 function verifyAccess() {
 
     if (state.metadata.status !== "available") {
-        throw new Error("course-not-available");
+        throw new Error(
+            "course-not-available"
+        );
     }
 
     const enrolled =
-        Array.isArray(state.profile.enrolledCourses) &&
+        Array.isArray(
+            state.profile.enrolledCourses
+        ) &&
         state.profile.enrolledCourses.includes(
             state.metadata.id
         );
 
     if (!enrolled) {
-        throw new Error("not-enrolled");
+        throw new Error(
+            "not-enrolled"
+        );
     }
 
-    const access = String(
-        state.metadata.access ||
-        ""
-    ).toLowerCase();
-
-    const plan = String(
-        state.profile.plan ||
-        "free"
-    ).toLowerCase();
-
     if (
-        access === "pro" &&
-        plan !== "pro"
+        String(
+            state.metadata.access || ""
+        ).toLowerCase() === "pro"
     ) {
-        throw new Error("pro-required");
+        throw new Error(
+            "protected-pro-loader-not-connected"
+        );
     }
 }
 
 
-async function loadCourseContent() {
+async function loadCourse() {
 
-    const access = String(
-        state.metadata.access ||
-        ""
-    ).toLowerCase();
-
-    /*
-     * SECURITY:
-     * Free course bodies may come from public dedicated JS files.
-     * Pro bodies must later come from protected Firebase/backend delivery.
-     */
-    if (access === "pro") {
-        throw new Error("protected-pro-loader-not-connected");
-    }
-
-    const loader =
-        window.CWS_COURSE_UTILS?.loadCourseData;
-
-    if (typeof loader !== "function") {
-        throw new Error("course-loader-unavailable");
-    }
-
-    state.course = await loader(
-        state.metadata.id
-    );
+    state.course =
+        await window.CWS_COURSE_UTILS.loadCourseData(
+            state.metadata.id
+        );
 
     if (
         !state.course ||
-        !Array.isArray(state.course.curriculum)
+        !Array.isArray(
+            state.course.curriculum
+        )
     ) {
-        throw new Error("course-content-invalid");
+        throw new Error(
+            "course-content-invalid"
+        );
     }
 }
 
@@ -251,9 +280,12 @@ function flattenLessons() {
 
                     state.lessons.push({
                         ...lesson,
-                        moduleId: courseModule.id,
-                        moduleTitle: courseModule.title,
-                        moduleDescription: courseModule.description,
+                        moduleId:
+                            courseModule.id,
+                        moduleTitle:
+                            courseModule.title,
+                        moduleDescription:
+                            courseModule.description,
                         moduleIndex,
                         lessonIndex
                     });
@@ -263,7 +295,9 @@ function flattenLessons() {
     );
 
     if (!state.lessons.length) {
-        throw new Error("course-has-no-lessons");
+        throw new Error(
+            "course-has-no-lessons"
+        );
     }
 }
 
@@ -271,9 +305,9 @@ function flattenLessons() {
 function getStoredProgress() {
 
     const value =
-        state.profile?.courseProgress?.[
-            state.course.id
-        ];
+        state.profile
+            ?.courseProgress
+            ?.[state.course.id];
 
     return (
         value &&
@@ -286,21 +320,19 @@ function getStoredProgress() {
 
 function resolveCurrentLesson() {
 
-    const progress = getStoredProgress();
+    const progress =
+        getStoredProgress();
 
     state.completedLessons =
-        Array.isArray(progress.completedLessons)
+        Array.isArray(
+            progress.completedLessons
+        )
             ? [...progress.completedLessons]
             : [];
 
-    let lessonId = requestedLessonId;
-
-    if (
-        !lessonId &&
-        progress.currentLessonId
-    ) {
-        lessonId = progress.currentLessonId;
-    }
+    let lessonId =
+        requestedLessonId ||
+        progress.currentLessonId;
 
     if (!lessonId) {
 
@@ -320,10 +352,11 @@ function resolveCurrentLesson() {
             ].id;
     }
 
-    const index = state.lessons.findIndex(
-        lesson =>
-            lesson.id === lessonId
-    );
+    const index =
+        state.lessons.findIndex(
+            lesson =>
+                lesson.id === lessonId
+        );
 
     state.currentLessonIndex =
         index >= 0
@@ -339,18 +372,116 @@ function resolveCurrentLesson() {
 }
 
 
+function getLessonCheckRecord() {
+
+    return state.profile
+        ?.lessonKnowledgeChecks
+        ?.[state.course.id]
+        ?.[state.currentLesson.id] ||
+        {};
+}
+
+
+function resolveKnowledgeState() {
+
+    const checks =
+        Array.isArray(
+            state.currentLesson.knowledgeCheck
+        )
+            ? state.currentLesson.knowledgeCheck
+            : [];
+
+    const original =
+        checks[0] || null;
+
+    state.knowledgeQuestion =
+        original
+            ? shuffleQuestionOptions(
+                original
+            )
+            : null;
+
+    const record =
+        getLessonCheckRecord();
+
+    state.knowledgePassed =
+        !state.knowledgeQuestion ||
+        Boolean(
+            record.passed
+        );
+
+    state.knowledgeSelected = null;
+}
+
+
+function shuffleQuestionOptions(question) {
+
+    const items =
+        question.options.map(
+            (text, originalIndex) => ({
+                text,
+                originalIndex
+            })
+        );
+
+    const correctOriginal =
+        question.correctAnswer;
+
+    for (
+        let i = items.length - 1;
+        i > 0;
+        i -= 1
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+        [
+            items[i],
+            items[j]
+        ] = [
+            items[j],
+            items[i]
+        ];
+    }
+
+    return {
+        ...question,
+        options:
+            items.map(
+                item =>
+                    item.text
+            ),
+        correctAnswer:
+            items.findIndex(
+                item =>
+                    item.originalIndex ===
+                    correctOriginal
+            )
+    };
+}
+
+
 function populateIdentity() {
 
-    const name = String(
-        state.profile.displayName ||
-        state.user.displayName ||
-        deriveNameFromEmail(
-            state.user.email
-        ) ||
-        "Student"
-    ).trim();
+    const name =
+        String(
+            state.profile.displayName ||
+            state.user.displayName ||
+            deriveNameFromEmail(
+                state.user.email
+            ) ||
+            "Student"
+        ).trim();
 
-    setText("lesson-student-name", name);
+    setText(
+        "lesson-student-name",
+        name
+    );
+
     setText(
         "lesson-student-email",
         state.profile.email ||
@@ -368,28 +499,50 @@ function populateIdentity() {
 
 function renderWorkspace() {
 
-    const course = state.course;
-    const lesson = state.currentLesson;
+    const course =
+        state.course;
+
+    const lesson =
+        state.currentLesson;
 
     document.title =
         `${lesson.title} | ${course.title} | CWS CodeLab`;
 
-    setText("sidebar-course-title", course.title);
-    setText("lesson-course-name", course.title);
     setText(
-        "lesson-course-kicker",
-        `${course.category} · ${course.level}`
+        "sidebar-course-title",
+        course.title
     );
 
-    setText("breadcrumb-course", course.title);
-    setText("breadcrumb-lesson", lesson.title);
+    setText(
+        "lesson-course-name",
+        course.title
+    );
+
+    setText(
+        "lesson-course-kicker",
+        `${course.category || ""} · ${course.level || ""}`
+    );
+
+    setText(
+        "breadcrumb-course",
+        course.title
+    );
+
+    setText(
+        "breadcrumb-lesson",
+        lesson.title
+    );
 
     setText(
         "lesson-module-label",
         `Module ${lesson.moduleIndex + 1} · ${lesson.moduleTitle}`
     );
 
-    setText("lesson-title", lesson.title);
+    setText(
+        "lesson-title",
+        lesson.title
+    );
+
     setText(
         "lesson-description",
         lesson.description ||
@@ -400,18 +553,31 @@ function renderWorkspace() {
     setText(
         "lesson-type",
         formatTitle(
-            lesson.type ||
-            "lesson"
+            lesson.type || "lesson"
         )
     );
 
     setText(
         "lesson-duration",
-        lesson.duration ||
-        "25 min"
+        lesson.duration || "25 min"
     );
 
-    renderDeepContext();
+    renderParagraph(
+        "lesson-what",
+        lesson.what
+    );
+
+    renderParagraph(
+        "lesson-why",
+        lesson.why
+    );
+
+    renderParagraph(
+        "lesson-how",
+        lesson.how
+    );
+
+    renderContext();
     renderContent();
     renderObjectives();
     renderTerminology();
@@ -419,35 +585,43 @@ function renderWorkspace() {
     renderPractice();
     renderMistakes();
     renderAdvanced();
+    renderKnowledgeCheck();
     renderCurriculum();
     renderCompletion();
+    renderModuleActions();
     renderNavigation();
     renderProgress();
 }
 
 
-function renderDeepContext() {
+function renderContext() {
 
-    const lesson = state.currentLesson;
-
-    renderParagraph("lesson-what", lesson.what);
-    renderParagraph("lesson-why", lesson.why);
-    renderParagraph("lesson-how", lesson.how);
-
-    const context =
+    const target =
         document.getElementById(
             "lesson-context"
         );
 
-    if (!context) {
+    if (!target) {
         return;
     }
 
-    context.innerHTML = `
-        ${contextList("Who uses this?", lesson.who)}
-        ${contextList("When is it useful?", lesson.when)}
-        ${contextList("Where is it used?", lesson.where)}
-        ${contextList("When might you avoid it?", lesson.avoidWhen)}
+    target.innerHTML = `
+        ${contextList(
+            "Who uses this?",
+            state.currentLesson.who
+        )}
+        ${contextList(
+            "When is it useful?",
+            state.currentLesson.when
+        )}
+        ${contextList(
+            "Where is it used?",
+            state.currentLesson.where
+        )}
+        ${contextList(
+            "When might you avoid it?",
+            state.currentLesson.avoidWhen
+        )}
     `;
 }
 
@@ -466,8 +640,8 @@ function contextList(title, values) {
             <h3>${escapeHtml(title)}</h3>
             <ul>
                 ${values.map(
-                    value =>
-                        `<li>${escapeHtml(value)}</li>`
+                    item =>
+                        `<li>${escapeHtml(item)}</li>`
                 ).join("")}
             </ul>
         </section>
@@ -493,16 +667,13 @@ function renderContent() {
             ? state.currentLesson.content
             : [];
 
-    target.innerHTML = content.length
-        ? content.map(
-            paragraph =>
-                `<p>${escapeHtml(paragraph)}</p>`
-        ).join("")
-        : `
-            <p>
-                Detailed content for this lesson is being prepared.
-            </p>
-        `;
+    target.innerHTML =
+        content.length
+            ? content.map(
+                paragraph =>
+                    `<p>${escapeHtml(paragraph)}</p>`
+            ).join("")
+            : `<p>Detailed content for this lesson is being prepared.</p>`;
 }
 
 
@@ -524,16 +695,11 @@ function renderObjectives() {
             ? state.currentLesson.objectives
             : [];
 
-    target.innerHTML = items.length
-        ? items.map(
+    target.innerHTML =
+        items.map(
             item =>
                 `<li>${escapeHtml(item)}</li>`
-        ).join("")
-        : `
-            <li>
-                Understand and apply the concepts in this lesson.
-            </li>
-        `;
+        ).join("");
 }
 
 
@@ -549,10 +715,6 @@ function renderTerminology() {
             "lesson-terminology"
         );
 
-    if (!target) {
-        return;
-    }
-
     const items =
         Array.isArray(
             state.currentLesson.terminology
@@ -560,19 +722,30 @@ function renderTerminology() {
             ? state.currentLesson.terminology
             : [];
 
-    if (!items.length) {
-        if (card) card.hidden = true;
+    if (!target) {
         return;
     }
 
-    if (card) card.hidden = false;
+    if (!items.length) {
+        if (card) {
+            card.hidden = true;
+        }
+        return;
+    }
 
-    target.innerHTML = items.map(item => `
-        <div class="lesson-term">
-            <strong>${escapeHtml(item.term || "")}</strong>
-            <p>${escapeHtml(item.definition || "")}</p>
-        </div>
-    `).join("");
+    if (card) {
+        card.hidden = false;
+    }
+
+    target.innerHTML =
+        items.map(
+            item => `
+                <div class="lesson-term">
+                    <strong>${escapeHtml(item.term || "")}</strong>
+                    <p>${escapeHtml(item.definition || "")}</p>
+                </div>
+            `
+        ).join("");
 }
 
 
@@ -588,61 +761,51 @@ function renderExamples() {
             "lesson-examples"
         );
 
-    if (!target) {
-        return;
-    }
-
-    const examples =
+    const items =
         Array.isArray(
             state.currentLesson.examples
         )
             ? state.currentLesson.examples
             : [];
 
-    if (!examples.length) {
-        if (card) card.hidden = true;
+    if (!target) {
         return;
     }
 
-    if (card) card.hidden = false;
+    if (!items.length) {
+        if (card) {
+            card.hidden = true;
+        }
+        return;
+    }
 
-    target.innerHTML = examples.map(
-        (example, index) => `
-            <section class="lesson-example">
-                <p class="lesson-section-kicker">
-                    Example ${index + 1}
-                </p>
+    if (card) {
+        card.hidden = false;
+    }
 
-                <h3>
-                    ${escapeHtml(
-                        example.title ||
-                        "Example"
-                    )}
-                </h3>
-
-                ${example.scenario
-                    ? `<p>${escapeHtml(example.scenario)}</p>`
-                    : ""}
-
-                ${example.code
-                    ? `<pre><code>${escapeHtml(example.code)}</code></pre>`
-                    : ""}
-
-                ${example.output
-                    ? `
-                        <p>
-                            <strong>Output:</strong>
-                            ${escapeHtml(example.output)}
-                        </p>
-                    `
-                    : ""}
-
-                ${example.explanation
-                    ? `<p>${escapeHtml(example.explanation)}</p>`
-                    : ""}
-            </section>
-        `
-    ).join("");
+    target.innerHTML =
+        items.map(
+            (item, index) => `
+                <section class="lesson-example">
+                    <p class="lesson-section-kicker">
+                        Example ${index + 1}
+                    </p>
+                    <h3>${escapeHtml(item.title || "Example")}</h3>
+                    ${item.scenario
+                        ? `<p>${escapeHtml(item.scenario)}</p>`
+                        : ""}
+                    ${item.code
+                        ? `<pre><code>${escapeHtml(item.code)}</code></pre>`
+                        : ""}
+                    ${item.output
+                        ? `<p><strong>Output:</strong> ${escapeHtml(item.output)}</p>`
+                        : ""}
+                    ${item.explanation
+                        ? `<p>${escapeHtml(item.explanation)}</p>`
+                        : ""}
+                </section>
+            `
+        ).join("");
 }
 
 
@@ -658,59 +821,56 @@ function renderPractice() {
             "lesson-practice"
         );
 
-    if (!target) {
-        return;
-    }
-
-    const tasks =
+    const items =
         Array.isArray(
             state.currentLesson.practice
         )
             ? state.currentLesson.practice
             : [];
 
-    if (!tasks.length) {
-        if (card) card.hidden = true;
+    if (!target) {
         return;
     }
 
-    if (card) card.hidden = false;
+    if (!items.length) {
+        if (card) {
+            card.hidden = true;
+        }
+        return;
+    }
 
-    target.innerHTML = tasks.map(
-        (task, index) => `
-            <section class="lesson-practice-block">
-                <p class="lesson-practice-label">
-                    ${escapeHtml(task.difficulty || "practice")}
-                </p>
+    if (card) {
+        card.hidden = false;
+    }
 
-                <h3>
-                    ${index + 1}. ${escapeHtml(task.title || "Practice")}
-                </h3>
-
-                <p>
-                    ${escapeHtml(task.task || "")}
-                </p>
-
-                ${task.hint
-                    ? `
-                        <details>
-                            <summary>Show hint</summary>
-                            <p>${escapeHtml(task.hint)}</p>
-                        </details>
-                    `
-                    : ""}
-
-                ${task.solution
-                    ? `
-                        <details>
-                            <summary>Show solution</summary>
-                            <pre><code>${escapeHtml(task.solution)}</code></pre>
-                        </details>
-                    `
-                    : ""}
-            </section>
-        `
-    ).join("");
+    target.innerHTML =
+        items.map(
+            (item, index) => `
+                <section class="lesson-practice-block">
+                    <p class="lesson-practice-label">
+                        ${escapeHtml(item.difficulty || "practice")}
+                    </p>
+                    <h3>${index + 1}. ${escapeHtml(item.title || "Practice")}</h3>
+                    <p>${escapeHtml(item.task || "")}</p>
+                    ${item.hint
+                        ? `
+                            <details>
+                                <summary>Show hint</summary>
+                                <p>${escapeHtml(item.hint)}</p>
+                            </details>
+                        `
+                        : ""}
+                    ${item.solution
+                        ? `
+                            <details>
+                                <summary>Show solution</summary>
+                                <pre><code>${escapeHtml(item.solution)}</code></pre>
+                            </details>
+                        `
+                        : ""}
+                </section>
+            `
+        ).join("");
 }
 
 
@@ -726,10 +886,6 @@ function renderMistakes() {
             "lesson-mistakes"
         );
 
-    if (!target) {
-        return;
-    }
-
     const mistakes =
         Array.isArray(
             state.currentLesson.commonMistakes
@@ -744,15 +900,23 @@ function renderMistakes() {
             ? state.currentLesson.troubleshooting
             : [];
 
+    if (!target) {
+        return;
+    }
+
     if (
         !mistakes.length &&
         !troubleshooting.length
     ) {
-        if (card) card.hidden = true;
+        if (card) {
+            card.hidden = true;
+        }
         return;
     }
 
-    if (card) card.hidden = false;
+    if (card) {
+        card.hidden = false;
+    }
 
     target.innerHTML = `
         ${mistakes.length
@@ -766,7 +930,6 @@ function renderMistakes() {
                 </ul>
             `
             : ""}
-
         ${troubleshooting.length
             ? `
                 <h3>Troubleshooting</h3>
@@ -799,22 +962,26 @@ function renderAdvanced() {
             "lesson-advanced-title"
         );
 
+    const advanced =
+        state.currentLesson.advanced;
+
     if (!target) {
         return;
     }
-
-    const advanced =
-        state.currentLesson.advanced;
 
     if (
         !advanced ||
         advanced.available === false
     ) {
-        if (card) card.hidden = true;
+        if (card) {
+            card.hidden = true;
+        }
         return;
     }
 
-    if (card) card.hidden = false;
+    if (card) {
+        card.hidden = false;
+    }
 
     if (
         title &&
@@ -831,10 +998,274 @@ function renderAdvanced() {
             ? advanced.content
             : [];
 
-    target.innerHTML = content.map(
-        paragraph =>
-            `<p>${escapeHtml(paragraph)}</p>`
-    ).join("");
+    target.innerHTML =
+        content.map(
+            paragraph =>
+                `<p>${escapeHtml(paragraph)}</p>`
+        ).join("");
+}
+
+
+function renderKnowledgeCheck() {
+
+    const card =
+        document.getElementById(
+            "lesson-knowledge-card"
+        );
+
+    const questionTarget =
+        document.getElementById(
+            "lesson-knowledge-question"
+        );
+
+    const optionsTarget =
+        document.getElementById(
+            "lesson-knowledge-options"
+        );
+
+    const resultTarget =
+        document.getElementById(
+            "lesson-knowledge-result"
+        );
+
+    const submitButton =
+        document.getElementById(
+            "lesson-knowledge-submit"
+        );
+
+    const question =
+        state.knowledgeQuestion;
+
+    if (
+        !card ||
+        !question ||
+        !questionTarget ||
+        !optionsTarget
+    ) {
+
+        if (card) {
+            card.hidden = true;
+        }
+
+        state.knowledgePassed = true;
+        return;
+    }
+
+    card.hidden = false;
+    questionTarget.textContent =
+        question.question;
+
+    optionsTarget.innerHTML =
+        question.options.map(
+            (option, index) => `
+                <label
+                    class="
+                        lesson-knowledge-option
+                        ${state.knowledgeSelected === index ? "selected" : ""}
+                    "
+                >
+                    <input
+                        type="radio"
+                        name="lesson-knowledge-option"
+                        value="${index}"
+                        ${state.knowledgeSelected === index ? "checked" : ""}
+                        ${state.knowledgePassed ? "disabled" : ""}
+                    >
+                    <span class="lesson-knowledge-option-index">
+                        ${String.fromCharCode(65 + index)}
+                    </span>
+                    <span>${escapeHtml(option)}</span>
+                </label>
+            `
+        ).join("");
+
+    if (!state.knowledgePassed) {
+
+        optionsTarget
+            .querySelectorAll(
+                'input[name="lesson-knowledge-option"]'
+            )
+            .forEach(input => {
+
+                input.addEventListener(
+                    "change",
+                    () => {
+
+                        state.knowledgeSelected =
+                            Number(
+                                input.value
+                            );
+
+                        renderKnowledgeCheck();
+                    }
+                );
+            });
+    }
+
+    if (state.knowledgePassed) {
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent =
+                "Knowledge Check Passed ✓";
+        }
+
+        if (resultTarget) {
+            resultTarget.hidden = false;
+            resultTarget.className =
+                "lesson-knowledge-result success";
+            resultTarget.textContent =
+                "Passed. You can now mark this lesson complete.";
+        }
+
+    } else {
+
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent =
+                "Check Answer";
+        }
+
+        if (resultTarget) {
+            resultTarget.hidden = true;
+        }
+    }
+}
+
+
+document
+    .getElementById(
+        "lesson-knowledge-form"
+    )
+    ?.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            if (
+                state.knowledgePassed ||
+                !state.knowledgeQuestion
+            ) {
+                return;
+            }
+
+            const resultTarget =
+                document.getElementById(
+                    "lesson-knowledge-result"
+                );
+
+            if (
+                !Number.isInteger(
+                    state.knowledgeSelected
+                )
+            ) {
+
+                if (resultTarget) {
+                    resultTarget.hidden = false;
+                    resultTarget.className =
+                        "lesson-knowledge-result error";
+                    resultTarget.textContent =
+                        "Choose an answer before checking.";
+                }
+
+                return;
+            }
+
+            const correct =
+                state.knowledgeSelected ===
+                state.knowledgeQuestion.correctAnswer;
+
+            await saveKnowledgeAttempt(
+                correct
+            );
+
+            if (!correct) {
+
+                if (resultTarget) {
+                    resultTarget.hidden = false;
+                    resultTarget.className =
+                        "lesson-knowledge-result error";
+                    resultTarget.textContent =
+                        state.knowledgeQuestion.explanation ||
+                        "Review the lesson and try again.";
+                }
+
+                return;
+            }
+
+            state.knowledgePassed = true;
+
+            renderKnowledgeCheck();
+            renderCompletion();
+
+            showMessage(
+                "Knowledge check passed. You can mark the lesson complete.",
+                "success"
+            );
+        }
+    );
+
+
+async function saveKnowledgeAttempt(passed) {
+
+    const existing =
+        getLessonCheckRecord();
+
+    const data = {
+        lessonId:
+            state.currentLesson.id,
+        questionId:
+            state.knowledgeQuestion?.id || "",
+        attempts:
+            Number(
+                existing.attempts || 0
+            ) + 1,
+        passed:
+            Boolean(
+                existing.passed ||
+                passed
+            ),
+        lastCorrect:
+            passed,
+        updatedAt:
+            serverTimestamp()
+    };
+
+    await updateDoc(
+        doc(
+            db,
+            "users",
+            state.user.uid
+        ),
+        new FieldPath(
+            "lessonKnowledgeChecks",
+            state.course.id,
+            state.currentLesson.id
+        ),
+        data,
+        "updatedAt",
+        serverTimestamp()
+    );
+
+    state.profile.lessonKnowledgeChecks = {
+        ...(
+            state.profile.lessonKnowledgeChecks ||
+            {}
+        ),
+        [state.course.id]: {
+            ...(
+                state.profile
+                    ?.lessonKnowledgeChecks
+                    ?.[state.course.id] ||
+                {}
+            ),
+            [state.currentLesson.id]: {
+                ...data,
+                updatedAt: null
+            }
+        }
+    };
 }
 
 
@@ -849,78 +1280,73 @@ function renderCurriculum() {
         return;
     }
 
-    target.innerHTML = state.course.curriculum.map(
-        (courseModule, moduleIndex) => {
+    target.innerHTML =
+        state.course.curriculum.map(
+            (courseModule, moduleIndex) => {
 
-            const lessons =
-                Array.isArray(
-                    courseModule.lessons
-                )
-                    ? courseModule.lessons
-                    : [];
+                const lessons =
+                    Array.isArray(
+                        courseModule.lessons
+                    )
+                        ? courseModule.lessons
+                        : [];
 
-            const open =
-                lessons.some(
-                    lesson =>
-                        lesson.id ===
-                        state.currentLesson.id
-                );
+                const open =
+                    lessons.some(
+                        lesson =>
+                            lesson.id ===
+                            state.currentLesson.id
+                    );
 
-            return `
-                <details
-                    class="lesson-module"
-                    ${open ? "open" : ""}
-                >
-                    <summary>
-                        <span>
-                            Module ${moduleIndex + 1}
-                        </span>
-                        ${escapeHtml(courseModule.title)}
-                    </summary>
+                return `
+                    <details
+                        class="lesson-module"
+                        ${open ? "open" : ""}
+                    >
+                        <summary>
+                            <span>Module ${moduleIndex + 1}</span>
+                            ${escapeHtml(courseModule.title)}
+                        </summary>
 
-                    <div class="lesson-module-lessons">
-                        ${lessons.map(
-                            (lesson, lessonIndex) => {
+                        <div class="lesson-module-lessons">
+                            ${lessons.map(
+                                (lesson, lessonIndex) => {
 
-                                const active =
-                                    lesson.id ===
-                                    state.currentLesson.id;
+                                    const active =
+                                        lesson.id ===
+                                        state.currentLesson.id;
 
-                                const completed =
-                                    state.completedLessons.includes(
-                                        lesson.id
-                                    );
+                                    const completed =
+                                        state.completedLessons.includes(
+                                            lesson.id
+                                        );
 
-                                return `
-                                    <button
-                                        type="button"
-                                        class="
-                                            lesson-sidebar-lesson
-                                            ${active ? "active" : ""}
-                                            ${completed ? "completed" : ""}
-                                        "
-                                        data-lesson-id="${escapeHtml(lesson.id)}"
-                                    >
-                                        <span class="lesson-sidebar-number">
-                                            ${lessonIndex + 1}
-                                        </span>
-
-                                        <strong>
-                                            ${escapeHtml(lesson.title)}
-                                        </strong>
-
-                                        <span class="lesson-sidebar-status">
-                                            ${completed ? "✓" : "○"}
-                                        </span>
-                                    </button>
-                                `;
-                            }
-                        ).join("")}
-                    </div>
-                </details>
-            `;
-        }
-    ).join("");
+                                    return `
+                                        <button
+                                            type="button"
+                                            class="
+                                                lesson-sidebar-lesson
+                                                ${active ? "active" : ""}
+                                                ${completed ? "completed" : ""}
+                                            "
+                                            data-lesson-id="${escapeHtml(lesson.id)}"
+                                        >
+                                            <span class="lesson-sidebar-number">
+                                                ${lessonIndex + 1}
+                                            </span>
+                                            <strong>${escapeHtml(lesson.title)}</strong>
+                                            <span class="lesson-sidebar-status">
+                                                ${completed ? "✓" : "○"}
+                                            </span>
+                                        </button>
+                                    `;
+                                }
+                            ).join("")}
+                        </div>
+                    </details>
+                `;
+            }
+        ).join("");
 
     target
         .querySelectorAll(
@@ -931,6 +1357,7 @@ function renderCurriculum() {
             button.addEventListener(
                 "click",
                 () => {
+
                     navigateToLesson(
                         button.dataset.lessonId
                     );
@@ -951,14 +1378,18 @@ function renderCompletion() {
         "lesson-completion-status",
         completed
             ? "Completed"
-            : "Not completed"
+            : state.knowledgePassed
+                ? "Ready to complete"
+                : "Pass the knowledge check first"
     );
 
     if (!completeButton) {
         return;
     }
 
-    completeButton.disabled = completed;
+    completeButton.disabled =
+        completed ||
+        !state.knowledgePassed;
 
     completeButton.classList.toggle(
         "completed",
@@ -968,71 +1399,75 @@ function renderCompletion() {
     completeButton.textContent =
         completed
             ? "Lesson Completed ✓"
-            : "Mark Lesson Complete ✓";
+            : !state.knowledgePassed
+                ? "Complete Knowledge Check First"
+                : "Mark Lesson Complete ✓";
 }
 
 
-completeButton?.addEventListener(
-    "click",
-    async () => {
+completeButton
+    ?.addEventListener(
+        "click",
+        async () => {
 
-        if (
-            !state.currentLesson ||
-            !state.user ||
-            state.completedLessons.includes(
-                state.currentLesson.id
-            )
-        ) {
-            return;
-        }
+            if (
+                !state.currentLesson ||
+                !state.user ||
+                !state.knowledgePassed ||
+                state.completedLessons.includes(
+                    state.currentLesson.id
+                )
+            ) {
+                return;
+            }
 
-        completeButton.disabled = true;
-        completeButton.textContent =
-            "Saving progress...";
+            completeButton.disabled = true;
+            completeButton.textContent =
+                "Saving progress...";
 
-        try {
+            try {
 
-            state.completedLessons.push(
-                state.currentLesson.id
-            );
-
-            calculateProgress();
-
-            await saveProgress();
-
-            renderCompletion();
-            renderCurriculum();
-            renderProgress();
-
-            showMessage(
-                "Lesson completed. Your progress has been saved.",
-                "success"
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Progress save failed:",
-                error
-            );
-
-            state.completedLessons =
-                state.completedLessons.filter(
-                    id =>
-                        id !==
-                        state.currentLesson.id
+                state.completedLessons.push(
+                    state.currentLesson.id
                 );
 
-            calculateProgress();
-            renderCompletion();
+                calculateProgress();
+                await saveProgress();
 
-            showMessage(
-                "CodeLab could not save your progress.",
-                "error"
-            );
+                renderCompletion();
+                renderCurriculum();
+                renderProgress();
+                renderModuleActions();
+
+                showMessage(
+                    "Lesson completed. Your progress has been saved.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Progress save failed:",
+                    error
+                );
+
+                state.completedLessons =
+                    state.completedLessons.filter(
+                        id =>
+                            id !==
+                            state.currentLesson.id
+                    );
+
+                calculateProgress();
+                renderCompletion();
+
+                showMessage(
+                    "CodeLab could not save your progress.",
+                    "error"
+                );
+            }
         }
-    }
-);
+    );
 
 
 function calculateProgress() {
@@ -1087,25 +1522,27 @@ async function saveProgress() {
             "users",
             state.user.uid
         ),
-
         new FieldPath(
             "courseProgress",
             state.course.id
         ),
-
         progressData,
-
         "lastActiveCourseId",
         state.course.id,
-
         "updatedAt",
         serverTimestamp()
     );
 
     state.profile.courseProgress = {
-        ...(state.profile.courseProgress || {}),
-        [state.course.id]:
-            progressData
+        ...(
+            state.profile.courseProgress ||
+            {}
+        ),
+        [state.course.id]: {
+            ...progressData,
+            startedAt: null,
+            lastAccessedAt: null
+        }
     };
 }
 
@@ -1123,21 +1560,163 @@ async function saveCurrentAccess() {
 }
 
 
-function renderProgress() {
+function getCurrentModule() {
 
-    setText(
-        "sidebar-course-progress",
-        `${state.percentage}%`
-    );
+    return state.course.curriculum[
+        state.currentLesson.moduleIndex
+    ] || null;
+}
 
-    const bar =
+
+function renderModuleActions() {
+
+    const callout =
         document.getElementById(
-            "sidebar-course-progress-bar"
+            "module-assessment-callout"
         );
 
-    if (bar) {
-        bar.style.width =
-            `${state.percentage}%`;
+    if (!callout) {
+        return;
+    }
+
+    const module =
+        getCurrentModule();
+
+    if (
+        !module ||
+        !Array.isArray(
+            module.lessons
+        ) ||
+        !module.lessons.length
+    ) {
+        callout.hidden = true;
+        return;
+    }
+
+    const lastLesson =
+        module.lessons[
+            module.lessons.length - 1
+        ];
+
+    const everyLessonComplete =
+        module.lessons.every(
+            lesson =>
+                state.completedLessons.includes(
+                    lesson.id
+                )
+        );
+
+    const show =
+        state.currentLesson.id ===
+            lastLesson.id &&
+        everyLessonComplete;
+
+    callout.hidden = !show;
+
+    if (!show) {
+        return;
+    }
+
+    setText(
+        "module-assessment-title",
+        `${module.title} complete`
+    );
+
+    setText(
+        "module-assessment-copy",
+        "Your lessons are complete. Test your understanding with a fresh module quiz, then complete the practical assessment."
+    );
+
+    const quizLink =
+        document.getElementById(
+            "module-quiz-link"
+        );
+
+    const practicalLink =
+        document.getElementById(
+            "module-practical-link"
+        );
+
+
+    const finalLink =
+        document.getElementById(
+            "module-final-link"
+        );
+
+    if (quizLink) {
+
+        const url =
+            new URL(
+                MODULE_ASSESSMENT_URL
+            );
+
+        url.searchParams.set(
+            "course",
+            state.course.id
+        );
+
+        url.searchParams.set(
+            "module",
+            module.id
+        );
+
+        url.searchParams.set(
+            "mode",
+            "quiz"
+        );
+
+        quizLink.href = url.href;
+    }
+
+    if (practicalLink) {
+
+        const url =
+            new URL(
+                MODULE_ASSESSMENT_URL
+            );
+
+        url.searchParams.set(
+            "course",
+            state.course.id
+        );
+
+        url.searchParams.set(
+            "module",
+            module.id
+        );
+
+        url.searchParams.set(
+            "mode",
+            "assessment"
+        );
+
+        practicalLink.href = url.href;
+    }
+
+    if (finalLink) {
+
+        const isFinalModule =
+            state.currentLesson.moduleIndex ===
+            state.course.curriculum.length - 1;
+
+        finalLink.hidden =
+            !isFinalModule;
+
+        if (isFinalModule) {
+
+            const url =
+                new URL(
+                    FINAL_ASSESSMENT_URL
+                );
+
+            url.searchParams.set(
+                "course",
+                state.course.id
+            );
+
+            finalLink.href =
+                url.href;
+        }
     }
 }
 
@@ -1155,6 +1734,7 @@ function renderNavigation() {
         ];
 
     if (previousButton) {
+
         previousButton.disabled =
             !previous;
 
@@ -1167,6 +1747,7 @@ function renderNavigation() {
     }
 
     if (nextButton) {
+
         nextButton.disabled =
             !next;
 
@@ -1180,40 +1761,42 @@ function renderNavigation() {
 }
 
 
-previousButton?.addEventListener(
-    "click",
-    () => {
+previousButton
+    ?.addEventListener(
+        "click",
+        () => {
 
-        const previous =
-            state.lessons[
-                state.currentLessonIndex - 1
-            ];
+            const previous =
+                state.lessons[
+                    state.currentLessonIndex - 1
+                ];
 
-        if (previous) {
-            navigateToLesson(
-                previous.id
-            );
+            if (previous) {
+                navigateToLesson(
+                    previous.id
+                );
+            }
         }
-    }
-);
+    );
 
 
-nextButton?.addEventListener(
-    "click",
-    () => {
+nextButton
+    ?.addEventListener(
+        "click",
+        () => {
 
-        const next =
-            state.lessons[
-                state.currentLessonIndex + 1
-            ];
+            const next =
+                state.lessons[
+                    state.currentLessonIndex + 1
+                ];
 
-        if (next) {
-            navigateToLesson(
-                next.id
-            );
+            if (next) {
+                navigateToLesson(
+                    next.id
+                );
+            }
         }
-    }
-);
+    );
 
 
 function navigateToLesson(lessonId) {
@@ -1235,6 +1818,25 @@ function navigateToLesson(lessonId) {
 
     window.location.href =
         url.href;
+}
+
+
+function renderProgress() {
+
+    setText(
+        "sidebar-course-progress",
+        `${state.percentage}%`
+    );
+
+    const bar =
+        document.getElementById(
+            "sidebar-course-progress-bar"
+        );
+
+    if (bar) {
+        bar.style.width =
+            `${state.percentage}%`;
+    }
 }
 
 
@@ -1261,15 +1863,27 @@ function initialiseSidebar() {
         );
 
     function closeSidebar() {
-        sidebar?.classList.remove("open");
-        overlay?.classList.remove("open");
+
+        sidebar?.classList.remove(
+            "open"
+        );
+
+        overlay?.classList.remove(
+            "open"
+        );
     }
 
     toggle?.addEventListener(
         "click",
         () => {
-            sidebar?.classList.add("open");
-            overlay?.classList.add("open");
+
+            sidebar?.classList.add(
+                "open"
+            );
+
+            overlay?.classList.add(
+                "open"
+            );
         }
     );
 
@@ -1286,6 +1900,7 @@ function initialiseSidebar() {
     document.addEventListener(
         "keydown",
         event => {
+
             if (event.key === "Escape") {
                 closeSidebar();
             }
@@ -1296,83 +1911,72 @@ function initialiseSidebar() {
 
 function handleFatalError(error) {
 
-    const value = String(
-        error?.message ||
-        error?.code ||
-        ""
-    );
+    const value =
+        String(
+            error?.message ||
+            error?.code ||
+            ""
+        );
 
     let message =
         "CodeLab could not open this lesson.";
 
-    if (value.includes("not-enrolled")) {
+    if (
+        value.includes(
+            "not-enrolled"
+        )
+    ) {
         message =
             "You must enrol in this course before opening its lessons.";
-    }
-
-    else if (value.includes("pro-required")) {
-        message =
-            "This course requires active CodeLab Pro access.";
-    }
-
-    else if (
+    } else if (
         value.includes(
-            "protected-pro-loader-not-connected"
+            "protected-pro"
         )
     ) {
         message =
             "Protected Pro lesson delivery has not been connected yet.";
     }
 
-    else if (
-        value.includes(
-            "course-not-available"
-        )
-    ) {
-        message =
-            "This course is not available yet.";
-    }
-
-    else if (
-        value.includes("course-not-found") ||
-        value.includes("course-not-specified")
-    ) {
-        message =
-            "The requested CodeLab course could not be found.";
-    }
-
-    else if (
-        value.includes("course-data-load-failed") ||
-        value.includes(
-            "course-data-registration-missing"
-        )
-    ) {
-        message =
-            "CodeLab could not load this course curriculum file.";
-    }
-
     setLoading(false);
-    showMessage(message, "error");
+
+    showMessage(
+        message,
+        "error"
+    );
 
     window.setTimeout(
         () => {
-
-            if (
-                value.includes(
-                    "protected-pro-loader-not-connected"
-                )
-            ) {
-                window.location.replace(
-                    PRICING_URL
-                );
-            } else {
-                window.location.replace(
-                    COURSES_URL
-                );
-            }
+            window.location.replace(
+                COURSES_URL
+            );
         },
-        2200
+        2300
     );
+}
+
+
+function renderParagraph(id, value) {
+
+    const target =
+        document.getElementById(id);
+
+    if (!target) {
+        return;
+    }
+
+    target.innerHTML =
+        value
+            ? `<p>${escapeHtml(value)}</p>`
+            : `<p>Additional context for this lesson is being prepared.</p>`;
+}
+
+
+function setLoading(value) {
+
+    if (loadingScreen) {
+        loadingScreen.hidden =
+            !value;
+    }
 }
 
 
@@ -1391,36 +1995,26 @@ function showMessage(
     }
 
     target.textContent =
-        String(message || "");
+        String(
+            message || ""
+        );
 
     target.className =
         `lesson-message ${type}`;
 
     target.hidden = false;
-}
 
+    window.clearTimeout(
+        showMessage.timeout
+    );
 
-function renderParagraph(id, value) {
-
-    const target =
-        document.getElementById(id);
-
-    if (!target) {
-        return;
-    }
-
-    target.innerHTML = value
-        ? `<p>${escapeHtml(value)}</p>`
-        : `<p>Additional context for this lesson is being prepared.</p>`;
-}
-
-
-function setLoading(value) {
-
-    if (loadingScreen) {
-        loadingScreen.hidden =
-            !value;
-    }
+    showMessage.timeout =
+        window.setTimeout(
+            () => {
+                target.hidden = true;
+            },
+            5000
+        );
 }
 
 
@@ -1431,7 +2025,9 @@ function setText(id, value) {
 
     if (element) {
         element.textContent =
-            String(value ?? "");
+            String(
+                value ?? ""
+            );
     }
 }
 
@@ -1440,7 +2036,10 @@ function deriveNameFromEmail(email) {
 
     return String(email || "")
         .split("@")[0]
-        .replace(/[._-]+/g, " ")
+        .replace(
+            /[._-]+/g,
+            " "
+        )
         .replace(
             /\b\w/g,
             character =>
@@ -1452,7 +2051,10 @@ function deriveNameFromEmail(email) {
 function formatTitle(value) {
 
     return String(value || "")
-        .replaceAll("-", " ")
+        .replaceAll(
+            "-",
+            " "
+        )
         .replace(
             /\b\w/g,
             character =>
@@ -1477,8 +2079,7 @@ window.addEventListener(
     () => {
 
         if (
-            typeof unsubscribe ===
-            "function"
+            typeof unsubscribe === "function"
         ) {
             unsubscribe();
         }
