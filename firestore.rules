@@ -1,0 +1,226 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function owns(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function verifiedUser() {
+      return signedIn()
+        && request.auth.token.get('email_verified', false) == true;
+    }
+
+    function ownsVerified(userId) {
+      return verifiedUser() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.get('admin', false) == true;
+    }
+
+    function authEmail() {
+      return request.auth.token.get('email', '');
+    }
+
+    function validShortString(value, maximum) {
+      return value is string && value.size() <= maximum;
+    }
+
+    function validProfileCreate(userId) {
+      let data = request.resource.data;
+
+      return data.keys().hasAll([
+          'uid',
+          'displayName',
+          'email',
+          'photoURL',
+          'role',
+          'plan',
+          'accountStatus',
+          'lastSignInProvider',
+          'createdAt',
+          'updatedAt',
+          'lastLoginAt'
+        ])
+        && data.keys().hasOnly([
+          'uid',
+          'displayName',
+          'email',
+          'photoURL',
+          'role',
+          'plan',
+          'accountStatus',
+          'lastSignInProvider',
+          'createdAt',
+          'updatedAt',
+          'lastLoginAt'
+        ])
+        && data.uid == userId
+        && data.email == authEmail()
+        && validShortString(data.displayName, 120)
+        && validShortString(data.email, 320)
+        && validShortString(data.photoURL, 2048)
+        && validShortString(data.lastSignInProvider, 40)
+        && data.role == 'student'
+        && data.plan == 'free'
+        && data.accountStatus == 'active'
+        && data.createdAt == request.time
+        && data.updatedAt == request.time
+        && data.lastLoginAt == request.time;
+    }
+
+    function validProfileUpdate(userId) {
+      let data = request.resource.data;
+      let changed = data.diff(resource.data).affectedKeys();
+
+      return data.uid == userId
+        && data.uid == resource.data.uid
+        && data.email == authEmail()
+        && validShortString(data.displayName, 120)
+        && validShortString(data.email, 320)
+        && validShortString(data.photoURL, 2048)
+        && validShortString(data.lastSignInProvider, 40)
+        && changed.hasOnly([
+          'displayName',
+          'email',
+          'photoURL',
+          'lastSignInProvider',
+          'updatedAt',
+          'lastLoginAt'
+        ])
+        && data.updatedAt == request.time
+        && data.lastLoginAt is timestamp;
+    }
+
+    function validNoteCreate() {
+      let data = request.resource.data;
+
+      return data.keys().hasAll([
+          'title',
+          'content',
+          'courseId',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'title',
+          'content',
+          'courseId',
+          'moduleId',
+          'lessonId',
+          'createdAt',
+          'updatedAt'
+        ])
+        && validShortString(data.title, 160)
+        && validShortString(data.content, 20000)
+        && validShortString(data.courseId, 120)
+        && validShortString(data.get('moduleId', ''), 120)
+        && validShortString(data.get('lessonId', ''), 120)
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
+    }
+
+    function validNoteUpdate() {
+      let data = request.resource.data;
+      let changed = data.diff(resource.data).affectedKeys();
+
+      return changed.hasOnly([
+          'title',
+          'content',
+          'courseId',
+          'moduleId',
+          'lessonId',
+          'updatedAt'
+        ])
+        && validShortString(data.title, 160)
+        && validShortString(data.content, 20000)
+        && validShortString(data.courseId, 120)
+        && validShortString(data.get('moduleId', ''), 120)
+        && validShortString(data.get('lessonId', ''), 120)
+        && data.createdAt == resource.data.createdAt
+        && data.updatedAt == request.time;
+    }
+
+    match /users/{userId} {
+      allow read: if owns(userId) || isAdmin();
+      allow create: if owns(userId) && validProfileCreate(userId);
+      allow update: if isAdmin() || (owns(userId) && validProfileUpdate(userId));
+      allow delete: if isAdmin();
+
+      match /dashboard/{documentId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /enrollments/{courseId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /courseProgress/{courseId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /assessmentAttempts/{attemptId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /projects/{projectId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /certificates/{certificateId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /entitlements/{entitlementId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+
+      match /notes/{noteId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow create: if ownsVerified(userId) && validNoteCreate();
+        allow update: if ownsVerified(userId) && validNoteUpdate();
+        allow delete: if ownsVerified(userId) || isAdmin();
+      }
+
+      match /preferences/{preferenceId} {
+        allow read: if ownsVerified(userId) || isAdmin();
+        allow write: if isAdmin();
+      }
+    }
+
+    match /courseCatalog/{courseId} {
+      allow read: if resource.data.get('visibility', '') == 'public'
+        && resource.data.get('status', '') in ['available', 'coming-soon'];
+      allow write: if isAdmin();
+    }
+
+    match /publicCertificateVerifications/{certificateId} {
+      allow read: if resource.data.get('visibility', '') == 'public'
+        && resource.data.get('status', '') == 'valid';
+      allow write: if isAdmin();
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAdmin()
+        || (verifiedUser() && resource.data.get('userId', '') == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
