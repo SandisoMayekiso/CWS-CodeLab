@@ -1,1235 +1,295 @@
-/* =========================================================
-   CWS CODELAB
-   STUDENT DASHBOARD UI
-
-   Firebase responsibilities are handled by:
-   js/auth-guard.js
-
-   This file handles:
-   - Mobile sidebar
-   - Student UI rendering
-   - Dashboard statistics
-   - Continue-learning UI
-   - Placeholder navigation for pages not built yet
-   - Loading screen
-   - Dashboard messages
-
-   IMPORTANT:
-   Real course navigation uses normal links.
-   Real sign out is handled by auth-guard.js.
-========================================================= */
-
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-
-        /* =====================================================
-           ELEMENTS
-        ===================================================== */
-
-        const sidebar =
-            document.getElementById(
-                "dashboard-sidebar"
-            );
-
-
-        const sidebarToggle =
-            document.getElementById(
-                "sidebar-toggle"
-            );
-
-
-        const sidebarClose =
-            document.getElementById(
-                "sidebar-close"
-            );
-
-
-        const sidebarOverlay =
-            document.getElementById(
-                "sidebar-overlay"
-            );
-
-
-        const dashboardYear =
-            document.getElementById(
-                "dashboard-year"
-            );
-
-
-        const futurePageButtons =
-            document.querySelectorAll(
-                "[data-future-page]"
-            );
-
-
-        /* =====================================================
-           YEAR
-        ===================================================== */
-
-        if (dashboardYear) {
-
-
-            dashboardYear.textContent =
-                new Date()
-                    .getFullYear();
-
-
-        }
-
-
-        /* =====================================================
-           SIDEBAR
-        ===================================================== */
-
-        function openSidebar() {
-
-
-            if (!sidebar) {
-
-                return;
-
-            }
-
-
-            sidebar.classList.add(
-                "open"
-            );
-
-
-            sidebarOverlay?.classList.add(
-                "open"
-            );
-
-
-            sidebarToggle?.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-
-            document.body.classList.add(
-                "dashboard-nav-open"
-            );
-
-
-        }
-
-
-        function closeSidebar() {
-
-
-            if (!sidebar) {
-
-                return;
-
-            }
-
-
-            sidebar.classList.remove(
-                "open"
-            );
-
-
-            sidebarOverlay?.classList.remove(
-                "open"
-            );
-
-
-            sidebarToggle?.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-
-            document.body.classList.remove(
-                "dashboard-nav-open"
-            );
-
-
-        }
-
-
-        sidebarToggle?.addEventListener(
-            "click",
-            () => {
-
-
-                const open =
-                    sidebar?.classList.contains(
-                        "open"
-                    );
-
-
-                if (open) {
-
-                    closeSidebar();
-
-                } else {
-
-                    openSidebar();
-
-                }
-
-
-            }
-        );
-
-
-        sidebarClose?.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-
-        sidebarOverlay?.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-
-                    closeSidebar();
-
-                }
-
-
-            }
-        );
-
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-
-                if (
-                    window.innerWidth >
-                    900
-                ) {
-
-                    closeSidebar();
-
-                }
-
-
-            }
-        );
-
-
-        /* =====================================================
-           FUTURE PAGE PLACEHOLDERS
-
-           Only pages we genuinely haven't built yet should
-           use data-future-page.
-
-           Courses no longer use this system.
-        ===================================================== */
-
-        futurePageButtons.forEach(
-            button => {
-
-
-                button.addEventListener(
-                    "click",
-                    event => {
-
-
-                        event.preventDefault();
-
-
-                        const page =
-                            button.dataset
-                                .futurePage;
-
-
-                        showDashboardMessage(
-                            `${formatFuturePageName(
-                                page
-                            )} will be connected as we continue building the CodeLab student portal.`,
-                            "info"
-                        );
-
-
-                        /*
-                         * If opened through the mobile sidebar,
-                         * close the sidebar afterwards.
-                         */
-
-                        closeSidebar();
-
-
-                    }
-                );
-
-
-            }
-        );
-
-
-        /* =====================================================
-           STUDENT
-
-           Called by auth-guard.js after Firebase authentication
-           and Firestore profile loading have completed.
-        ===================================================== */
-
-        function setStudent(
-            student = {}
-        ) {
-
-
-            const name =
-                normaliseName(
-                    student.displayName ||
-                    student.name ||
-                    "Student"
-                );
-
-
-            const email =
-                normaliseEmailDisplay(
-                    student.email
-                );
-
-
-            const plan =
-                normalisePlan(
-                    student.plan
-                );
-
-
-            const accountStatus =
-                normaliseAccountStatus(
-                    student.accountStatus
-                );
-
-
-            const initial =
-                getInitial(
-                    name
-                );
-
-
-            /* =================================================
-               TOPBAR
-            ================================================= */
-
-            setText(
-                "student-name",
-                name
-            );
-
-
-            setText(
-                "student-email",
-                email
-            );
-
-
-            setText(
-                "topbar-student-avatar",
-                initial
-            );
-
-
-            /* =================================================
-               SIDEBAR
-            ================================================= */
-
-            setText(
-                "sidebar-student-name",
-                name
-            );
-
-
-            setText(
-                "sidebar-student-plan",
-                `${plan} Learner`
-            );
-
-
-            setText(
-                "student-avatar",
-                initial
-            );
-
-
-            /* =================================================
-               WELCOME
-            ================================================= */
-
-            setText(
-                "welcome-student-name",
-                `${firstName(
-                    name
-                )}.`
-            );
-
-
-            /* =================================================
-               PROFILE
-            ================================================= */
-
-            setText(
-                "profile-student-name",
-                name
-            );
-
-
-            setText(
-                "profile-student-email",
-                email
-            );
-
-
-            setText(
-                "profile-student-avatar",
-                initial
-            );
-
-
-            setText(
-                "profile-account-status",
-                plan
-            );
-
-
-            setText(
-                "profile-learning-status",
-                accountStatus
-            );
-
-
-            /* =================================================
-               CREATED DATE
-            ================================================= */
-
-            if (
-                student.createdAt
-            ) {
-
-
-                setText(
-                    "profile-member-since",
-                    formatDate(
-                        student.createdAt
-                    )
-                );
-
-
-            } else {
-
-
-                setText(
-                    "profile-member-since",
-                    "—"
-                );
-
-
-            }
-
-
-        }
-
-
-        /* =====================================================
-           DASHBOARD STATISTICS
-        ===================================================== */
-
-        function setDashboardStats(
-            stats = {}
-        ) {
-
-
-            const courses =
-                safeNumber(
-                    stats.courses
-                );
-
-
-            const progress =
-                clamp(
-                    safeNumber(
-                        stats.progress
-                    ),
-                    0,
-                    100
-                );
-
-
-            const projects =
-                safeNumber(
-                    stats.projects
-                );
-
-
-            const certificates =
-                safeNumber(
-                    stats.certificates
-                );
-
-
-            setText(
-                "dashboard-course-count",
-                courses
-            );
-
-
-            setText(
-                "dashboard-progress-value",
-                `${progress}%`
-            );
-
-
-            setText(
-                "dashboard-project-count",
-                projects
-            );
-
-
-            setText(
-                "dashboard-certificate-count",
-                certificates
-            );
-
-
-            updateContinueLearningState(
-                {
-
-                    courseCount:
-                        courses,
-
-                    progress
-
-                }
-            );
-
-
-        }
-
-
-        /* =====================================================
-           CONTINUE LEARNING
-
-           This provides a better dashboard state before we build
-           the full "recent course" Firestore functionality.
-        ===================================================== */
-
-        function updateContinueLearningState(
-            data = {}
-        ) {
-
-
-            const courseCount =
-                safeNumber(
-                    data.courseCount
-                );
-
-
-            const progress =
-                clamp(
-                    safeNumber(
-                        data.progress
-                    ),
-                    0,
-                    100
-                );
-
-
-            const title =
-                document.getElementById(
-                    "continue-learning-title"
-                );
-
-
-            const description =
-                document.getElementById(
-                    "continue-learning-description"
-                );
-
-
-            if (
-                courseCount <= 0
-            ) {
-
-
-                if (title) {
-
-
-                    title.textContent =
-                        "Choose your first course";
-
-
-                }
-
-
-                if (description) {
-
-
-                    description.textContent =
-                        "Browse all available CodeLab courses, enrol in a free course and begin your developer journey.";
-
-
-                }
-
-
-                return;
-
-            }
-
-
-            if (title) {
-
-
-                title.textContent =
-                    courseCount === 1
-
-                        ? "1 course in your learning library"
-
-                        : `${courseCount} courses in your learning library`;
-
-
-            }
-
-
-            if (description) {
-
-
-                if (
-                    progress > 0
-                ) {
-
-
-                    description.textContent =
-                        `Your overall progress is currently ${progress}%. Open My Courses to continue where you left off.`;
-
-
-                } else {
-
-
-                    description.textContent =
-                        "Your enrolled courses are ready. Open My Courses and begin your next lesson.";
-
-
-                }
-
-
-            }
-
-
-        }
-
-
-        /* =====================================================
-           LOADING STATE
-
-           auth-guard.js calls this when authentication/profile
-           checks complete.
-        ===================================================== */
-
-        function setDashboardLoading(
-            loading
-        ) {
-
-
-            const loadingScreen =
-                document.getElementById(
-                    "dashboard-loading"
-                );
-
-
-            if (!loadingScreen) {
-
-                return;
-
-            }
-
-
-            loadingScreen.hidden =
-                !loading;
-
-
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ===================================================== */
-
-        function showDashboardMessage(
-            message,
-            type = "info"
-        ) {
-
-
-            const element =
-                document.getElementById(
-                    "dashboard-message"
-                );
-
-
-            if (!element) {
-
-                return;
-
-            }
-
-
-            const allowedTypes = [
-
-                "info",
-
-                "success",
-
-                "error"
-
-            ];
-
-
-            const safeType =
-                allowedTypes.includes(
-                    type
-                )
-
-                    ? type
-
-                    : "info";
-
-
-            element.textContent =
-                String(
-                    message ||
-                    ""
-                );
-
-
-            element.className =
-                `dashboard-message ${safeType}`;
-
-
-            element.hidden =
-                false;
-
-
-            window.clearTimeout(
-                showDashboardMessage.timeout
-            );
-
-
-            showDashboardMessage.timeout =
-                window.setTimeout(
-                    () => {
-
-
-                        element.hidden =
-                            true;
-
-
-                    },
-                    5000
-                );
-
-
-        }
-
-
-        /* =====================================================
-           CLEAR MESSAGE
-        ===================================================== */
-
-        function clearDashboardMessage() {
-
-
-            const element =
-                document.getElementById(
-                    "dashboard-message"
-                );
-
-
-            if (!element) {
-
-                return;
-
-            }
-
-
-            window.clearTimeout(
-                showDashboardMessage.timeout
-            );
-
-
-            element.hidden =
-                true;
-
-
-            element.textContent =
-                "";
-
-
-            element.className =
-                "dashboard-message";
-
-
-        }
-
-
-        /* =====================================================
-           SET TEXT
-        ===================================================== */
-
-        function setText(
-            id,
-            value
-        ) {
-
-
-            const element =
-                document.getElementById(
-                    id
-                );
-
-
-            if (!element) {
-
-                return;
-
-            }
-
-
-            element.textContent =
-                String(
-                    value ??
-                    ""
-                );
-
-
-        }
-
-
-        /* =====================================================
-           NAME
-        ===================================================== */
-
-        function normaliseName(
-            value
-        ) {
-
-
-            const name =
-                String(
-                    value ||
-                    ""
-                )
-                    .trim()
-                    .replace(
-                        /\s+/g,
-                        " "
-                    );
-
-
-            return name ||
-                "Student";
-
-
-        }
-
-
-        function firstName(
-            name
-        ) {
-
-
-            return normaliseName(
-                name
-            )
-                .split(
-                    /\s+/
-                )[0];
-
-
-        }
-
-
-        function getInitial(
-            name
-        ) {
-
-
-            return firstName(
-                name
-            )
-                .charAt(0)
-                .toUpperCase() ||
-                "S";
-
-
-        }
-
-
-        /* =====================================================
-           EMAIL DISPLAY
-        ===================================================== */
-
-        function normaliseEmailDisplay(
-            value
-        ) {
-
-
-            const email =
-                String(
-                    value ||
-                    ""
-                )
-                    .trim();
-
-
-            return email ||
-                "CodeLab Student";
-
-
-        }
-
-
-        /* =====================================================
-           PLAN
-        ===================================================== */
-
-        function normalisePlan(
-            value
-        ) {
-
-
-            const plan =
-                String(
-                    value ||
-                    "Free"
-                )
-                    .trim();
-
-
-            if (!plan) {
-
-                return "Free";
-
-            }
-
-
-            return (
-                plan.charAt(0)
-                    .toUpperCase() +
-                plan.slice(1)
-                    .toLowerCase()
-            );
-
-
-        }
-
-
-        /* =====================================================
-           ACCOUNT STATUS
-        ===================================================== */
-
-        function normaliseAccountStatus(
-            value
-        ) {
-
-
-            const status =
-                String(
-                    value ||
-                    "Active"
-                )
-                    .trim();
-
-
-            if (!status) {
-
-                return "Active";
-
-            }
-
-
-            return (
-                status.charAt(0)
-                    .toUpperCase() +
-                status.slice(1)
-                    .toLowerCase()
-            );
-
-
-        }
-
-
-        /* =====================================================
-           DATE
-        ===================================================== */
-
-        function formatDate(
-            dateValue
-        ) {
-
-
-            let date;
-
-
-            if (
-                dateValue instanceof
-                Date
-            ) {
-
-
-                date =
-                    dateValue;
-
-
-            } else if (
-                dateValue &&
-                typeof dateValue.toDate ===
-                    "function"
-            ) {
-
-
-                date =
-                    dateValue.toDate();
-
-
-            } else {
-
-
-                date =
-                    new Date(
-                        dateValue
-                    );
-
-
-            }
-
-
-            if (
-                Number.isNaN(
-                    date.getTime()
-                )
-            ) {
-
-
-                return "—";
-
-
-            }
-
-
-            return new Intl.DateTimeFormat(
-                "en-ZA",
-                {
-
-                    year:
-                        "numeric",
-
-                    month:
-                        "short"
-
-                }
-            )
-                .format(
-                    date
-                );
-
-
-        }
-
-
-        /* =====================================================
-           NUMBER
-        ===================================================== */
-
-        function safeNumber(
-            value
-        ) {
-
-
-            const number =
-                Number(
-                    value
-                );
-
-
-            if (
-                !Number.isFinite(
-                    number
-                )
-            ) {
-
-
-                return 0;
-
-
-            }
-
-
-            return Math.max(
-                0,
-                Math.round(
-                    number
-                )
-            );
-
-
-        }
-
-
-        /* =====================================================
-           CLAMP
-        ===================================================== */
-
-        function clamp(
-            number,
-            minimum,
-            maximum
-        ) {
-
-
-            return Math.min(
-                maximum,
-                Math.max(
-                    minimum,
-                    number
-                )
-            );
-
-
-        }
-
-
-        /* =====================================================
-           FUTURE PAGE NAME
-        ===================================================== */
-
-        function formatFuturePageName(
-            value
-        ) {
-
-
-            if (!value) {
-
-                return "This section";
-
-            }
-
-
-            return String(
-                value
-            )
-                .replaceAll(
-                    "-",
-                    " "
-                )
-                .replace(
-                    /\b\w/g,
-                    character =>
-                        character
-                            .toUpperCase()
-                );
-
-
-        }
-
-
-        /* =====================================================
-           PUBLIC DASHBOARD API
-
-           auth-guard.js uses these functions.
-        ===================================================== */
-
-        window.CWSDashboard = {
-
-
-            setStudent,
-
-
-            setStats:
-                setDashboardStats,
-
-
-            setLoading:
-                setDashboardLoading,
-
-
-            showMessage:
-                showDashboardMessage,
-
-
-            clearMessage:
-                clearDashboardMessage,
-
-
-            updateContinueLearning:
-                updateContinueLearningState
-
-
-        };
-
-
-        /* =====================================================
-           INITIAL VISUAL STATE
-
-           The Firebase loading overlay remains visible until
-           auth-guard.js authenticates the learner.
-        ===================================================== */
-
-        setStudent(
-            {
-
-                displayName:
-                    "Student",
-
-                email:
-                    "Loading account...",
-
-                plan:
-                    "Free",
-
-                accountStatus:
-                    "Active"
-
-            }
-        );
-
-
-        setDashboardStats(
-            {
-
-                courses:
-                    0,
-
-                progress:
-                    0,
-
-                projects:
-                    0,
-
-                certificates:
-                    0
-
-            }
-        );
-
-
-        console.log(
-            "CWS CodeLab student dashboard UI initialized."
-        );
-
-
+/* CWS CodeLab student dashboard presentation controller.
+ * Authentication and trusted Firestore reads are owned by auth-guard.js.
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById("dashboard-sidebar");
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebarClose = document.getElementById("sidebar-close");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+  const mobileQuery = window.matchMedia("(max-width: 980px)");
+  let lastSidebarTrigger = null;
+  let messageTimer = null;
+
+  document.getElementById("dashboard-year")?.replaceChildren(
+    String(new Date().getFullYear())
+  );
+
+  function openSidebar(trigger = sidebarToggle) {
+    if (!sidebar || !mobileQuery.matches) return;
+    lastSidebarTrigger = trigger;
+    sidebar.classList.add("open");
+    sidebarOverlay?.classList.add("visible");
+    sidebarOverlay?.setAttribute("aria-hidden", "false");
+    sidebarToggle?.setAttribute("aria-expanded", "true");
+    document.body.classList.add("dashboard-nav-open");
+    sidebarClose?.focus();
+  }
+
+  function closeSidebar({ restoreFocus = false } = {}) {
+    sidebar?.classList.remove("open");
+    sidebarOverlay?.classList.remove("visible");
+    sidebarOverlay?.setAttribute("aria-hidden", "true");
+    sidebarToggle?.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("dashboard-nav-open");
+
+    if (restoreFocus) {
+      lastSidebarTrigger?.focus();
     }
-);
+  }
+
+  sidebarToggle?.addEventListener("click", event => openSidebar(event.currentTarget));
+  sidebarClose?.addEventListener("click", () => closeSidebar({ restoreFocus: true }));
+  sidebarOverlay?.addEventListener("click", () => closeSidebar({ restoreFocus: true }));
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && sidebar?.classList.contains("open")) {
+      closeSidebar({ restoreFocus: true });
+    }
+  });
+
+  mobileQuery.addEventListener?.("change", event => {
+    if (!event.matches) closeSidebar();
+  });
+
+  sidebar?.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => closeSidebar());
+  });
+
+  document.querySelectorAll("[data-future-page]").forEach(button => {
+    button.addEventListener("click", () => {
+      const label = String(button.dataset.futurePage || "This feature");
+      showDashboardMessage(`${sentenceCase(label)} is not available yet. Current learning records will remain unchanged.`, "info");
+      closeSidebar();
+    });
+  });
+
+  function setStudent(student = {}) {
+    const name = normaliseName(student.displayName || student.name);
+    const email = normaliseEmail(student.email);
+    const plan = titleCase(student.plan || "free");
+    const status = titleCase(student.accountStatus || "active");
+    const initial = firstName(name).charAt(0).toUpperCase() || "S";
+    const verified = student.emailVerified === true;
+
+    setText("student-name", name);
+    setText("student-email", email);
+    setText("topbar-student-avatar", initial);
+    setText("sidebar-student-name", name);
+    setText("sidebar-student-plan", `${plan} learner`);
+    setText("student-avatar", initial);
+    setText("welcome-student-name", `${firstName(name)}.`);
+    setText("profile-student-name", name);
+    setText("profile-student-email", email);
+    setText("profile-student-avatar", initial);
+    setText("profile-account-status", plan);
+    setText("profile-learning-status", status);
+    setText("profile-verification-status", verified ? "Verified" : "Pending");
+    setText("dashboard-plan-badge", `${plan} plan`);
+    setText("dashboard-verification-badge", verified ? "Verified email" : "Verification pending");
+    setText("profile-member-since", formatDate(student.createdAt));
+
+    document.getElementById("dashboard-verification-badge")
+      ?.classList.toggle("verified", verified);
+  }
+
+  function setDashboardStats(stats = {}) {
+    const courses = nonNegativeInteger(stats.courses);
+    const progress = clamp(nonNegativeInteger(stats.progress), 0, 100);
+    const projects = nonNegativeInteger(stats.projects);
+    const certificates = nonNegativeInteger(stats.certificates);
+
+    setText("dashboard-course-count", courses);
+    setText("dashboard-progress-value", `${progress}%`);
+    setText("dashboard-project-count", projects);
+    setText("dashboard-certificate-count", certificates);
+
+    updateContinueLearning({
+      courseCount: courses,
+      progress,
+      recentCourse: isPlainObject(stats.recentCourse) ? stats.recentCourse : null
+    });
+  }
+
+  function updateContinueLearning(data = {}) {
+    const courseCount = nonNegativeInteger(data.courseCount);
+    const overallProgress = clamp(nonNegativeInteger(data.progress), 0, 100);
+    const recent = isPlainObject(data.recentCourse) ? data.recentCourse : null;
+    const action = document.getElementById("continue-learning-action");
+    const progress = document.getElementById("continue-progress");
+    const courseProgress = clamp(
+      nonNegativeInteger(recent?.progress ?? overallProgress),
+      0,
+      100
+    );
+
+    if (!recent || courseCount === 0) {
+      setText("continue-learning-label", "COURSE LIBRARY");
+      setText("continue-learning-title", "Choose your first course");
+      setText("continue-learning-description", "Browse the CodeLab library, enrol in an available course and begin building your learning record.");
+      setAction(action, "../pages/courses.html", "Browse course library");
+      if (progress) progress.hidden = true;
+      return;
+    }
+
+    setText("continue-learning-label", String(recent.label || "CONTINUE COURSE").toUpperCase());
+    setText("continue-learning-title", recent.title || "Continue your current course");
+    setText("continue-learning-description", recent.description || `Your overall course progress is ${courseProgress}%. Return to the next incomplete lesson.`);
+    setAction(action, safeInternalHref(recent.href), "Continue course");
+    setText("continue-progress-label", `${courseProgress}% complete`);
+
+    const bar = document.getElementById("continue-progress-bar");
+    if (bar) bar.style.width = `${courseProgress}%`;
+    if (progress) progress.hidden = false;
+  }
+
+  function setDashboardLoading(loading) {
+    const loadingScreen = document.getElementById("dashboard-loading");
+    if (loadingScreen) loadingScreen.hidden = !Boolean(loading);
+  }
+
+  function setVerificationState({ required = false, message = "" } = {}) {
+    const loader = document.getElementById("dashboard-loader");
+    const actions = document.getElementById("dashboard-loading-actions");
+
+    loader?.toggleAttribute("hidden", required);
+    if (actions) actions.hidden = !required;
+    setText("dashboard-loading-title", required ? "Verify your email to continue" : "Loading your CodeLab account…");
+    setText("dashboard-loading-description", message || (required
+      ? "Use the link sent to your inbox, then refresh your account status."
+      : "Checking authentication and learner access"));
+  }
+
+  function showDashboardMessage(message, type = "info", timeout = 6000) {
+    const element = document.getElementById("dashboard-message");
+    if (!element) return;
+
+    const safeType = ["info", "success", "error"].includes(type) ? type : "info";
+    element.textContent = String(message || "");
+    element.className = `dashboard-message ${safeType}`;
+    element.hidden = false;
+    window.clearTimeout(messageTimer);
+
+    if (timeout > 0) {
+      messageTimer = window.setTimeout(clearDashboardMessage, timeout);
+    }
+  }
+
+  function clearDashboardMessage() {
+    const element = document.getElementById("dashboard-message");
+    window.clearTimeout(messageTimer);
+    if (!element) return;
+    element.hidden = true;
+    element.textContent = "";
+    element.className = "dashboard-message";
+  }
+
+  function setAction(element, href, label) {
+    if (!element) return;
+    element.href = href;
+    element.innerHTML = `${escapeHtml(label)} <span aria-hidden="true">→</span>`;
+  }
+
+  function safeInternalHref(value) {
+    const fallback = "../pages/courses.html";
+    const raw = String(value || "").trim();
+
+    if (!raw || raw.startsWith("//") || /^[a-z][a-z\d+.-]*:/i.test(raw)) {
+      return fallback;
+    }
+
+    try {
+      const resolved = new URL(raw, window.location.href);
+      return resolved.origin === window.location.origin
+        ? `${resolved.pathname}${resolved.search}${resolved.hash}`
+        : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = String(value ?? "");
+  }
+
+  function normaliseName(value) {
+    return String(value || "Student").trim().replace(/\s+/g, " ") || "Student";
+  }
+
+  function normaliseEmail(value) {
+    return String(value || "CodeLab learner").trim() || "CodeLab learner";
+  }
+
+  function firstName(value) {
+    return normaliseName(value).split(/\s+/)[0];
+  }
+
+  function titleCase(value) {
+    const normalised = String(value || "").trim().toLowerCase();
+    return normalised ? normalised.charAt(0).toUpperCase() + normalised.slice(1) : "—";
+  }
+
+  function sentenceCase(value) {
+    const normalised = String(value || "").trim();
+    return normalised ? normalised.charAt(0).toUpperCase() + normalised.slice(1) : "This feature";
+  }
+
+  function formatDate(value) {
+    let date = null;
+
+    if (value instanceof Date) date = value;
+    else if (value && typeof value.toDate === "function") date = value.toDate();
+    else if (value) date = new Date(value);
+
+    if (!date || Number.isNaN(date.getTime())) return "—";
+
+    return new Intl.DateTimeFormat("en-ZA", {
+      month: "short",
+      year: "numeric"
+    }).format(date);
+  }
+
+  function nonNegativeInteger(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.max(0, Math.round(number)) : 0;
+  }
+
+  function clamp(number, minimum, maximum) {
+    return Math.min(maximum, Math.max(minimum, number));
+  }
+
+  function isPlainObject(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  window.CWSDashboard = Object.freeze({
+    setStudent,
+    setStats: setDashboardStats,
+    setLoading: setDashboardLoading,
+    setVerificationState,
+    showMessage: showDashboardMessage,
+    clearMessage: clearDashboardMessage,
+    updateContinueLearning
+  });
+
+  setStudent({
+    displayName: "Student",
+    email: "Loading account…",
+    plan: "free",
+    accountStatus: "active",
+    emailVerified: false
+  });
+  setDashboardStats({ courses: 0, progress: 0, projects: 0, certificates: 0 });
+
+  window.dispatchEvent(new CustomEvent("cws:dashboard-ready"));
+});
