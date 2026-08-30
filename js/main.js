@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
      CONFIGURATION
   ======================================================= */
 
-  const MOBILE_NAV_BREAKPOINT = 900;
+  const MOBILE_NAV_BREAKPOINT = 1050;
 
   const reducedMotion =
     window.matchMedia(
@@ -751,6 +751,226 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     });
+
+
+  /* =======================================================
+     OPTIONAL ANALYTICS CONSENT
+
+     Essential authentication storage is not controlled by
+     this banner. Only optional Analytics is enabled after an
+     explicit choice.
+  ======================================================= */
+
+  const ANALYTICS_CONSENT_KEY =
+    "cws.analytics-consent";
+
+  const preferenceButton =
+    document.getElementById("manage-cookie-preferences");
+
+  let consentBanner = null;
+
+
+  preferenceButton?.addEventListener("click", () => {
+    clearConsentPreference();
+    showConsentBanner();
+  });
+
+
+  if (!readConsentPreference()) {
+    showConsentBanner();
+  }
+
+
+  function showConsentBanner() {
+
+    if (consentBanner?.isConnected) {
+      consentBanner.querySelector("button")?.focus();
+      return;
+    }
+
+    consentBanner = document.createElement("aside");
+    consentBanner.className = "consent-banner";
+    consentBanner.setAttribute("aria-label", "Analytics preferences");
+
+    const cookiePolicyUrl =
+      document.body.dataset.page === "home"
+        ? "pages/cookie-policy.html"
+        : "cookie-policy.html";
+
+    consentBanner.innerHTML = `
+      <div>
+        <strong>Optional analytics</strong>
+        <p>CodeLab uses essential storage for account features. Optional Analytics only runs if you allow it. <a href="${cookiePolicyUrl}">Read the Cookie Policy</a>.</p>
+      </div>
+      <div class="consent-actions">
+        <button type="button" class="consent-decline">Decline</button>
+        <button type="button" class="consent-accept">Allow analytics</button>
+      </div>
+    `;
+
+    consentBanner
+      .querySelector(".consent-decline")
+      ?.addEventListener("click", () => saveConsentPreference("denied"));
+
+    consentBanner
+      .querySelector(".consent-accept")
+      ?.addEventListener("click", () => saveConsentPreference("granted"));
+
+    document.body.appendChild(consentBanner);
+  }
+
+
+  function saveConsentPreference(value) {
+    try {
+      localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+    } catch (error) {
+      console.info("CWS CodeLab could not persist the analytics preference.", error);
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("cws:analytics-consent", { detail: value })
+    );
+
+    consentBanner?.remove();
+    consentBanner = null;
+  }
+
+
+  function readConsentPreference() {
+    try {
+      return localStorage.getItem(ANALYTICS_CONSENT_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+
+  function clearConsentPreference() {
+    try {
+      localStorage.removeItem(ANALYTICS_CONSENT_KEY);
+    } catch {
+      // The preference can still be changed for the current page.
+    }
+  }
+
+
+  /* =======================================================
+     CATALOGUE-DRIVEN PUBLIC METRICS
+
+     The homepage and catalogue summary use the same central
+     metadata as the course cards. This prevents marketing
+     counts from becoming stale when a course changes status.
+  ======================================================= */
+
+  const publicCourses =
+    Array.isArray(window.CWS_COURSES)
+      ? window.CWS_COURSES
+      : [];
+
+
+  if (publicCourses.length) {
+
+    const availableCourses =
+      publicCourses.filter(
+        course => course.status === "available"
+      );
+
+    const metrics = {
+      available: availableCourses.length,
+      free: availableCourses.filter(
+        course => String(course.access).toLowerCase() === "free"
+      ).length,
+      pro: availableCourses.filter(
+        course => String(course.access).toLowerCase() === "pro"
+      ).length,
+      upcoming: publicCourses.filter(
+        course => course.status === "coming-soon"
+      ).length,
+      projects: availableCourses.reduce(
+        (total, course) => total + Number(course.projects || 0),
+        0
+      )
+    };
+
+    document
+      .querySelectorAll("[data-course-metric]")
+      .forEach(element => {
+        const name = element.dataset.courseMetric;
+
+        if (Object.hasOwn(metrics, name)) {
+          element.textContent = String(metrics[name]);
+        }
+      });
+
+    renderHomeCourses(availableCourses);
+
+  }
+
+
+  function renderHomeCourses(courses) {
+
+    const grid =
+      document.getElementById("home-course-grid");
+
+    if (!grid) {
+      return;
+    }
+
+    const featured = courses
+      .filter(course => course.featured)
+      .slice(0, 3);
+
+    const visibleCourses =
+      featured.length === 3
+        ? featured
+        : courses.slice(0, 3);
+
+    grid.innerHTML = visibleCourses
+      .map(course => {
+        const access = String(course.access || "Free");
+        const accessClass = access.toLowerCase() === "pro" ? "pro" : "free";
+        const accent = sanitiseCssColour(course.accent);
+
+        return `
+          <article class="home-course-card" style="--course-accent:${accent}">
+            <div class="home-course-top">
+              <span class="course-monogram">${escapeHtml(course.icon || "CWS")}</span>
+              <span class="access-badge ${accessClass}">${escapeHtml(access)}</span>
+            </div>
+            <h3>${escapeHtml(course.title)}</h3>
+            <p>${escapeHtml(course.outcome || course.description)}</p>
+            <div class="home-course-meta">
+              <span>${escapeHtml(course.level)}</span>
+              <span>${Number(course.modules || 0)} modules</span>
+              <span>${Number(course.projects || 0)} projects</span>
+            </div>
+            <a class="text-link" href="pages/courses.html?course=${encodeURIComponent(course.id)}">
+              View course <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        `;
+      })
+      .join("");
+
+  }
+
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+
+  function sanitiseCssColour(value) {
+    const colour = String(value || "").trim();
+    return /^#[\da-f]{3,8}$/i.test(colour)
+      ? colour
+      : "#8b7cff";
+  }
 
 
   /* =======================================================
