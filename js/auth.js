@@ -50,6 +50,8 @@ import {
 
     updateProfile,
 
+    sendEmailVerification,
+
     sendPasswordResetEmail,
 
     setPersistence,
@@ -232,13 +234,9 @@ function initialiseFirebaseRegistration(
 
 
     /*
-     * Capture mode is intentional.
-     *
-     * auth-ui.js currently has temporary frontend-only
-     * submit handling.
-     *
-     * This Firebase handler runs first and stops that old
-     * placeholder handler from also processing the form.
+     * Capture mode keeps the Firebase handler authoritative
+     * if another presentation script adds a form listener in
+     * the future. auth-ui.js does not submit forms.
      */
 
     form.addEventListener(
@@ -568,12 +566,36 @@ function initialiseFirebaseRegistration(
 
 
                 /* =============================================
+                   EMAIL VERIFICATION
+
+                   Verification is sent after the profile write
+                   so a temporary email-delivery problem does not
+                   discard a successfully created learner account.
+                ============================================== */
+
+                try {
+
+                    await sendEmailVerification(
+                        user
+                    );
+
+                } catch (verificationError) {
+
+                    console.warn(
+                        "CWS CodeLab: Account created, but the verification email could not be sent.",
+                        verificationError
+                    );
+
+                }
+
+
+                /* =============================================
                    SUCCESS
                 ============================================== */
 
                 showMessage(
                     "register-message",
-                    "Account created successfully. Opening your student dashboard...",
+                    "Account created. Check your inbox for the verification email while CodeLab opens your dashboard.",
                     "success"
                 );
 
