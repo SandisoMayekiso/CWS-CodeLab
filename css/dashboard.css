@@ -2787,3 +2787,406 @@
     }
 
 }
+
+
+/* =========================================================
+   2026 PREMIUM DASHBOARD REFINEMENT
+   Supports the authenticated production dashboard markup.
+========================================================= */
+
+.student-body {
+    --dashboard-ink: #152338;
+    --dashboard-muted: #66768a;
+    --dashboard-line: #dce4ed;
+    --dashboard-panel: #ffffff;
+    --dashboard-soft: #f3f6fa;
+    --dashboard-accent: #6876ec;
+}
+
+.dashboard-navigation button,
+.dashboard-quick-links button {
+    width: 100%;
+    border: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dashboard-nav-placeholder small {
+    margin-left: auto;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #7f91a6;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.dashboard-welcome-copy {
+    min-width: 0;
+}
+
+.dashboard-terminal-bar > div:first-child {
+    display: flex;
+    gap: 5px;
+}
+
+.dashboard-terminal-bar > div:first-child span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff6b6b;
+}
+
+.dashboard-terminal-bar > div:first-child span:nth-child(2) {
+    background: #f5c451;
+}
+
+.dashboard-terminal-bar > div:first-child span:nth-child(3) {
+    background: #54d2a3;
+}
+
+.dashboard-terminal-bar p {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-terminal-bar small {
+    margin-left: auto;
+    color: #54d2a3;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.dashboard-terminal-status p {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.dashboard-terminal-status strong {
+    color: #9eb0c3;
+    font-size: 8px;
+}
+
+.dashboard-terminal-status small {
+    margin-top: 2px;
+    color: #536a82;
+    font-size: 7px;
+}
+
+.dashboard-account-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.dashboard-account-flags span {
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #9babc0;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+#dashboard-verification-badge.verified {
+    border-color: rgba(84, 210, 163, 0.22);
+    background: rgba(84, 210, 163, 0.08);
+    color: #7de0bb;
+}
+
+.dashboard-stat-card {
+    position: relative;
+    min-width: 0;
+    box-shadow: 0 10px 28px rgba(25, 43, 68, 0.04);
+}
+
+.dashboard-stat-card > div {
+    min-width: 0;
+}
+
+.dashboard-stat-card > small {
+    margin-left: auto;
+    color: #9aa5b4;
+    font-size: 7px;
+    white-space: nowrap;
+}
+
+.dashboard-panel {
+    box-shadow: 0 12px 34px rgba(25, 43, 68, 0.045);
+}
+
+.dashboard-empty-learning {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 16px 18px;
+    margin-top: 22px;
+    padding: 20px;
+    border: 1px solid var(--dashboard-line);
+    border-radius: 15px;
+    background: var(--dashboard-soft);
+}
+
+.dashboard-empty-icon {
+    grid-row: 1 / span 2;
+}
+
+.continue-learning-copy {
+    min-width: 0;
+}
+
+.continue-learning-label {
+    color: var(--dashboard-accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+}
+
+.continue-learning-copy h3 {
+    margin-top: 5px;
+    color: var(--dashboard-ink);
+    font-size: 18px;
+}
+
+.continue-learning-copy > p:last-child {
+    max-width: 720px;
+    margin-top: 7px;
+    color: var(--dashboard-muted);
+    font-size: 10px;
+    line-height: 1.65;
+}
+
+.continue-progress {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.continue-progress[hidden] {
+    display: none;
+}
+
+.continue-progress > span {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dfe5ed;
+}
+
+.continue-progress i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--dashboard-accent), #9867dc);
+}
+
+.continue-progress small {
+    color: var(--dashboard-muted);
+    font-size: 8px;
+}
+
+.dashboard-inline-action {
+    grid-column: 2;
+}
+
+.dashboard-profile-details dt {
+    color: #8a97a7;
+    font-size: 8px;
+}
+
+.dashboard-profile-details dd {
+    margin: 0;
+    color: #44536a;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.dashboard-profile-button:disabled,
+.dashboard-profile-button[aria-disabled="true"] {
+    cursor: pointer;
+}
+
+.dashboard-quick-links a,
+.dashboard-quick-links button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    border: 1px solid var(--light-border, #d4dde8);
+    border-radius: 12px;
+    background: transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.dashboard-quick-links a:hover,
+.dashboard-quick-links button:hover {
+    transform: translateX(2px);
+    border-color: #d5daf0;
+    background: var(--surface-soft, #edf2f7);
+}
+
+.dashboard-quick-links > a > span,
+.dashboard-quick-links > button > span {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #eef0ff;
+    color: #6573d8;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7px;
+    font-weight: 800;
+}
+
+.dashboard-quick-links i {
+    margin-left: auto;
+    color: #8995a6;
+    font-style: normal;
+}
+
+.dashboard-loading {
+    padding: 20px;
+}
+
+.dashboard-loading-card {
+    width: min(100%, 470px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    background: #0b1828;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+}
+
+.dashboard-loading-card > span {
+    max-width: 360px;
+    line-height: 1.6;
+}
+
+.dashboard-loading-actions {
+    width: 100%;
+    display: grid;
+    gap: 9px;
+    margin-top: 22px;
+}
+
+.dashboard-loading-actions[hidden] {
+    display: none;
+}
+
+.dashboard-loading-actions button {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #d8e2ed;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dashboard-loading-actions button:first-child {
+    border-color: transparent;
+    background: linear-gradient(135deg, #6876ec, #8a61d7);
+    color: #fff;
+}
+
+.dashboard-loading-actions button:hover {
+    border-color: rgba(143, 156, 255, 0.45);
+}
+
+.dashboard-loading-actions button:disabled {
+    cursor: wait;
+    opacity: 0.58;
+}
+
+.dashboard-navigation a:focus-visible,
+.dashboard-navigation button:focus-visible,
+.dashboard-quick-links a:focus-visible,
+.dashboard-quick-links button:focus-visible,
+.dashboard-loading-actions button:focus-visible,
+.dashboard-signout-button:focus-visible,
+.dashboard-menu-button:focus-visible,
+.sidebar-close:focus-visible {
+    outline: 3px solid rgba(127, 142, 255, 0.48);
+    outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+    .dashboard-welcome {
+        padding: 27px;
+    }
+
+    .dashboard-terminal code {
+        font-size: 8px;
+    }
+
+    .dashboard-stat-card > small {
+        display: none;
+    }
+
+    .dashboard-empty-learning {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-empty-icon {
+        grid-row: auto;
+    }
+
+    .continue-progress,
+    .dashboard-inline-action {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 520px) {
+    .dashboard-main {
+        padding-inline: 14px;
+    }
+
+    .dashboard-welcome {
+        border-radius: 20px;
+    }
+
+    .dashboard-account-copy {
+        display: none;
+    }
+
+    .dashboard-loading-card {
+        padding: 26px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-loader {
+        animation-duration: 1.8s;
+    }
+
+    .dashboard-quick-links a,
+    .dashboard-quick-links button,
+    .dashboard-nav-link {
+        transition: none;
+    }
+}
