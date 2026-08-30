@@ -1,1264 +1,392 @@
-/* =========================================================
-   CWS CODELAB
-   AUTHENTICATION GUARD
+/* CWS CodeLab protected dashboard bootstrap.
+ *
+ * This module verifies the Firebase session, enforces email verification for
+ * password accounts, reads only the signed-in learner's permitted documents
+ * and hands presentation-safe data to dashboard.js.
+ */
 
-   Protects authenticated student pages.
-
-   Responsibilities:
-   - Check Firebase authentication state
-   - Redirect unauthenticated users
-   - Load Firestore student profile
-   - Populate dashboard user information
-   - Create missing student profile when appropriate
-   - Handle Firebase sign out
-   - Control dashboard loading screen
-
-   Firebase Project:
-   cws-codelab
-========================================================= */
-
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
-
+import { auth, db } from "./firebase-config.js";
 import {
-    auth,
-    db
-} from "./firebase-config.js";
-
-
-/* =========================================================
-   FIREBASE AUTH
-========================================================= */
-
+  onAuthStateChanged,
+  reload,
+  sendEmailVerification,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
-
-    onAuthStateChanged,
-
-    signOut
-
-} from
-    "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-
-/* =========================================================
-   FIRESTORE
-========================================================= */
-
-import {
-
-    doc,
-
-    getDoc,
-
-    setDoc,
-
-    serverTimestamp
-
-} from
-    "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
-
-/* =========================================================
-   PAGE URLS
-========================================================= */
-
-const LOGIN_URL =
-    new URL(
-        "../pages/login.html",
-        import.meta.url
-    ).href;
-
-
-const DASHBOARD_URL =
-    new URL(
-        "../student/dashboard.html",
-        import.meta.url
-    ).href;
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let authCheckComplete =
-    false;
-
-
-let currentUser =
-    null;
-
-
-let currentProfile =
-    null;
-
-
-/* =========================================================
-   START AUTH CHECK
-========================================================= */
-
-setLoadingState(
-    true
-);
-
-
-/* =========================================================
-   AUTH STATE OBSERVER
-========================================================= */
-
-const unsubscribe =
-    onAuthStateChanged(
-        auth,
-
-        async user => {
-
-
-            /* =================================================
-               NOT AUTHENTICATED
-            ================================================= */
-
-            if (!user) {
-
-
-                console.log(
-                    "CWS CodeLab: No authenticated user."
-                );
-
-
-                currentUser =
-                    null;
-
-
-                currentProfile =
-                    null;
-
-
-                redirectToLogin();
-
-
-                return;
-
-            }
-
-
-            /* =================================================
-               AUTHENTICATED
-            ================================================= */
-
-            console.log(
-                "CWS CodeLab: Authenticated user detected."
-            );
-
-
-            currentUser =
-                user;
-
-
-            try {
-
-
-                /* =============================================
-                   LOAD FIRESTORE PROFILE
-                ============================================== */
-
-                const profile =
-                    await loadStudentProfile(
-                        user
-                    );
-
-
-                currentProfile =
-                    profile;
-
-
-                /* =============================================
-                   WAIT FOR DASHBOARD API
-                ============================================== */
-
-                const dashboard =
-                    await waitForDashboardApi();
-
-
-                /* =============================================
-                   POPULATE DASHBOARD
-                ============================================== */
-
-                dashboard.setStudent(
-                    {
-
-                        uid:
-                            user.uid,
-
-                        displayName:
-                            profile.displayName ||
-                            user.displayName ||
-                            deriveNameFromEmail(
-                                user.email
-                            ) ||
-                            "Student",
-
-                        email:
-                            profile.email ||
-                            user.email ||
-                            "",
-
-                        photoURL:
-                            profile.photoURL ||
-                            user.photoURL ||
-                            "",
-
-                        plan:
-                            formatPlan(
-                                profile.plan ||
-                                "free"
-                            ),
-
-                        role:
-                            profile.role ||
-                            "student",
-
-                        accountStatus:
-                            profile.accountStatus ||
-                            "active",
-
-                        createdAt:
-                            convertFirestoreDate(
-                                profile.createdAt
-                            )
-
-                    }
-                );
-
-
-                /* =============================================
-                   STATS
-
-                   These values are currently placeholders until
-                   progress/enrolment collections are introduced.
-                ============================================== */
-
-                dashboard.setStats(
-                    {
-
-                        courses:
-                            safeNumber(
-                                profile.enrolledCourseCount
-                            ),
-
-                        progress:
-                            safeNumber(
-                                profile.overallProgress
-                            ),
-
-                        projects:
-                            safeNumber(
-                                profile.completedProjectCount
-                            ),
-
-                        certificates:
-                            safeNumber(
-                                profile.certificateCount
-                            )
-
-                    }
-                );
-
-
-                dashboard.clearMessage();
-
-
-                authCheckComplete =
-                    true;
-
-
-                setLoadingState(
-                    false
-                );
-
-
-                console.log(
-                    "CWS CodeLab: Dashboard authentication complete."
-                );
-
-
-            } catch (error) {
-
-
-                console.error(
-                    "CWS CodeLab dashboard authentication error:",
-                    error
-                );
-
-
-                /*
-                 * The Firebase account exists, so don't
-                 * immediately log the learner out just because
-                 * a profile read encountered an issue.
-                 */
-
-                try {
-
-
-                    const dashboard =
-                        await waitForDashboardApi();
-
-
-                    dashboard.setStudent(
-                        {
-
-                            uid:
-                                user.uid,
-
-                            displayName:
-                                user.displayName ||
-                                deriveNameFromEmail(
-                                    user.email
-                                ) ||
-                                "Student",
-
-                            email:
-                                user.email ||
-                                "",
-
-                            photoURL:
-                                user.photoURL ||
-                                "",
-
-                            plan:
-                                "Free",
-
-                            role:
-                                "student"
-
-                        }
-                    );
-
-
-                    dashboard.showMessage(
-                        getProfileErrorMessage(
-                            error
-                        ),
-                        "error"
-                    );
-
-
-                } catch (
-                    dashboardError
-                ) {
-
-
-                    console.error(
-                        "CWS CodeLab could not initialize dashboard UI:",
-                        dashboardError
-                    );
-
-
-                }
-
-
-                authCheckComplete =
-                    true;
-
-
-                setLoadingState(
-                    false
-                );
-
-
-            }
-
-
-        },
-
-        error => {
-
-
-            console.error(
-                "CWS CodeLab authentication observer error:",
-                error
-            );
-
-
-            redirectToLogin();
-
-
-        }
-    );
-
-
-/* =========================================================
-   LOAD STUDENT PROFILE
-========================================================= */
-
-async function loadStudentProfile(
-    user
-) {
-
-
-    if (!user?.uid) {
-
-
-        throw new Error(
-            "Authenticated user does not have a Firebase UID."
-        );
-
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const LOGIN_URL = new URL("../pages/login.html", import.meta.url);
+const RESEND_COOLDOWN_MS = 60_000;
+
+let activeUser = null;
+let dashboard = null;
+let resendAvailableAt = 0;
+let loadingPromise = null;
+
+void initialiseDashboardAccess();
+
+async function initialiseDashboardAccess() {
+  dashboard = await waitForDashboardController();
+  bindAccountActions();
+  dashboard.setLoading(true);
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      redirectToLogin();
+      return;
     }
 
+    activeUser = user;
+    loadingPromise = loadStudentDashboard(user);
+  }, () => {
+    showBlockingState(
+      "We could not verify your sign-in",
+      "Check your connection and sign in again. No account changes were made."
+    );
+  });
+}
 
-    const userReference =
-        doc(
-            db,
-            "users",
-            user.uid
-        );
+async function loadStudentDashboard(user) {
+  dashboard.clearMessage();
+  dashboard.setLoading(true);
 
+  if (requiresEmailVerification(user)) {
+    showVerificationState();
+    return;
+  }
 
-    const snapshot =
-        await getDoc(
-            userReference
-        );
+  try {
+    const profile = await getOrCreateStudentProfile(user);
 
-
-    /* =====================================================
-       PROFILE EXISTS
-    ===================================================== */
-
-    if (
-        snapshot.exists()
-    ) {
-
-
-        return {
-
-            id:
-                snapshot.id,
-
-            ...snapshot.data()
-
-        };
-
+    if (String(profile.accountStatus || "active").toLowerCase() !== "active") {
+      showBlockingState(
+        "This account is not active",
+        "Contact CWS CodeLab support if you believe this account status is incorrect."
+      );
+      return;
     }
 
+    const summary = await getDashboardSummary(user.uid);
 
-    /* =====================================================
-       PROFILE MISSING
-
-       This can happen if:
-       - Account existed before Firestore setup
-       - Profile creation previously failed
-       - OAuth user was created before profile integration
-
-       Create a safe default student profile.
-    ===================================================== */
-
-    console.warn(
-        "CWS CodeLab: Student profile missing. Creating one."
+    dashboard.setStudent({
+      ...profile,
+      displayName: profile.displayName || user.displayName || deriveName(user.email),
+      email: user.email || profile.email || "",
+      emailVerified: user.emailVerified === true
+    });
+    dashboard.setStats(normaliseSummary(summary));
+    dashboard.setVerificationState({ required: false });
+    dashboard.setLoading(false);
+  } catch (error) {
+    console.error("CWS CodeLab dashboard initialization failed.", error);
+    showBlockingState(
+      "Your dashboard could not be loaded",
+      friendlyDashboardError(error)
     );
-
-
-    const displayName =
-        user.displayName ||
-        deriveNameFromEmail(
-            user.email
-        ) ||
-        "Student";
-
-
-    const provider =
-        getUserProvider(
-            user
-        );
-
-
-    const profile = {
-
-        uid:
-            user.uid,
-
-        displayName,
-
-        email:
-            user.email ||
-            "",
-
-        photoURL:
-            user.photoURL ||
-            "",
-
-        role:
-            "student",
-
-        plan:
-            "free",
-
-        accountStatus:
-            "active",
-
-        lastSignInProvider:
-            provider,
-
-        createdAt:
-            serverTimestamp(),
-
-        updatedAt:
-            serverTimestamp(),
-
-        lastLoginAt:
-            serverTimestamp()
-
-    };
-
-
-    await setDoc(
-        userReference,
-        profile
-    );
-
-
-    /*
-     * serverTimestamp() is resolved by Firestore after
-     * the write. Return usable dashboard information now.
-     */
-
-    return {
-
-        ...profile,
-
-        createdAt:
-            new Date()
-
-    };
-
-
+  }
 }
 
-
-/* =========================================================
-   SIGN OUT
-========================================================= */
-
-document.addEventListener(
-    "click",
-    async event => {
-
-
-        const button =
-            event.target.closest(
-                "#sign-out-button"
-            );
-
-
-        if (!button) {
-
-            return;
-
-        }
-
-
-        /*
-         * dashboard.js currently contains a temporary
-         * sign-out message handler.
-
-         * Stop that placeholder listener and perform
-         * real Firebase sign out instead.
-         */
-
-        event.preventDefault();
-
-        event.stopImmediatePropagation();
-
-
-        const originalHTML =
-            button.innerHTML;
-
-
-        button.disabled =
-            true;
-
-
-        button.setAttribute(
-            "aria-busy",
-            "true"
-        );
-
-
-        button.textContent =
-            "Signing out...";
-
-
-        try {
-
-
-            await signOut(
-                auth
-            );
-
-
-            /*
-             * onAuthStateChanged() will also detect the logout,
-             * but redirect immediately for responsive UX.
-             */
-
-            window.location.replace(
-                LOGIN_URL
-            );
-
-
-        } catch (error) {
-
-
-            console.error(
-                "CWS CodeLab sign-out error:",
-                error
-            );
-
-
-            button.disabled =
-                false;
-
-
-            button.setAttribute(
-                "aria-busy",
-                "false"
-            );
-
-
-            button.innerHTML =
-                originalHTML;
-
-
-            try {
-
-
-                const dashboard =
-                    await waitForDashboardApi();
-
-
-                dashboard.showMessage(
-                    "CodeLab could not sign you out. Please try again.",
-                    "error"
-                );
-
-
-            } catch (
-                dashboardError
-            ) {
-
-
-                console.error(
-                    dashboardError
-                );
-
-
-            }
-
-
-        }
-
-
-    },
-    true
-);
-
-
-/* =========================================================
-   WAIT FOR DASHBOARD API
-
-   dashboard.js creates:
-
-   window.CWSDashboard
-
-   Since module and defer execution order can differ slightly,
-   this prevents race conditions.
-========================================================= */
-
-function waitForDashboardApi(
-    timeout = 5000
-) {
-
-
-    return new Promise(
-        (
-            resolve,
-            reject
-        ) => {
-
-
-            /* =================================================
-               ALREADY READY
-            ================================================= */
-
-            if (
-                window.CWSDashboard
-            ) {
-
-
-                resolve(
-                    window.CWSDashboard
-                );
-
-
-                return;
-
-            }
-
-
-            const startedAt =
-                Date.now();
-
-
-            const interval =
-                window.setInterval(
-                    () => {
-
-
-                        if (
-                            window.CWSDashboard
-                        ) {
-
-
-                            window.clearInterval(
-                                interval
-                            );
-
-
-                            resolve(
-                                window.CWSDashboard
-                            );
-
-
-                            return;
-
-                        }
-
-
-                        if (
-                            Date.now() -
-                            startedAt >=
-                            timeout
-                        ) {
-
-
-                            window.clearInterval(
-                                interval
-                            );
-
-
-                            reject(
-                                new Error(
-                                    "Dashboard API did not initialize."
-                                )
-                            );
-
-
-                        }
-
-
-                    },
-                    50
-                );
-
-
-        }
-    );
-
-
+async function getOrCreateStudentProfile(user) {
+  const reference = doc(db, "users", user.uid);
+  const snapshot = await getDoc(reference);
+
+  if (snapshot.exists()) {
+    return snapshot.data() || {};
+  }
+
+  const profile = {
+    uid: user.uid,
+    displayName: normaliseName(user.displayName || deriveName(user.email)),
+    email: user.email || "",
+    photoURL: user.photoURL || "",
+    role: "student",
+    plan: "free",
+    accountStatus: "active",
+    lastSignInProvider: getProviderName(user),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    lastLoginAt: serverTimestamp()
+  };
+
+  await setDoc(reference, profile);
+
+  return {
+    ...profile,
+    createdAt: new Date()
+  };
 }
 
+async function getDashboardSummary(userId) {
+  const snapshot = await getDoc(doc(db, "users", userId, "dashboard", "summary"));
+  return snapshot.exists() ? snapshot.data() || {} : {};
+}
 
-/* =========================================================
-   LOADING
-========================================================= */
+function normaliseSummary(value) {
+  const summary = isPlainObject(value) ? value : {};
+  const recentCourse = isPlainObject(summary.recentCourse)
+    ? {
+        label: shortText(summary.recentCourse.label, 60),
+        title: shortText(summary.recentCourse.title, 160),
+        description: shortText(summary.recentCourse.description, 320),
+        href: safeDashboardHref(summary.recentCourse.href),
+        progress: percentage(summary.recentCourse.progress)
+      }
+    : null;
 
-function setLoadingState(
-    loading
-) {
+  return {
+    courses: nonNegativeInteger(summary.courses),
+    progress: percentage(summary.progress),
+    projects: nonNegativeInteger(summary.projects),
+    certificates: nonNegativeInteger(summary.certificates),
+    recentCourse
+  };
+}
 
+function bindAccountActions() {
+  document.getElementById("sign-out-button")?.addEventListener("click", signOutUser);
+  document.getElementById("verification-signout-button")?.addEventListener("click", signOutUser);
+  document.getElementById("verification-refresh-button")?.addEventListener("click", refreshVerification);
+  document.getElementById("resend-verification-button")?.addEventListener("click", resendVerification);
+}
 
-    const loadingElement =
-        document.getElementById(
-            "dashboard-loading"
-        );
+async function signOutUser() {
+  setActionButtonsDisabled(true);
 
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("CWS CodeLab sign-out failed.", error);
+    dashboard.showMessage("Sign-out could not be completed. Please try again.", "error", 0);
+    setActionButtonsDisabled(false);
+  }
+}
 
-    /*
-     * The module may execute before the DOM element exists.
-     */
+async function refreshVerification() {
+  if (!activeUser) {
+    redirectToLogin();
+    return;
+  }
 
-    if (!loadingElement) {
+  setActionButtonsDisabled(true);
+  dashboard.setVerificationState({
+    required: true,
+    message: "Refreshing your verification status…"
+  });
 
+  try {
+    await reload(activeUser);
+    activeUser = auth.currentUser;
 
-        if (
-            document.readyState ===
-            "loading"
-        ) {
-
-
-            document.addEventListener(
-                "DOMContentLoaded",
-                () => {
-
-
-                    setLoadingState(
-                        loading
-                    );
-
-
-                },
-                {
-                    once:
-                        true
-                }
-            );
-
-
-        }
-
-
-        return;
-
+    if (activeUser?.emailVerified) {
+      await loadStudentDashboard(activeUser);
+      return;
     }
 
-
-    loadingElement.hidden =
-        !loading;
-
-
+    dashboard.setVerificationState({
+      required: true,
+      message: "Your email is still unverified. Open the newest verification email, then refresh again."
+    });
+  } catch (error) {
+    console.error("CWS CodeLab verification refresh failed.", error);
+    dashboard.setVerificationState({
+      required: true,
+      message: "Verification status could not be refreshed. Check your connection and try again."
+    });
+  } finally {
+    setActionButtonsDisabled(false);
+  }
 }
 
+async function resendVerification() {
+  if (!activeUser) {
+    redirectToLogin();
+    return;
+  }
 
-/* =========================================================
-   LOGIN REDIRECT
-========================================================= */
+  const remaining = resendAvailableAt - Date.now();
+
+  if (remaining > 0) {
+    dashboard.setVerificationState({
+      required: true,
+      message: `Please wait ${Math.ceil(remaining / 1000)} seconds before requesting another email.`
+    });
+    return;
+  }
+
+  setActionButtonsDisabled(true);
+
+  try {
+    await sendEmailVerification(activeUser);
+    resendAvailableAt = Date.now() + RESEND_COOLDOWN_MS;
+    dashboard.setVerificationState({
+      required: true,
+      message: "A new verification email was sent. Check your inbox and spam folder before refreshing."
+    });
+  } catch (error) {
+    console.error("CWS CodeLab verification email failed.", error);
+    dashboard.setVerificationState({
+      required: true,
+      message: friendlyVerificationError(error)
+    });
+  } finally {
+    setActionButtonsDisabled(false);
+  }
+}
+
+function showVerificationState() {
+  dashboard.setStudent({
+    displayName: activeUser?.displayName || deriveName(activeUser?.email),
+    email: activeUser?.email || "",
+    plan: "free",
+    accountStatus: "active",
+    emailVerified: false
+  });
+  dashboard.setVerificationState({
+    required: true,
+    message: `We sent a verification link to ${activeUser?.email || "your email address"}. Verify it before opening your learner workspace.`
+  });
+  dashboard.setLoading(true);
+}
+
+function showBlockingState(title, description) {
+  const titleElement = document.getElementById("dashboard-loading-title");
+  const descriptionElement = document.getElementById("dashboard-loading-description");
+  const loader = document.getElementById("dashboard-loader");
+  const actions = document.getElementById("dashboard-loading-actions");
+
+  if (titleElement) titleElement.textContent = title;
+  if (descriptionElement) descriptionElement.textContent = description;
+  if (loader) loader.hidden = true;
+  if (actions) actions.hidden = false;
+  document.getElementById("resend-verification-button")?.setAttribute("hidden", "");
+  document.getElementById("verification-refresh-button")?.setAttribute("hidden", "");
+  dashboard.setLoading(true);
+}
+
+function setActionButtonsDisabled(disabled) {
+  [
+    "sign-out-button",
+    "resend-verification-button",
+    "verification-refresh-button",
+    "verification-signout-button"
+  ].forEach(id => {
+    const button = document.getElementById(id);
+    if (button) button.disabled = Boolean(disabled);
+  });
+}
+
+function requiresEmailVerification(user) {
+  const providers = new Set((user.providerData || []).map(item => item?.providerId));
+  return providers.has("password") && user.emailVerified !== true;
+}
+
+function getProviderName(user) {
+  const providerId = user?.providerData?.[0]?.providerId || "password";
+
+  return ({
+    "password": "password",
+    "google.com": "google",
+    "github.com": "github",
+    "apple.com": "apple"
+  })[providerId] || "other";
+}
+
+function deriveName(email) {
+  const localPart = String(email || "").split("@")[0];
+  const words = localPart.replace(/[._-]+/g, " ").trim();
+  return normaliseName(words || "Student");
+}
+
+function normaliseName(value) {
+  return String(value || "Student").trim().replace(/\s+/g, " ").slice(0, 120) || "Student";
+}
+
+function shortText(value, limit) {
+  return String(value || "").trim().slice(0, limit);
+}
+
+function nonNegativeInteger(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.max(0, Math.round(number)) : 0;
+}
+
+function percentage(value) {
+  return Math.min(100, nonNegativeInteger(value));
+}
+
+function safeDashboardHref(value) {
+  const fallback = "../pages/courses.html";
+  const raw = String(value || "").trim();
+
+  if (!raw || raw.startsWith("//") || /^[a-z][a-z\d+.-]*:/i.test(raw)) {
+    return fallback;
+  }
+
+  try {
+    const resolved = new URL(raw, window.location.href);
+    return resolved.origin === window.location.origin
+      ? `${resolved.pathname}${resolved.search}${resolved.hash}`
+      : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function friendlyDashboardError(error) {
+  const code = String(error?.code || "").replace("firestore/", "");
+
+  if (code === "permission-denied") {
+    return "Your account does not currently have permission to read this learner record. Sign out and contact support if the problem continues.";
+  }
+
+  if (code === "unavailable") {
+    return "The learning service is temporarily unavailable. Check your connection and try again.";
+  }
+
+  return "Try refreshing the page. If the problem continues, sign out and contact CWS CodeLab support.";
+}
+
+function friendlyVerificationError(error) {
+  const code = String(error?.code || "").replace("auth/", "");
+
+  if (code === "too-many-requests") {
+    return "Too many verification requests were made. Wait a few minutes before trying again.";
+  }
+
+  if (code === "network-request-failed") {
+    return "The verification email could not be sent because the network request failed.";
+  }
+
+  return "The verification email could not be sent. Wait a moment and try again.";
+}
 
 function redirectToLogin() {
-
-
-    if (
-        isLoginPage()
-    ) {
-
-        return;
-
-    }
-
-
-    setLoadingState(
-        true
-    );
-
-
-    window.location.replace(
-        LOGIN_URL
-    );
-
-
+  const target = new URL(LOGIN_URL.href);
+  target.searchParams.set("redirect", "student/dashboard.html");
+  window.location.replace(target.href);
 }
 
+function waitForDashboardController() {
+  if (window.CWSDashboard) return Promise.resolve(window.CWSDashboard);
 
-/* =========================================================
-   CHECK CURRENT PAGE
-========================================================= */
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => {
+      reject(new Error("Dashboard presentation controller did not initialize."));
+    }, 5000);
 
-function isLoginPage() {
-
-
-    return window.location
-        .pathname
-        .toLowerCase()
-        .endsWith(
-            "/pages/login.html"
-        );
-
-
+    window.addEventListener("cws:dashboard-ready", () => {
+      window.clearTimeout(timeout);
+      resolve(window.CWSDashboard);
+    }, { once: true });
+  });
 }
 
-
-/* =========================================================
-   FIRESTORE TIMESTAMP
-========================================================= */
-
-function convertFirestoreDate(
-    value
-) {
-
-
-    if (!value) {
-
-        return null;
-
-    }
-
-
-    /*
-     * Firestore Timestamp
-     */
-
-    if (
-        typeof value.toDate ===
-        "function"
-    ) {
-
-
-        return value.toDate();
-
-    }
-
-
-    /*
-     * JavaScript Date
-     */
-
-    if (
-        value instanceof Date
-    ) {
-
-        return value;
-
-    }
-
-
-    /*
-     * Date string / timestamp
-     */
-
-    const date =
-        new Date(
-            value
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return null;
-
-    }
-
-
-    return date;
-
-
-}
-
-
-/* =========================================================
-   PROVIDER
-========================================================= */
-
-function getUserProvider(
-    user
-) {
-
-
-    const providerData =
-        Array.isArray(
-            user?.providerData
-        )
-
-            ? user.providerData
-
-            : [];
-
-
-    if (
-        providerData.length === 0
-    ) {
-
-        return "unknown";
-
-    }
-
-
-    const providerId =
-        String(
-            providerData[0]
-                ?.providerId ||
-            ""
-        )
-            .toLowerCase();
-
-
-    if (
-        providerId.includes(
-            "google"
-        )
-    ) {
-
-        return "google";
-
-    }
-
-
-    if (
-        providerId.includes(
-            "github"
-        )
-    ) {
-
-        return "github";
-
-    }
-
-
-    if (
-        providerId.includes(
-            "apple"
-        )
-    ) {
-
-        return "apple";
-
-    }
-
-
-    if (
-        providerId.includes(
-            "password"
-        )
-    ) {
-
-        return "password";
-
-    }
-
-
-    return providerId ||
-        "unknown";
-
-
-}
-
-
-/* =========================================================
-   NAME FROM EMAIL
-========================================================= */
-
-function deriveNameFromEmail(
-    email
-) {
-
-
-    if (!email) {
-
-        return "";
-
-    }
-
-
-    const localPart =
-        String(
-            email
-        )
-            .split("@")[0]
-            .replace(
-                /[._-]+/g,
-                " "
-            )
-            .trim();
-
-
-    return localPart
-        .replace(
-            /\b\w/g,
-            character =>
-                character.toUpperCase()
-        );
-
-
-}
-
-
-/* =========================================================
-   PLAN
-========================================================= */
-
-function formatPlan(
-    plan
-) {
-
-
-    const value =
-        String(
-            plan ||
-            "free"
-        )
-            .trim();
-
-
-    if (!value) {
-
-        return "Free";
-
-    }
-
-
-    return (
-        value.charAt(0)
-            .toUpperCase() +
-        value.slice(1)
-            .toLowerCase()
-    );
-
-
-}
-
-
-/* =========================================================
-   SAFE NUMBER
-========================================================= */
-
-function safeNumber(
-    value
-) {
-
-
-    const number =
-        Number(
-            value
-        );
-
-
-    if (
-        !Number.isFinite(
-            number
-        )
-    ) {
-
-        return 0;
-
-    }
-
-
-    return Math.max(
-        0,
-        Math.round(
-            number
-        )
-    );
-
-
-}
-
-
-/* =========================================================
-   PROFILE ERROR MESSAGE
-========================================================= */
-
-function getProfileErrorMessage(
-    error
-) {
-
-
-    const code =
-        error?.code ||
-        "";
-
-
-    if (
-        code ===
-        "permission-denied" ||
-        code ===
-        "firestore/permission-denied"
-    ) {
-
-
-        return "You are signed in, but CodeLab could not load your student profile. Check the Firestore security rules.";
-
-    }
-
-
-    if (
-        code ===
-        "unavailable" ||
-        code ===
-        "firestore/unavailable"
-    ) {
-
-
-        return "You are signed in, but the CodeLab database is temporarily unavailable.";
-
-    }
-
-
-    return "You are signed in, but CodeLab could not fully load your student profile.";
-
-
-}
-
-
-/* =========================================================
-   PUBLIC AUTH GUARD API
-========================================================= */
-
-window.CWSAuthGuard = {
-
-
-    getUser() {
-
-        return currentUser;
-
-    },
-
-
-    getProfile() {
-
-        return currentProfile;
-
-    },
-
-
-    isReady() {
-
-        return authCheckComplete;
-
-    },
-
-
-    async signOut() {
-
-        await signOut(
-            auth
-        );
-
-    }
-
-
-};
-
-
-/* =========================================================
-   CLEANUP
-========================================================= */
-
-window.addEventListener(
-    "pagehide",
-    () => {
-
-
-        if (
-            typeof unsubscribe ===
-            "function"
-        ) {
-
-
-            unsubscribe();
-
-        }
-
-
-    }
-);
-
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-console.log(
-    "CWS CodeLab authentication guard loaded."
-);
+export { loadingPromise };
