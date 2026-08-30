@@ -1,1354 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="CWS CodeLab student dashboard for courses, projects, assessments, progress and certificates."
-    >
-
-    <meta
-        name="author"
-        content="CyberWithSandiso"
-    >
-
-    <title>
-        Student Dashboard | CWS CodeLab
-    </title>
-
-
-    <!-- =====================================================
-         GOOGLE FONTS
-    ====================================================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- =====================================================
-         STYLES
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="../css/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../css/dashboard.css"
-    >
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
-    <script
-        src="../js/dashboard.js"
-        defer
-    ></script>
-
-    <script
-        type="module"
-        src="../js/auth-guard.js"
-    ></script>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CWS CodeLab student dashboard for courses, projects, progress and completion records.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#07111f">
+  <title>Student Dashboard | CWS CodeLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <script src="../js/dashboard.js" defer></script>
+  <script type="module" src="../js/auth-guard.js"></script>
 </head>
-
-
 <body class="student-body">
-
-
-    <!-- =====================================================
-         SKIP LINK
-    ====================================================== -->
-
-    <a
-        href="#dashboard-main"
-        class="skip-link"
-    >
-        Skip to dashboard
-    </a>
-
-
-    <!-- =====================================================
-         DASHBOARD APP
-    ====================================================== -->
-
-    <div class="dashboard-app">
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
-
-        <aside
-            id="dashboard-sidebar"
-            class="dashboard-sidebar"
-            aria-label="Student navigation"
-        >
-
-
-            <!-- =============================================
-                 BRAND
-            ============================================== -->
-
-            <div class="dashboard-sidebar-header">
-
-
-                <a
-                    href="dashboard.html"
-                    class="dashboard-brand"
-                    aria-label="CWS CodeLab student dashboard"
-                >
-
-                    <span
-                        class="dashboard-brand-mark"
-                        aria-hidden="true"
-                    >
-                        &lt;/&gt;
-                    </span>
-
-
-                    <span class="dashboard-brand-copy">
-
-                        <strong>
-                            CWS CodeLab
-                        </strong>
-
-                        <small>
-                            Student Portal
-                        </small>
-
-                    </span>
-
-                </a>
-
-
-                <button
-                    type="button"
-                    id="sidebar-close"
-                    class="sidebar-close"
-                    aria-label="Close navigation"
-                >
-                    ×
-                </button>
-
-
-            </div>
-
-
-            <!-- =============================================
-                 STUDENT ACCOUNT
-            ============================================== -->
-
-            <div class="sidebar-student-card">
-
-
-                <div
-                    id="student-avatar"
-                    class="sidebar-student-avatar"
-                    aria-hidden="true"
-                >
-                    S
-                </div>
-
-
-                <div class="sidebar-student-copy">
-
-                    <strong id="sidebar-student-name">
-                        Student
-                    </strong>
-
-                    <span id="sidebar-student-plan">
-                        CodeLab Learner
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-            <!-- =============================================
-                 NAVIGATION
-            ============================================== -->
-
-            <nav class="dashboard-navigation">
-
-
-                <p class="dashboard-nav-label">
-                    Learning
-                </p>
-
-
-                <!-- DASHBOARD -->
-
-                <a
-                    href="dashboard.html"
-                    class="dashboard-nav-link active"
-                    aria-current="page"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        DB
-                    </span>
-
-                    <span>
-                        Dashboard
-                    </span>
-
-                </a>
-
-
-                <!-- MY COURSES -->
-
-                <a
-                    href="student-courses.html"
-                    class="dashboard-nav-link"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        CR
-                    </span>
-
-                    <span>
-                        My Courses
-                    </span>
-
-                </a>
-
-
-                <!-- LEARNING PATHS -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="learning-paths"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        LP
-                    </span>
-
-                    <span>
-                        Learning Paths
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <!-- PROJECTS -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="projects"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        PJ
-                    </span>
-
-                    <span>
-                        Projects
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <!-- ASSESSMENTS -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="assessments"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        AS
-                    </span>
-
-                    <span>
-                        Assessments
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <p class="dashboard-nav-label dashboard-nav-label-second">
-                    Achievement
-                </p>
-
-
-                <!-- PROGRESS -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="progress"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        PR
-                    </span>
-
-                    <span>
-                        Progress
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <!-- CERTIFICATES -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="certificates"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        CT
-                    </span>
-
-                    <span>
-                        Certificates
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-                <!-- PROFILE -->
-
-                <button
-                    type="button"
-                    class="dashboard-nav-link dashboard-nav-placeholder"
-                    data-future-page="profile"
-                >
-
-                    <span class="dashboard-nav-icon">
-                        PF
-                    </span>
-
-                    <span>
-                        Profile
-                    </span>
-
-                    <small>
-                        Soon
-                    </small>
-
-                </button>
-
-
-            </nav>
-
-
-            <!-- =============================================
-                 SIDEBAR FOOTER
-            ============================================== -->
-
-            <div class="dashboard-sidebar-footer">
-
-
-                <!-- PUBLIC WEBSITE -->
-
-                <a
-                    href="../index.html"
-                    class="sidebar-external-link"
-                >
-
-                    <span>
-                        &lt;/&gt;
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            CodeLab Website
-                        </strong>
-
-                        <small>
-                            Public website
-                        </small>
-
-                    </div>
-
-                </a>
-
-
-                <!-- CWS ACADEMY -->
-
-                <a
-                    href="https://sandisomayekiso.github.io/CyberWithSandiso/"
-                    class="sidebar-academy-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-
-                    <span>
-                        CWS
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            CWS Academy
-                        </strong>
-
-                        <small>
-                            Cybersecurity School ↗
-                        </small>
-
-                    </div>
-
-                </a>
-
-
-                <!-- SIGN OUT -->
-
-                <button
-                    type="button"
-                    id="sign-out-button"
-                    class="dashboard-signout-button"
-                >
-
-                    <span>
-                        Sign Out
-                    </span>
-
-                    <span aria-hidden="true">
-                        →
-                    </span>
-
-                </button>
-
-
-            </div>
-
-
-        </aside>
-
-
-        <!-- =================================================
-             MOBILE OVERLAY
-        ================================================== -->
-
-        <div
-            id="sidebar-overlay"
-            class="sidebar-overlay"
-        ></div>
-
-
-        <!-- =================================================
-             CONTENT
-        ================================================== -->
-
-        <div class="dashboard-content">
-
-
-            <!-- =============================================
-                 TOPBAR
-            ============================================== -->
-
-            <header class="dashboard-topbar">
-
-
-                <div class="dashboard-topbar-left">
-
-
-                    <button
-                        type="button"
-                        id="sidebar-toggle"
-                        class="dashboard-menu-button"
-                        aria-controls="dashboard-sidebar"
-                        aria-expanded="false"
-                        aria-label="Open student navigation"
-                    >
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </button>
-
-
-                    <div>
-
-                        <p class="dashboard-topbar-label">
-                            CWS CodeLab
-                        </p>
-
-                        <strong>
-                            Student Dashboard
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- ACCOUNT -->
-
-                <div class="dashboard-account">
-
-
-                    <div class="dashboard-account-copy">
-
-                        <strong id="student-name">
-                            Student
-                        </strong>
-
-                        <span id="student-email">
-                            Loading account...
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        id="topbar-student-avatar"
-                        class="dashboard-account-avatar"
-                        aria-hidden="true"
-                    >
-                        S
-                    </div>
-
-
-                </div>
-
-
-            </header>
-
-
-            <!-- =================================================
-                 MAIN
-            ================================================== -->
-
-            <main
-                id="dashboard-main"
-                class="dashboard-main"
-            >
-
-
-                <!-- =============================================
-                     MESSAGE
-                ============================================== -->
-
-                <div
-                    id="dashboard-message"
-                    class="dashboard-message"
-                    role="status"
-                    aria-live="polite"
-                    hidden
-                >
-                </div>
-
-
-                <!-- =============================================
-                     WELCOME
-                ============================================== -->
-
-                <section class="dashboard-welcome">
-
-
-                    <div class="dashboard-welcome-copy">
-
-
-                        <p class="dashboard-kicker">
-                            Developer Workspace
-                        </p>
-
-
-                        <h1>
-
-                            Welcome back,
-
-                            <span id="welcome-student-name">
-                                Student.
-                            </span>
-
-                        </h1>
-
-
-                        <p>
-
-                            Continue learning, build practical
-                            projects and keep progressing toward
-                            your developer goals.
-
-                        </p>
-
-
-                        <!-- =====================================
-                             STUDENT COURSE ACTIONS
-                        ====================================== -->
-
-                        <div class="dashboard-welcome-actions">
-
-
-                            <a
-                                href="student-courses.html"
-                                class="btn btn-primary"
-                            >
-
-                                Browse Courses
-
-                                <span aria-hidden="true">
-                                    →
-                                </span>
-
-                            </a>
-
-
-                            <a
-                                href="student-courses.html?filter=enrolled"
-                                class="btn dashboard-secondary-button"
-                            >
-                                My Enrolled Courses
-                            </a>
-
-
-                        </div>
-
-
-                    </div>
-
-
-                    <!-- =========================================
-                         CODE TERMINAL
-                    ========================================== -->
-
-                    <div class="dashboard-terminal">
-
-
-                        <div class="dashboard-terminal-bar">
-
-                            <span></span>
-                            <span></span>
-                            <span></span>
-
-                            <p>
-                                learner.js
-                            </p>
-
-                        </div>
-
-
-                        <pre><code><span class="dashboard-code-comment">// CWS CodeLab</span>
-
-<span class="dashboard-code-keyword">const</span> student = {
-  status: <span class="dashboard-code-string">"learning"</span>,
-  goal: <span class="dashboard-code-string">"build real software"</span>
+  <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
+
+  <div class="dashboard-app">
+    <aside id="dashboard-sidebar" class="dashboard-sidebar" aria-label="Student navigation">
+      <div class="dashboard-sidebar-header">
+        <a href="dashboard.html" class="dashboard-brand" aria-label="CWS CodeLab student dashboard">
+          <span class="dashboard-brand-mark" aria-hidden="true">&lt;/&gt;</span>
+          <span class="dashboard-brand-copy"><strong>CWS CodeLab</strong><small>Student workspace</small></span>
+        </a>
+        <button id="sidebar-close" class="sidebar-close" type="button" aria-label="Close navigation">×</button>
+      </div>
+
+      <div class="sidebar-student-card">
+        <div id="student-avatar" class="sidebar-student-avatar" aria-hidden="true">S</div>
+        <div class="sidebar-student-copy"><strong id="sidebar-student-name">Student</strong><span id="sidebar-student-plan">Free learner</span></div>
+      </div>
+
+      <nav class="dashboard-navigation" aria-label="Learning navigation">
+        <p class="dashboard-nav-label">Workspace</p>
+        <a href="dashboard.html" class="dashboard-nav-link active" aria-current="page"><span class="dashboard-nav-icon">DB</span><span>Dashboard</span></a>
+        <a href="../pages/courses.html" class="dashboard-nav-link"><span class="dashboard-nav-icon">CR</span><span>Course library</span></a>
+
+        <p class="dashboard-nav-label dashboard-nav-label-second">In development</p>
+        <button type="button" class="dashboard-nav-link dashboard-nav-placeholder" data-future-page="learning paths" aria-disabled="true"><span class="dashboard-nav-icon">LP</span><span>Learning paths</span><small>Preview</small></button>
+        <button type="button" class="dashboard-nav-link dashboard-nav-placeholder" data-future-page="project workspace" aria-disabled="true"><span class="dashboard-nav-icon">PJ</span><span>Projects</span><small>Preview</small></button>
+        <button type="button" class="dashboard-nav-link dashboard-nav-placeholder" data-future-page="progress and certificates" aria-disabled="true"><span class="dashboard-nav-icon">PR</span><span>Progress</span><small>Preview</small></button>
+      </nav>
+
+      <div class="dashboard-sidebar-footer">
+        <a href="../index.html" class="sidebar-external-link"><span>&lt;/&gt;</span><div><strong>CodeLab website</strong><small>Public site</small></div></a>
+        <a href="https://sandisomayekiso.github.io/CyberWithSandiso/" class="sidebar-academy-link" target="_blank" rel="noopener noreferrer"><span>CWS</span><div><strong>CWS Academy</strong><small>Cybersecurity learning ↗</small></div></a>
+        <button id="sign-out-button" class="dashboard-signout-button" type="button"><span>Sign out</span><span aria-hidden="true">→</span></button>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+    <div class="dashboard-content">
+      <header class="dashboard-topbar">
+        <div class="dashboard-topbar-left">
+          <button id="sidebar-toggle" class="dashboard-menu-button" type="button" aria-controls="dashboard-sidebar" aria-expanded="false" aria-label="Open student navigation"><span></span><span></span><span></span></button>
+          <div><p class="dashboard-topbar-label">CWS CODELAB</p><strong>Student dashboard</strong></div>
+        </div>
+        <div class="dashboard-account">
+          <div class="dashboard-account-copy"><strong id="student-name">Student</strong><span id="student-email">Loading account…</span></div>
+          <div id="topbar-student-avatar" class="dashboard-account-avatar" aria-hidden="true">S</div>
+        </div>
+      </header>
+
+      <main id="dashboard-main" class="dashboard-main">
+        <div id="dashboard-message" class="dashboard-message" role="status" aria-live="polite" hidden></div>
+
+        <section class="dashboard-welcome premium-dashboard-welcome">
+          <div class="dashboard-welcome-copy">
+            <p class="dashboard-kicker"><span aria-hidden="true"></span>Developer workspace</p>
+            <h1>Welcome back, <span id="welcome-student-name">Student.</span></h1>
+            <p>Continue from your latest lesson, turn concepts into working projects and keep your learning evidence in one place.</p>
+            <div class="dashboard-welcome-actions"><a href="#continue-learning-container" class="btn btn-primary">Continue learning <span aria-hidden="true">→</span></a><a href="../pages/courses.html" class="btn dashboard-secondary-button">Browse courses</a></div>
+            <div class="dashboard-account-flags"><span id="dashboard-plan-badge">Free plan</span><span id="dashboard-verification-badge">Checking verification…</span></div>
+          </div>
+
+          <div class="dashboard-terminal" aria-label="Example learning workspace status">
+            <div class="dashboard-terminal-bar"><div aria-hidden="true"><span></span><span></span><span></span></div><p>workspace / learner.js</p><small>READY</small></div>
+            <pre><code><span class="dashboard-code-comment">// Keep progress practical</span>
+<span class="dashboard-code-keyword">const</span> learner = {
+  goal: <span class="dashboard-code-string">"build real software"</span>,
+  method: [<span class="dashboard-code-string">"learn"</span>, <span class="dashboard-code-string">"build"</span>, <span class="dashboard-code-string">"debug"</span>]
 };
 
-student.<span class="dashboard-code-function">keepBuilding</span>();</code></pre>
-
-
-                        <div class="dashboard-terminal-status">
-
-                            <span></span>
-
-                            Learning environment ready
-
-                        </div>
-
-
-                    </div>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     LEARNING STATISTICS
-                ============================================== -->
-
-                <section
-                    class="dashboard-stats"
-                    aria-label="Learning statistics"
-                >
-
-
-                    <!-- COURSES -->
-
-                    <article class="dashboard-stat-card">
-
-                        <span class="dashboard-stat-icon">
-                            CR
-                        </span>
-
-                        <div>
-
-                            <strong id="dashboard-course-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Enrolled Courses
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- PROGRESS -->
-
-                    <article class="dashboard-stat-card">
-
-                        <span class="dashboard-stat-icon">
-                            PG
-                        </span>
-
-                        <div>
-
-                            <strong id="dashboard-progress-value">
-                                0%
-                            </strong>
-
-                            <p>
-                                Overall Progress
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- PROJECTS -->
-
-                    <article class="dashboard-stat-card">
-
-                        <span class="dashboard-stat-icon">
-                            PJ
-                        </span>
-
-                        <div>
-
-                            <strong id="dashboard-project-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Projects Completed
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- CERTIFICATES -->
-
-                    <article class="dashboard-stat-card">
-
-                        <span class="dashboard-stat-icon">
-                            CT
-                        </span>
-
-                        <div>
-
-                            <strong id="dashboard-certificate-count">
-                                0
-                            </strong>
-
-                            <p>
-                                Certificates
-                            </p>
-
-                        </div>
-
-                    </article>
-
-
-                </section>
-
-
-                <!-- =============================================
-                     DASHBOARD GRID
-                ============================================== -->
-
-                <div class="dashboard-grid">
-
-
-                    <!-- =========================================
-                         CONTINUE LEARNING
-                    ========================================== -->
-
-                    <section class="dashboard-panel dashboard-learning-panel">
-
-
-                        <div class="dashboard-panel-header">
-
-
-                            <div>
-
-                                <p class="dashboard-panel-kicker">
-                                    Learning
-                                </p>
-
-                                <h2>
-                                    Continue Learning
-                                </h2>
-
-                            </div>
-
-
-                            <a
-                                href="student-courses.html?filter=enrolled"
-                                class="dashboard-panel-link"
-                            >
-                                View all
-                            </a>
-
-
-                        </div>
-
-
-                        <!-- =====================================
-                             COURSE AREA
-
-                             Later we can dynamically replace this
-                             with the most recently accessed course.
-                        ====================================== -->
-
-                        <div
-                            id="continue-learning-container"
-                            class="dashboard-empty-learning"
-                        >
-
-
-                            <div class="dashboard-empty-icon">
-                                &lt;/&gt;
-                            </div>
-
-
-                            <h3 id="continue-learning-title">
-                                Your courses live here
-                            </h3>
-
-
-                            <p id="continue-learning-description">
-
-                                Browse the CodeLab course library,
-                                enrol in free courses and return here
-                                as your progress grows.
-
-                            </p>
-
-
-                            <a
-                                href="student-courses.html"
-                                class="dashboard-inline-action"
-                            >
-                                Browse Student Courses →
-                            </a>
-
-
-                        </div>
-
-
-                    </section>
-
-
-                    <!-- =========================================
-                         PROFILE
-                    ========================================== -->
-
-                    <aside class="dashboard-panel dashboard-profile-panel">
-
-
-                        <div class="dashboard-panel-header">
-
-
-                            <div>
-
-                                <p class="dashboard-panel-kicker">
-                                    Account
-                                </p>
-
-                                <h2>
-                                    Your Profile
-                                </h2>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="dashboard-profile-summary">
-
-
-                            <div
-                                id="profile-student-avatar"
-                                class="dashboard-profile-avatar"
-                                aria-hidden="true"
-                            >
-                                S
-                            </div>
-
-
-                            <div>
-
-                                <strong id="profile-student-name">
-                                    Student
-                                </strong>
-
-                                <span id="profile-student-email">
-                                    Loading account...
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="dashboard-profile-details">
-
-
-                            <div>
-
-                                <span>
-                                    Account
-                                </span>
-
-                                <strong id="profile-account-status">
-                                    Free
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Learning status
-                                </span>
-
-                                <strong id="profile-learning-status">
-                                    Active
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Member since
-                                </span>
-
-                                <strong id="profile-member-since">
-                                    —
-                                </strong>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="dashboard-profile-button"
-                            data-future-page="profile"
-                        >
-                            Manage Profile
-                        </button>
-
-
-                    </aside>
-
-
-                    <!-- =========================================
-                         DEVELOPER JOURNEY
-                    ========================================== -->
-
-                    <section class="dashboard-panel dashboard-path-panel">
-
-
-                        <div class="dashboard-panel-header">
-
-
-                            <div>
-
-                                <p class="dashboard-panel-kicker">
-                                    Roadmap
-                                </p>
-
-                                <h2>
-                                    Developer Journey
-                                </h2>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="dashboard-path-steps">
-
-
-                            <div class="dashboard-path-step active">
-
-                                <span>
-                                    01
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Learn the Foundations
-                                    </strong>
-
-                                    <p>
-                                        Programming logic and core concepts
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="dashboard-path-step">
-
-                                <span>
-                                    02
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Build Projects
-                                    </strong>
-
-                                    <p>
-                                        Turn concepts into working software
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="dashboard-path-step">
-
-                                <span>
-                                    03
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Complete Assessments
-                                    </strong>
-
-                                    <p>
-                                        Demonstrate what you have learned
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="dashboard-path-step">
-
-                                <span>
-                                    04
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Ship Your Work
-                                    </strong>
-
-                                    <p>
-                                        Deploy projects and build a portfolio
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-
-                    </section>
-
-
-                    <!-- =========================================
-                         QUICK ACTIONS
-                    ========================================== -->
-
-                    <aside class="dashboard-panel dashboard-quick-panel">
-
-
-                        <div class="dashboard-panel-header">
-
-
-                            <div>
-
-                                <p class="dashboard-panel-kicker">
-                                    Shortcuts
-                                </p>
-
-                                <h2>
-                                    Quick Actions
-                                </h2>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="dashboard-quick-links">
-
-
-                            <!-- STUDENT COURSE LIBRARY -->
-
-                            <a href="student-courses.html">
-
-                                <span>
-                                    CR
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Course Library
-                                    </strong>
-
-                                    <small>
-                                        Browse CodeLab courses
-                                    </small>
-
-                                </div>
-
-                            </a>
-
-
-                            <!-- ENROLLED COURSES -->
-
-                            <a href="student-courses.html?filter=enrolled">
-
-                                <span>
-                                    EN
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        My Enrolled Courses
-                                    </strong>
-
-                                    <small>
-                                        Continue your learning
-                                    </small>
-
-                                </div>
-
-                            </a>
-
-
-                            <!-- LEARNING PATH -->
-
-                            <button
-                                type="button"
-                                class="dashboard-quick-action-button"
-                                data-future-page="learning-paths"
-                            >
-
-                                <span>
-                                    LP
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Learning Paths
-                                    </strong>
-
-                                    <small>
-                                        Developer roadmaps
-                                    </small>
-
-                                </div>
-
-                            </button>
-
-
-                            <!-- PRICING -->
-
-                            <a href="../pages/pricing.html">
-
-                                <span>
-                                    PR
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        Free vs Pro
-                                    </strong>
-
-                                    <small>
-                                        Compare CodeLab access
-                                    </small>
-
-                                </div>
-
-                            </a>
-
-
-                            <!-- CWS ACADEMY -->
-
-                            <a
-                                href="https://sandisomayekiso.github.io/CyberWithSandiso/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="dashboard-quick-academy"
-                            >
-
-                                <span>
-                                    CWS
-                                </span>
-
-                                <div>
-
-                                    <strong>
-                                        CWS Academy
-                                    </strong>
-
-                                    <small>
-                                        Cybersecurity School ↗
-                                    </small>
-
-                                </div>
-
-                            </a>
-
-
-                        </div>
-
-
-                    </aside>
-
-
-                </div>
-
-
-            </main>
-
-
-            <!-- =================================================
-                 FOOTER
-            ================================================== -->
-
-            <footer class="dashboard-footer">
-
-
-                <p>
-
-                    &copy;
-                    <span id="dashboard-year"></span>
-                    CyberWithSandiso.
-
-                </p>
-
-
-                <p>
-                    CWS CodeLab · Learn. Build. Ship.
-                </p>
-
-
-            </footer>
-
-
+learner.<span class="dashboard-code-function">continue</span>();</code></pre>
+            <div class="dashboard-terminal-status"><span aria-hidden="true"></span><p><strong>Learning environment ready</strong><small>Your progress is connected to this account</small></p></div>
+          </div>
+        </section>
+
+        <section class="dashboard-stats" aria-label="Learning statistics">
+          <article class="dashboard-stat-card"><span class="dashboard-stat-icon">CR</span><div><strong id="dashboard-course-count">0</strong><p>Enrolled courses</p></div><small>Active library</small></article>
+          <article class="dashboard-stat-card"><span class="dashboard-stat-icon">PG</span><div><strong id="dashboard-progress-value">0%</strong><p>Overall progress</p></div><small>Across courses</small></article>
+          <article class="dashboard-stat-card"><span class="dashboard-stat-icon">PJ</span><div><strong id="dashboard-project-count">0</strong><p>Projects completed</p></div><small>Verified work</small></article>
+          <article class="dashboard-stat-card"><span class="dashboard-stat-icon">CT</span><div><strong id="dashboard-certificate-count">0</strong><p>Certificates</p></div><small>Eligible records</small></article>
+        </section>
+
+        <div class="dashboard-grid premium-dashboard-grid">
+          <section class="dashboard-panel dashboard-learning-panel">
+            <div class="dashboard-panel-header"><div><p class="dashboard-panel-kicker">NEXT STEP</p><h2>Continue learning</h2></div><a href="../pages/courses.html" class="dashboard-panel-link">View courses</a></div>
+            <div id="continue-learning-container" class="dashboard-empty-learning">
+              <div class="dashboard-empty-icon">&lt;/&gt;</div>
+              <div class="continue-learning-copy"><p class="continue-learning-label" id="continue-learning-label">COURSE LIBRARY</p><h3 id="continue-learning-title">Choose your first course</h3><p id="continue-learning-description">Browse the CodeLab library, enrol in an available course and begin building your learning record.</p></div>
+              <div class="continue-progress" id="continue-progress" hidden><span><i id="continue-progress-bar" style="width:0%"></i></span><small id="continue-progress-label">0% complete</small></div>
+              <a id="continue-learning-action" href="../pages/courses.html" class="dashboard-inline-action">Browse course library <span aria-hidden="true">→</span></a>
+            </div>
+          </section>
+
+          <aside class="dashboard-panel dashboard-profile-panel">
+            <div class="dashboard-panel-header"><div><p class="dashboard-panel-kicker">ACCOUNT</p><h2>Your profile</h2></div></div>
+            <div class="dashboard-profile-summary"><div id="profile-student-avatar" class="dashboard-profile-avatar" aria-hidden="true">S</div><div><strong id="profile-student-name">Student</strong><span id="profile-student-email">Loading account…</span></div></div>
+            <dl class="dashboard-profile-details">
+              <div><dt>Plan</dt><dd id="profile-account-status">Free</dd></div>
+              <div><dt>Account</dt><dd id="profile-learning-status">Active</dd></div>
+              <div><dt>Email</dt><dd id="profile-verification-status">Checking</dd></div>
+              <div><dt>Member since</dt><dd id="profile-member-since">—</dd></div>
+            </dl>
+            <button type="button" class="dashboard-profile-button" data-future-page="profile settings" aria-disabled="true">Profile settings · Coming soon</button>
+          </aside>
+
+          <section class="dashboard-panel dashboard-path-panel">
+            <div class="dashboard-panel-header"><div><p class="dashboard-panel-kicker">LEARNING METHOD</p><h2>Your developer journey</h2></div></div>
+            <ol class="dashboard-path-steps">
+              <li class="dashboard-path-step active"><span>01</span><div><strong>Understand</strong><p>Learn the concept and see it in context.</p></div></li>
+              <li class="dashboard-path-step"><span>02</span><div><strong>Build</strong><p>Apply it through guided and independent code.</p></div></li>
+              <li class="dashboard-path-step"><span>03</span><div><strong>Debug</strong><p>Use evidence, errors and tests to improve it.</p></div></li>
+              <li class="dashboard-path-step"><span>04</span><div><strong>Ship</strong><p>Document and publish selected project work.</p></div></li>
+            </ol>
+          </section>
+
+          <aside class="dashboard-panel dashboard-quick-panel">
+            <div class="dashboard-panel-header"><div><p class="dashboard-panel-kicker">SHORTCUTS</p><h2>Quick actions</h2></div></div>
+            <div class="dashboard-quick-links">
+              <a href="../pages/courses.html"><span>CR</span><div><strong>Course library</strong><small>Browse all available courses</small></div><i aria-hidden="true">→</i></a>
+              <button type="button" data-future-page="enrolled course workspace" aria-disabled="true"><span>EN</span><div><strong>My enrolled courses</strong><small>Protected workspace · Coming soon</small></div><i aria-hidden="true">→</i></button>
+              <a href="../pages/pricing.html"><span>PL</span><div><strong>Access plans</strong><small>Compare Free and Pro preview</small></div><i aria-hidden="true">→</i></a>
+              <a href="../pages/privacy-policy.html"><span>PV</span><div><strong>Privacy and data</strong><small>Review how information is handled</small></div><i aria-hidden="true">→</i></a>
+            </div>
+          </aside>
         </div>
+      </main>
 
-
-        <!-- =================================================
-             AUTH LOADING SCREEN
-
-             IMPORTANT:
-             Do not add "hidden" here.
-
-             auth-guard.js hides this only after Firebase has
-             confirmed the current authentication state.
-        ================================================== -->
-
-        <div
-            id="dashboard-loading"
-            class="dashboard-loading"
-        >
-
-            <div class="dashboard-loader"></div>
-
-            <strong>
-                Loading your CodeLab account...
-            </strong>
-
-            <span>
-                Checking authentication
-            </span>
-
-        </div>
-
-
+      <footer class="dashboard-footer"><p>&copy; <span id="dashboard-year"></span> CyberWithSandiso.</p><p>CWS CodeLab · Learn. Build. Debug. Ship.</p></footer>
     </div>
 
-
+    <div id="dashboard-loading" class="dashboard-loading" role="status" aria-live="polite">
+      <div class="dashboard-loading-card">
+        <div id="dashboard-loader" class="dashboard-loader" aria-hidden="true"></div>
+        <strong id="dashboard-loading-title">Loading your CodeLab account…</strong>
+        <span id="dashboard-loading-description">Checking authentication and learner access</span>
+        <div id="dashboard-loading-actions" class="dashboard-loading-actions" hidden>
+          <button id="resend-verification-button" type="button">Resend verification email</button>
+          <button id="verification-refresh-button" type="button">I have verified · Refresh</button>
+          <button id="verification-signout-button" type="button">Use another account</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
 </html>
